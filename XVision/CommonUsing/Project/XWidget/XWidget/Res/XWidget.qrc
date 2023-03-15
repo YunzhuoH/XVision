@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/Close.svg</file>
+        <file>images/Maximize.svg</file>
+        <file>images/MaximizeMax.svg</file>
+        <file>images/Minimize.svg</file>
+        <file>style/Default.css</file>
+        <file>images/CloseInverse.svg</file>
+        <file>images/CheckBox24px.svg</file>
+        <file>images/CheckBoxOutlineBlank24px.svg</file>
+        <file>images/RadioButtonChecked24px.svg</file>
+        <file>images/RadioButtonUnChecked24px.svg</file>
+        <file>images/ComboBoxNormal.svg</file>
+        <file>images/ComboBoxShowPopup.svg</file>
+        <file>images/DrawerBranchClose.svg</file>
+        <file>images/DrawerBranchOpen.svg</file>
+    </qresource>
+</RCC>

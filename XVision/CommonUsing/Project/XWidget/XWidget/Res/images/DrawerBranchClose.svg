@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   t="1677641522196"
+   class="icon"
+   viewBox="0 0 1024 1024"
+   version="1.1"
+   p-id="8348"
+   width="64"
+   height="64"
+   id="svg4"
+   sodipodi:docname="DrawerBranchClose.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="13.078125"
+     inkscape:cx="32.114695"
+     inkscape:cy="32.114695"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <path
+     d="m 379.57486,703.93018 v -40.96 -64.512 -78.336 -79.872 q 0,-38.4 -0.256,-70.656 -0.256,-32.256 -0.256,-50.176 0,-12.288 5.888,-20.48 5.888,-8.192 14.848,-11.008 8.96,-2.816 19.712,0 10.752,2.816 19.968,12.032 18.944,19.456 40.96,40.704 22.016,21.248 45.312,42.752 23.296,21.504 47.104,43.008 23.808,21.504 45.824,41.472 9.728,8.704 14.592,21.504 4.864,12.8 4.352,26.624 -0.512,13.824 -5.888,27.136 -5.376,13.312 -16.128,22.528 -19.968,17.408 -39.68,35.072 -19.712,17.664 -40.448,36.352 -20.736,18.688 -43.52,39.168 -22.784,20.48 -48.384,43.52 -11.264,10.24 -22.784,13.568 -11.52,3.328 -20.736,1.024 -9.216,-2.304 -14.848,-10.24 -5.632,-7.936 -5.632,-20.224 z"
+     p-id="8349"
+     fill="#8a8a8a"
+     id="path2"
+     style="fill:#4f4f4f;fill-opacity:1;stroke-width:0.5" />
+</svg>

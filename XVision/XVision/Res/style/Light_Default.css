@@ -1,0 +1,255 @@
+﻿/***************************XWidget默认风格***************************/
+
+
+
+*
+{
+    font-family: 'Microsoft YaHei';
+    outline: none;
+}
+
+
+/***************************AppMainWindow***************************/
+.AppMainWindow
+{
+  background-color: #EEEEEE;
+}
+
+.AppMainWindow #toolBarMain
+{
+  background-color: #CCCCCC;
+}
+
+.AppMainWindow #fmMain
+{
+  background-color: #DDDDDD;
+}
+
+.AppMainWindow QStatusBar
+{
+  background-color: #CCCCCC;
+}
+
+.AppMainWindow XTitleBar
+{
+    background: #CCCCCC;
+    font:15px/30px Microsoft-YaHei, serif;
+}
+.AppMainWindow XTitleBar QMenuBar
+{
+    background: #CCCCCC;
+    font-weight: 400;
+    font:15px/30px Microsoft-YaHei, serif;
+    color: #555555;
+}
+.AppMainWindow XTitleBar QMenuBar::item
+{
+    background-color: #CCCCCC;
+    padding: 5px 15px;
+}
+.AppMainWindow XTitleBar QMenu
+{
+    background: #CCCCCC;
+    font-weight: 400;
+    font:15px/30px Microsoft-YaHei, serif;
+    color: #555555;
+}
+
+
+
+.AppMainWindow #hLineToolBar
+{
+    qproperty-lineColor:gray;
+}
+.AppMainWindow #hLineMain
+{
+    qproperty-lineColor:gray;
+}
+/***************************XTitleBar***************************/
+/*
+hover/selected:BBBBBB
+pressed:AAAAAA
+XTitleBar-background:D0D0D0
+*/
+.XTitleBar
+{
+    background: #D0D0D0;
+    font-weight: 400;
+    color: #323232
+}
+
+.XTitleBar #closeBtn
+
+{
+    qproperty-iconSize: 16px 16px;
+    qproperty-icon:url();
+
+    background-image: url(:/images/LightStyle/Close.svg);
+    background-position: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-repeat: no-repeat;
+
+}
+/*关闭按钮hover:需要设置为背景图像*/
+.XTitleBar #closeBtn:hover
+{
+    background-color: #FF0000;
+
+    background-image: url(:/images/LightStyle/CloseInverse.svg);
+    background-position: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-repeat: no-repeat;
+}
+/*关闭按钮按下:需要设置为背景图像*/
+.XTitleBar #closeBtn:pressed
+{
+    background-color: #FF6060;
+
+    background-image: url(:/images/LightStyle/CloseInverse.svg);
+    background-position: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-repeat: no-repeat;
+}
+
+/*最小化按钮*/
+.XTitleBar #minimumSizeBtn
+{
+    qproperty-iconSize: 14px 14px;
+    qproperty-icon: url(:/images/LightStyle/Minimize.svg);
+}
+/*最大化按钮-普通*/
+.XTitleBar #maximumSizeBtn[maximumsized=true]
+{
+    qproperty-iconSize: 14px 14px;
+    qproperty-icon: url(:/images/LightStyle/Maximize.svg);
+}
+/*最大化按钮-最大化*/
+.XTitleBar #maximumSizeBtn[maximumsized=false]
+{
+    qproperty-iconSize: 14px 14px;
+    qproperty-icon: url(:/images/LightStyle/MaximizeMax.svg);
+}
+
+
+XTitleBar QAbstractButton
+{
+    padding-left: 5px;
+    padding-right: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+XTitleBar QAbstractButton:hover
+{
+    background-color: #BBBBBB;
+    border: none;
+}
+
+XTitleBar QAbstractButton:pressed
+{
+    background-color: #AAAAAA;
+    border: none;
+}
+
+.XTitleBar QMenuBar
+{
+    background: #D9D9D9;
+}
+.XTitleBar QMenuBar::item
+{
+    background-color: #D0D0D0;
+    padding: 5px 15px;
+}
+.XTitleBar QMenuBar::item:selected
+{
+  background-color: #BBBBBB;
+}
+.XTitleBar QMenuBar::item:pressed
+{
+    background-color: #AAAAAA;
+}
+
+.XTitleBar QMenu
+{
+    border:1px solid;
+    border-color:#BBBBBB;
+    background-color: #D0D0D0;
+}
+.XTitleBar QMenu::item:selected{
+    background-color: #BBBBBB;
+}
+.XTitleBar QMenu::item:pressed{
+    background-color: #AAAAAA;
+}
+
+/**************************************************************/
+
+/******************XDrawerWidget*************************/
+
+.XDrawerItemWidget #title
+{
+    min-height: 30px;
+    max-height: 30px;
+    background: #E1E0E0;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: #4F4F4F;
+    border: none;
+}
+
+.XDrawerItemWidget #title::hover
+{
+    border: 1px solid #8ebded;
+}
+
+.XDrawerItemWidget #title::pressed
+{
+    border: 1px solid #2477ce;
+}
+
+.XDrawerItemWidget #title::branch:close
+{
+    image: url(:/images/DrawerBranchClose.svg);
+}
+
+.XDrawerItemWidget #title::branch:open
+{
+    image: url(:/images/DrawerBranchOpen.svg);
+}
+
+.XDrawerItemWidget #title QToolButton
+{
+    margin: 1px;
+    border: none;
+}
+
+.XDrawerItemWidget #title QToolButton:hover
+{
+    background: #E5F3FF;
+}
+
+.XDrawerItemWidget #title QToolButton:pressed, .XDrawerItemWidget #title QToolButton:checked
+{
+    background: #CDE8FF;
+}
+
+.XDrawerItemWidget #Container
+{
+    background: #F3F3F3;
+}
+
+.XDrawerItemWidget
+{
+    background: #F3F3F3;
+}
+
+/************************************************************/

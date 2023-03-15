@@ -1,0 +1,167 @@
+﻿/***************************XWidget默认风格***************************/
+
+
+
+*
+{
+    font-family: 'Microsoft YaHei';
+    outline: none;
+}
+
+
+/***************************XTitleBar***************************/
+.XTitleBar #closeBtn
+{
+    qproperty-iconSize: 16px 16px;
+    qproperty-icon: url(:/images/Close.svg);
+}
+/*关闭按钮hover?图标不生效*/
+.XTitleBar #closeBtn:hover
+{
+    background-color: #FF0000;
+    qproperty-iconSize: 16px 16px;
+    qproperty-icon: url(:/images/CloseInverse.svg);
+}
+/*关闭按钮按下?图标不生效*/
+.XTitleBar #closeBtn:pressed
+{
+    background-color: #FF6060;
+    qproperty-iconSize: 16px 16px;
+    qproperty-icon: url(:/images/CloseInverse.svg);
+}
+
+/*最小化按钮*/
+.XTitleBar #minimumSizeBtn
+{
+    qproperty-iconSize: 14px 14px;
+    qproperty-icon: url(:/images/Minimize.svg);
+}
+/*最大化按钮-普通*/
+.XTitleBar #maximumSizeBtn[maximumsized=true]
+{
+    qproperty-iconSize: 14px 14px;
+    qproperty-icon: url(:/images/Maximize.svg);
+}
+/*最大化按钮-最大化*/
+.XTitleBar #maximumSizeBtn[maximumsized=false]
+{
+    qproperty-iconSize: 14px 14px;
+    qproperty-icon: url(:/images/MaximizeMax.svg);
+}
+
+
+XTitleBar QAbstractButton
+{
+    padding-left: 5px;
+    padding-right: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+XTitleBar QAbstractButton:hover
+{
+    background-color: #C8C8C8;
+    border: none;
+}
+
+XTitleBar QAbstractButton:pressed
+{
+    background-color: #AFAFAF;
+    border: none;
+}
+
+.XTitleBar
+{
+    background: #D0D0D0;
+    font-weight: 400;
+    color: rgba(40,40,40,1);
+
+}
+
+.XTitleBar QMenuBar
+{
+    background: #D9D9D9;
+}
+
+.XTitleBar QMenuBar::item
+{
+    font-family: 'Microsoft YaHei';
+    font-weight: 400;
+    color: rgba(94,94,94,1);
+    background-color: #D0D0D0;
+    padding: 0px 10px;
+}
+
+.XTitleBar QMenuBar::item:selected
+{
+    background-color: #C6C6C6;
+}
+
+.XTitleBar QMenuBar::item:pressed
+{
+    background-color: #C6C6C6;
+}
+
+
+/**************************************************************/
+
+/******************XDrawerWidget*************************/
+
+.XDrawerItemWidget #title
+{
+    min-height: 30px;
+    max-height: 30px;
+    background: #E1E0E0;
+    font-family: 'Microsoft YaHei';
+    font-weight: bold;
+    color: #4F4F4F;
+    border: none;
+}
+
+.XDrawerItemWidget #title::hover
+{
+    border: 1px solid #8ebded;
+}
+
+.XDrawerItemWidget #title::pressed
+{
+    border: 1px solid #2477ce;
+}
+
+.XDrawerItemWidget #title::branch:close
+{
+    image: url(:/images/DrawerBranchClose.svg);
+}
+
+.XDrawerItemWidget #title::branch:open
+{
+    image: url(:/images/DrawerBranchOpen.svg);
+}
+
+.XDrawerItemWidget #title QToolButton
+{
+    margin: 1px;
+    border: none;
+}
+
+.XDrawerItemWidget #title QToolButton:hover
+{
+    background: #E5F3FF;
+}
+
+.XDrawerItemWidget #title QToolButton:pressed, .XDrawerItemWidget #title QToolButton:checked
+{
+    background: #CDE8FF;
+}
+
+.XDrawerItemWidget #Container
+{
+    background: #F3F3F3;
+}
+
+.XDrawerItemWidget
+{
+    background: #F3F3F3;
+}
+
+/************************************************************/

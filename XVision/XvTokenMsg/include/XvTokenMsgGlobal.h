@@ -1,0 +1,12 @@
+#ifndef XVTOKENMSG_GLOBAL_H
+#define XVTOKENMSG_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(XVTOKENMSG_LIBRARY)
+#  define XVTOKENMSG_EXPORT Q_DECL_EXPORT
+#else
+#  define XVTOKENMSG_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // XVTOKENMSG_GLOBAL_H

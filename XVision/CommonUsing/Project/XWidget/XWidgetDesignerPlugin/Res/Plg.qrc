@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/XMatRaisedButton.png</file>
+        <file>images/XMatCheckBox.png</file>
+        <file>images/XMatCircularProgress.png</file>
+        <file>images/XMatComboBox.png</file>
+        <file>images/XMatFlatButton.png</file>
+        <file>images/XMatLineEdit.png</file>
+        <file>images/XMatProgress.png</file>
+        <file>images/XMatRadioButton.png</file>
+        <file>images/XMatSlider.png</file>
+        <file>images/XMatToggle.png</file>
+        <file>images/XMatLabel.png</file>
+        <file>images/XMatDoubleSpinBox.png</file>
+        <file>images/XMatSpinBox.png</file>
+        <file>images/XMatToolButton.png</file>
+        <file>images/XMatHLine.png</file>
+        <file>images/XMatVLine.png</file>
+        <file>images/XMatPlainTextEdit.png</file>
+    </qresource>
+</RCC>
