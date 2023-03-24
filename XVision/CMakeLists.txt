@@ -6,7 +6,8 @@ project(XVision VERSION 0.1 LANGUAGES CXX)
 
 add_subdirectory(XVision)
 add_subdirectory(XvCore)
-add_subdirectory(XvCommon)
+add_subdirectory(XvData)
+add_subdirectory(XvUtils)
 add_subdirectory(XvTokenMsg)
 
 

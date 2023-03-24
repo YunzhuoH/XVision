@@ -5,15 +5,64 @@
 #include "XGraphicsConnectLink.h"
 
 
+/*******************************/
+//* [XGraphicsEllipseItemPrivate]
+/*******************************/
+class XGraphicsEllipseItemPrivate
+{
+    Q_DISABLE_COPY(XGraphicsEllipseItemPrivate)
+    Q_DECLARE_PUBLIC(XGraphicsEllipseItem)
+
+public:
+    XGraphicsEllipseItemPrivate(XGraphicsEllipseItem *q):q_ptr(q)
+    {
+        itemEllipsePen.setColor(QColor(25, 150, 255));
+        itemEllipsePen.setWidth(3);
+        itemEllipseBrush=QBrush(QColor(Qt::white));
+
+        selectEllipsePen.setColor(QColor(255, 150, 50));
+        selectEllipsePen.setWidth(5);
+        selectEllipseBrush=QBrush(QColor(Qt::white));
+
+        selectBoundingEllipsePen.setColor(Qt::white);
+        selectBoundingEllipsePen.setWidth(1);
+        selectBoundingEllipsePen.setStyle(Qt::DashLine);
+
+        connectEllipseSize=10;
+
+    };
+    virtual ~XGraphicsEllipseItemPrivate(){};
+
+    XGraphicsEllipseItem              *const q_ptr;
+
+    ///常规椭圆画笔
+    QPen                               itemEllipsePen;
+    ///常规椭圆笔刷
+    QBrush                             itemEllipseBrush;
+
+    ///选中时矩形画笔
+    QPen                               selectEllipsePen;
+    ///选中时矩形笔刷
+    QBrush                             selectEllipseBrush;
+
+    ///选中时边框画笔
+    QPen                               selectBoundingEllipsePen;
+
+    ///连接椭圆环尺寸
+    double                             connectEllipseSize;
+};
+
+
+
 /***************************构造析构***************************/
 XGraphicsEllipseItem::XGraphicsEllipseItem(QObject *parent)
-  :XGraphicsItem{"","",parent}
+  :XGraphicsItem{"","",parent},d_ptr(new XGraphicsEllipseItemPrivate(this))
 {
      initItem();
 }
 
 XGraphicsEllipseItem::XGraphicsEllipseItem(QString type, QString id, QObject *parent)
-    :XGraphicsItem{type,id,parent}
+    :XGraphicsItem{type,id,parent},d_ptr(new XGraphicsEllipseItemPrivate(this))
 {
     initItem();
 }
@@ -22,6 +71,84 @@ XGraphicsEllipseItem::~XGraphicsEllipseItem()
 {
 
 }
+
+/***************************属性接口***************************/
+
+QPen XGraphicsEllipseItem::itemEllipsePen() const
+{
+    Q_D(const XGraphicsEllipseItem);
+    return d->itemEllipsePen;
+}
+
+void XGraphicsEllipseItem::setItemEllipsePen(const QPen &pen)
+{
+    Q_D(XGraphicsEllipseItem);
+    d->itemEllipsePen=pen;
+}
+
+QBrush XGraphicsEllipseItem::itemEllipseBrush() const
+{
+    Q_D(const XGraphicsEllipseItem);
+    return d->itemEllipseBrush;
+}
+
+void XGraphicsEllipseItem::setItemEllipseBrush(const QBrush &brush)
+{
+    Q_D(XGraphicsEllipseItem);
+    d->itemEllipseBrush=brush;
+}
+
+QPen XGraphicsEllipseItem::selectEllipsePen() const
+{
+    Q_D(const XGraphicsEllipseItem);
+    return d->selectEllipsePen;
+}
+
+void XGraphicsEllipseItem::setSelectEllipsePen(const QPen &pen)
+{
+    Q_D(XGraphicsEllipseItem);
+    d->selectEllipsePen=pen;
+}
+
+QBrush XGraphicsEllipseItem::selectEllipseBrush() const
+{
+    Q_D(const XGraphicsEllipseItem);
+    return d->selectEllipseBrush;
+}
+
+void XGraphicsEllipseItem::setSelectEllipseBrush(const QBrush &brush)
+{
+    Q_D(XGraphicsEllipseItem);
+    d->selectEllipseBrush=brush;
+}
+
+QPen XGraphicsEllipseItem::selectBoundingEllipsePen() const
+{
+    Q_D(const XGraphicsEllipseItem);
+    return d->selectBoundingEllipsePen;
+}
+
+void XGraphicsEllipseItem::setSelectBoundingEllipsePen(const QPen &pen)
+{
+    Q_D(XGraphicsEllipseItem);
+    d->selectBoundingEllipsePen=pen;
+}
+
+
+double XGraphicsEllipseItem::connectEllipseSize() const
+{
+    Q_D(const XGraphicsEllipseItem);
+    return d->connectEllipseSize;
+}
+
+void XGraphicsEllipseItem::setConnectEllipseSize(const double &size)
+{
+    Q_D(XGraphicsEllipseItem);
+    d->connectEllipseSize=size;
+}
+
+
+
 
 /***************************内部接口***************************/
 
@@ -41,15 +168,15 @@ void XGraphicsEllipseItem::initItem()
 
 void XGraphicsEllipseItem::initConnectArea()
 {
-    m_connectEllipseRingArea=SConnectEllipseRing("Ring",m_ptCenter,m_rRadiusX,m_rRadiusY,m_config.rConnectEllipseSize);
+    m_connectEllipseRingArea=SConnectEllipseRing("Ring",m_ptCenter,m_rRadiusX,m_rRadiusY,connectEllipseSize());
 }
 
 void XGraphicsEllipseItem::drawItemText(QPainter *painter, const QString &text, const QRectF &rect)
 {
     painter->save();
-    painter->setFont(m_ItemConfig.fontText);
+    painter->setFont(textFont());
     QFontMetrics fontMetrics = painter->fontMetrics();
-    painter->setPen(m_ItemConfig.penText);
+    painter->setPen(textPen());
     painter->drawText(rect, Qt::AlignCenter | Qt::TextWrapAnywhere, text);
     painter->restore();
 }
@@ -192,30 +319,31 @@ void XGraphicsEllipseItem::setTip(const QString &tip)
 QRectF XGraphicsEllipseItem::boundingRect() const
 {
     QRectF rect =this->rect();
-    double size=m_config.rConnectEllipseSize/2;
+    double size=connectEllipseSize()/2;
     rect.setRect(rect.x()-size,rect.y()-size,rect.width()+size*2,rect.height()+size*2);
     return rect;
 }
 
 void XGraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_D(XGraphicsEllipseItem);
     painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
 
     painter->save();
     if(isSelected())
     {
-        painter->setPen(m_config.penSelectEllipse);
-        painter->setBrush(m_config.brushSelectEllipse);
+        painter->setPen(d->selectEllipsePen);
+        painter->setBrush(d->selectEllipseBrush);
     }
     else
     {
-        painter->setPen(m_config.penItemEllipse);
-        painter->setBrush(m_config.brushItemEllipse);
+        painter->setPen(d->itemEllipsePen);
+        painter->setBrush(d->itemEllipseBrush);
     }
     if(m_bHighlight)
     {
-        painter->setPen(m_ItemConfig.penHighlight);
-        painter->setBrush(m_ItemConfig.brushHighlight);
+        painter->setPen(highlightPen());
+        painter->setBrush(highlightBrush());
     }
     painter->drawEllipse(m_ptCenter,m_rRadiusX,m_rRadiusY);
 
@@ -223,7 +351,7 @@ void XGraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
     if(isSelected())
     {
-        painter->setPen(m_config.penSelectBoundingEllipse);
+        painter->setPen(d->selectBoundingEllipsePen);
         painter->setBrush(Qt::NoBrush);
         painter->drawRect(boundingRect());
     }
@@ -277,8 +405,8 @@ void XGraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
     };
     if (m_eShowConnectAreaType==EShowConnectAreaType::ShowFull)
     {
-        painter->setPen(m_ItemConfig.penConnectArea);
-        painter->setBrush(m_ItemConfig.brushConnectArea);
+        painter->setPen(connectAreaPen());
+        painter->setBrush(connectAreaBrush());
 
         if(m_connectEllipseRingArea.data.key==m_strShowFullKey)
         {
@@ -293,8 +421,8 @@ void XGraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
     }
     else if(m_eShowConnectAreaType==EShowConnectAreaType::ShowLittle)
     {
-        painter->setPen(m_ItemConfig.penConnectArea);
-        painter->setBrush(m_ItemConfig.brushConnectArea);
+        painter->setPen(connectAreaPen());
+        painter->setBrush(connectAreaBrush());
         painter->drawPath(funcGetEllipseRing(m_connectEllipseRingArea,0.5));
     }
 }

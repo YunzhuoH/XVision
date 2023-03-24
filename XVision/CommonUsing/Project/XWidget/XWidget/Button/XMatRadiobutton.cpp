@@ -30,8 +30,8 @@ void XMatRadioButtonPrivate::init()
 
     q->setAutoExclusive(true);
 
-    checkedIcon->setIcon(QIcon(":/res/images/RadioButtonChecked24px.svg"));
-    uncheckedIcon->setIcon(QIcon(":/res/images/RadioButtonUnChecked24px.svg"));
+    checkedIcon->setIcon(QIcon(":/images/RadioButtonChecked24px.svg"));
+    uncheckedIcon->setIcon(QIcon(":/images/RadioButtonUnChecked24px.svg"));
 
     uncheckedState->assignProperty(checkedIcon, "iconSize", 0);
     uncheckedState->assignProperty(uncheckedIcon, "iconSize", 24);

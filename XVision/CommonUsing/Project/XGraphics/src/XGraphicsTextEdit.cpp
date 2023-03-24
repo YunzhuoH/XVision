@@ -1,5 +1,6 @@
 ﻿#include "XGraphicsTextEdit.h"
-
+#include "XGraphicsItem.h"
+#include "XGraphicsConnectLink.h"
 
 XGraphicsTextEdit::XGraphicsTextEdit(QWidget *parent)
     :QTextEdit(parent)

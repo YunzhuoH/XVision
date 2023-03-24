@@ -23,7 +23,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets XML)
 
 #添加依赖库包含目录
 list(APPEND CORE_INCLUDE_DIR
-  ../XvCommon/include
+  ../XvData/include
   ../XvTokenMsg/include
   ../${XLog_Inc}
   ../${XLanguage_Inc}
@@ -41,7 +41,7 @@ list(APPEND CORE_INCLUDE_DIR
 #添加工程库
 list(APPEND CORE_LIBS
     XvTokenMsg
-    XvCommon
+    XvData
     XLog        #日志库
     XLanguage   #多语言库
 )

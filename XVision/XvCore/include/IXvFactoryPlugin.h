@@ -5,8 +5,9 @@
 #include <QObject>
 #include <QList>
 
+namespace XvCore
+{
 
-class XvPluginMgr;
 ///工厂生成插件
 class XVCORE_EXPORT  IXvFactoryPlugin
 {
@@ -27,11 +28,9 @@ public:
 
 };
 
+}
+
 #define XV_FACTORY_PLG "Xv.Factory.PlgSys"
-Q_DECLARE_INTERFACE(IXvFactoryPlugin, XV_FACTORY_PLG);
-
-
-
-
+Q_DECLARE_INTERFACE(XvCore::IXvFactoryPlugin, XV_FACTORY_PLG);
 
 #endif // IXVFACTORYBASEPLUGIN_H

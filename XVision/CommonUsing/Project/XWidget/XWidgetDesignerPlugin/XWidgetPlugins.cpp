@@ -51,7 +51,6 @@ XWidgetPlugins::XWidgetPlugins(QObject* parent /*= 0*/) : QObject(parent), m_imp
     m_impl->widgets.push_back(new XMatProgressPlugin(this));
     m_impl->widgets.push_back(new XMatCircularProgressPlugin(this));
 
-
 }
 
 XWidgetPlugins::~XWidgetPlugins() {}

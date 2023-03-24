@@ -2,6 +2,7 @@
 #define XMATMENUBAR_H
 
 #include "XWidgetGlobal.h"
+#include "XMatCommonDef.h"
 #include <QMenuBar>
 #include <QScopedPointer>
 
@@ -12,11 +13,14 @@ class XWIDGET_EXPORT XMatMenuBar : public QMenuBar
 {
     Q_OBJECT
     Q_PROPERTY(QColor rippleColor WRITE setRippleColor READ rippleColor)
-
+    Q_PROPERTY(XMatCommonDef::RippleStyle rippleStyle WRITE setRippleStyle READ rippleStyle)
 
 public:
     explicit XMatMenuBar(QWidget *parent=nullptr);
     ~XMatMenuBar();
+
+    void setRippleStyle(XMatCommonDef::RippleStyle style);
+    XMatCommonDef::RippleStyle rippleStyle() const;
 
     void setRippleColor(const QColor &color);
     QColor rippleColor() const;

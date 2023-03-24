@@ -1,7 +1,4 @@
 ﻿/***************************XWidget默认风格***************************/
-
-
-
 *
 {
     font-family: 'Microsoft YaHei';
@@ -15,9 +12,9 @@
   background-color: #EEEEEE;
 }
 
-.AppMainWindow #toolBarMain
+.AppMainWindow #fmToolBar
 {
-  background-color: #CCCCCC;
+  background-color: #EEEEEE;
 }
 
 .AppMainWindow #fmMain
@@ -27,29 +24,29 @@
 
 .AppMainWindow QStatusBar
 {
-  background-color: #CCCCCC;
+  background-color: #EEEEEE;
 }
 
 .AppMainWindow XTitleBar
 {
-    background: #CCCCCC;
+    background: #EEEEEE;
     font:15px/30px Microsoft-YaHei, serif;
 }
 .AppMainWindow XTitleBar QMenuBar
 {
-    background: #CCCCCC;
+    background: #EEEEEE;
     font-weight: 400;
     font:15px/30px Microsoft-YaHei, serif;
     color: #555555;
 }
 .AppMainWindow XTitleBar QMenuBar::item
 {
-    background-color: #CCCCCC;
+    background-color: #EEEEEE;
     padding: 5px 15px;
 }
 .AppMainWindow XTitleBar QMenu
 {
-    background: #CCCCCC;
+    background: #EEEEEE;
     font-weight: 400;
     font:15px/30px Microsoft-YaHei, serif;
     color: #555555;
@@ -57,14 +54,75 @@
 
 
 
-.AppMainWindow #hLineToolBar
+.AppMainWindow #hlineTitle
 {
-    qproperty-lineColor:gray;
+    qproperty-lineColor:#BBBBBB;
 }
-.AppMainWindow #hLineMain
+.AppMainWindow #hlineMain
 {
-    qproperty-lineColor:gray;
+    qproperty-lineColor:#BBBBBB;
 }
+.AppMainWindow #hlineStatus
+{
+    qproperty-lineColor:#BBBBBB;
+}
+
+
+
+/***************************FrmXvFuncType***************************/
+.FrmXvFuncType #fmXvFuncTyps
+{
+    border: 1px solid #BBBBBB;
+}
+
+.FrmXvFuncType QScrollArea QWidget
+{
+   background-color: white;
+}
+
+.FrmXvFuncType QAbstractButton:hover
+{
+    background-color: #EEEEEE;
+    border: none;
+}
+.FrmXvFuncType QAbstractButton:pressed
+{
+    background-color: #DDDDDD;
+    border: none;
+}
+/***************************XGraphicsView***************************/
+XGraphicsView
+{
+    qproperty-backgroundColor:white;
+    qproperty-gridSmallColor:#DDDDDD;
+    qproperty-gridBigColor:#BBBBBB;
+    qproperty-magneticLineColor:#888888;
+    qproperty-magneticLineWidth:2;
+}
+
+XGraphicsView XMatScrollBar
+{
+    qproperty-canvasColor:white;
+    qproperty-backgroundColor:white;
+
+}
+
+/***************************QScrollArea***************************/
+QScrollArea
+{
+    border: none;
+}
+
+
+
+XMatScrollBar
+{
+    qproperty-canvasColor:transparent;
+    qproperty-backgroundColor:transparent;
+
+}
+
+
 /***************************XTitleBar***************************/
 /*
 hover/selected:BBBBBB
@@ -252,4 +310,7 @@ XTitleBar QAbstractButton:pressed
     background: #F3F3F3;
 }
 
-/************************************************************/
+/********************************************************************/
+
+
+

@@ -24,6 +24,9 @@ class XWIDGET_EXPORT XMatComboBox : public QComboBox
     Q_PROPERTY(QColor disabledForegroundColor WRITE setDisabledForegroundColor READ disabledForegroundColor)
     Q_PROPERTY(QColor disabledBackgroundColor WRITE setDisabledBackgroundColor READ disabledBackgroundColor)
 
+    Q_PROPERTY(XMatCommonDef::RippleStyle rippleStyle WRITE setRippleStyle READ rippleStyle)
+
+
 public:
 
     explicit XMatComboBox(QWidget *parent = 0);
@@ -54,6 +57,8 @@ public:
     void setDisabledBackgroundColor(const QColor &color);
     QColor disabledBackgroundColor() const;
 
+    void setRippleStyle(XMatCommonDef::RippleStyle style);
+    XMatCommonDef::RippleStyle rippleStyle() const;
 
 public:
     void showPopup() override;

@@ -3,6 +3,7 @@
 
 #include <QtGlobal>
 #include <QColor>
+#include "XMatSpinBox.h"
 
 class XMatSpinBox;
 class XMatRippleOverlay;
@@ -20,8 +21,8 @@ public:
     void init();
 
     XMatSpinBox                      *const q_ptr;
-    XMatRippleOverlay              *rippleOverlay;
-
+    XMatRippleOverlay                *rippleOverlay;
+    XMatCommonDef::RippleStyle        rippleStyle;
     QColor                            rippleColor;
 
 };

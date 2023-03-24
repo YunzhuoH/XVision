@@ -3,57 +3,60 @@
 
 #include "XGraphicsItem.h"
 
-///矩形Item风格
-struct SXRectItemConfig
-{
-    SXRectItemConfig()
-    {
-        rRoundedRect=5;
-
-        penItemRect.setColor(QColor(25, 150, 255));
-        penItemRect.setWidth(3);
-        brushItemRect=QBrush(QColor(Qt::white));
-
-        penSelectRect.setColor(QColor(255, 150, 50));
-        penSelectRect.setWidth(5);
-        brushSelectRect=QBrush(QColor(Qt::white));
-
-        penSelectBoundingRect.setColor(Qt::white);
-        penSelectBoundingRect.setWidth(1);
-        penSelectBoundingRect.setStyle(Qt::DashLine);
-
-        rConnectRectSize=20;
-    }
-
-    ///矩形圆角大小
-    double rRoundedRect;
-
-    ///常规矩形画笔
-    QPen penItemRect;
-    ///常规矩形笔刷
-    QBrush brushItemRect;
-
-    ///选中时矩形画笔
-    QPen penSelectRect;
-    ///选中时矩形笔刷
-    QBrush brushSelectRect;
-
-    ///选中时边框画笔
-    QPen penSelectBoundingRect;
-
-    ///连接矩形尺寸
-    double rConnectRectSize;
-
-};
+class XGraphicsRectItemPrivate;
 ///pixmap偏移
 #define PIX_OFFSET 10
 class XGRAPHICS_PUBLIC XGraphicsRectItem:public XGraphicsItem,public QGraphicsRectItem
 {
     Q_OBJECT
+    Q_PROPERTY(double rectRounded READ rectRounded WRITE setRectRounded)
+    Q_PROPERTY(double connectRectSize READ connectRectSize WRITE setConnectRectSize)
+    Q_PROPERTY(QPen itemRectPen READ itemRectPen WRITE setItemRectPen)
+    Q_PROPERTY(QBrush itemRectBrush READ itemRectBrush WRITE setItemRectBrush)
+    Q_PROPERTY(QPen selectRectPen READ selectRectPen WRITE setSelectRectPen)
+    Q_PROPERTY(QBrush selectRectBrush READ selectRectBrush WRITE setSelectRectBrush)
+    Q_PROPERTY(QPen selectBoundingRectPen READ selectBoundingRectPen WRITE setSelectBoundingRectPen)
 public:
     XGraphicsRectItem(QObject *parent = nullptr);
     XGraphicsRectItem(QString type,QString id,QObject *parent = nullptr);
     ~XGraphicsRectItem();
+public:
+ //*[属性接口]*
+    ///矩形圆角大小
+    double rectRounded() const;
+    ///设置矩形圆角大小
+    void setRectRounded(const double &rounded);
+
+    ///连接矩形尺寸
+    double connectRectSize() const;
+    ///设置连接矩形尺寸
+    void setConnectRectSize(const double &size);
+
+    ///常规矩形画笔
+    QPen itemRectPen() const;
+    ///设置常规矩形画笔
+    void setItemRectPen(const QPen &pen);
+
+    ///常规矩形笔刷
+    QBrush itemRectBrush() const;
+    ///设置常规矩形笔刷
+    void setItemRectBrush(const QBrush &brush);
+
+    ///选中时矩形画笔
+    QPen selectRectPen() const;
+    ///设置选中时矩形画笔
+    void setSelectRectPen(const QPen &pen);
+
+    ///选中时矩形笔刷
+    QBrush selectRectBrush() const;
+    ///设置选中时矩形笔刷
+    void setSelectRectBrush(const QBrush &brush);
+
+    ///选中时边框画笔
+    QPen selectBoundingRectPen() const;
+    ///设置选中时边框画笔
+    void setSelectBoundingRectPen(const QPen &pen);
+
     // XGraphicsItem interface
 protected:
     ///初始化Item
@@ -88,15 +91,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-public:
-    ///配置
-    SXRectItemConfig* config()
-    {
-        return &m_config;
-    }
 protected:
-    ///Item配置
-    SXRectItemConfig m_config;
 
     ///节点中心、上下左右中心位置
     QPointF   m_ptCenter, m_ptLeft, m_ptRight, m_ptTop, m_ptBottom;
@@ -121,7 +116,10 @@ protected:
 
     ///连接矩形区域
     QMap<QString,SConnectRect> m_mapConnectRectArea;
-
+protected:
+    const QScopedPointer<XGraphicsRectItemPrivate> d_ptr;
+private:
+     Q_DECLARE_PRIVATE(XGraphicsRectItem)
 
 };
 

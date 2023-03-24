@@ -2,11 +2,10 @@
 #define XGRAPHICSTEXTEDIT_H
 
 #include "XGraphicsGlobal.h"
-
 #include <QTextEdit>
-#include "XGraphicsItem.h"
-#include "XGraphicsConnectLink.h"
 
+class XGraphicsItem;
+class XGraphicsConnectLink;
 class XGRAPHICS_PUBLIC XGraphicsTextEdit:public QTextEdit
 {
     Q_OBJECT

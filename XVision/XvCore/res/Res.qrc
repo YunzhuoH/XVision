@@ -1,5 +1,21 @@
 <RCC>
     <qresource prefix="/">
         <file>image/XvFuncIcon.svg</file>
+        <file>image/XvFuncType_Calibration.svg</file>
+        <file>image/XvFuncType_Communication.svg</file>
+        <file>image/XvFuncType_Contraposition.svg</file>
+        <file>image/XvFuncType_DataProcessing.svg</file>
+        <file>image/XvFuncType_DefectDetection.svg</file>
+        <file>image/XvFuncType_ImageAcquisition.svg</file>
+        <file>image/XvFuncType_ImageProcessing.svg</file>
+        <file>image/XvFuncType_Location.svg</file>
+        <file>image/XvFuncType_Logic.svg</file>
+        <file>image/XvFuncType_MachineLearning.svg</file>
+        <file>image/XvFuncType_Measurement.svg</file>
+        <file>image/XvFuncType_Null.svg</file>
+        <file>image/XvFuncType_Other.svg</file>
+        <file>image/XvFuncType_Recognition.svg</file>
+        <file>image/XvFuncType_Special.svg</file>
+        <file>image/XvFuncType_User.svg</file>
     </qresource>
 </RCC>

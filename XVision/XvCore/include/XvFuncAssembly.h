@@ -1,43 +1,21 @@
 ﻿#ifndef XVFUNCASSEMBLY_H
 #define XVFUNCASSEMBLY_H
 
+#include "XvCoreGlobal.h"
 #include <QObject>
 #include <QPixmap>
 
-#include "XvFuncBase.h"
 #include "XvFuncDef.h"
 
-///算子基本信息(显示使用)
-typedef struct S_XVFUNC_BASE_INFO
+#define XvFuncAsm XvCore::XvFuncAssembly::getInstance()
+namespace XvCore
 {
-    S_XVFUNC_BASE_INFO()
-    {
-
-    }
-    S_XVFUNC_BASE_INFO(const QString& _role,
-                       const EXvFuncType& _type,
-                       const QString& _name,
-                       const QPixmap& _icon,
-                       const QMetaObject& _meta):
-        role(_role),type(_type), name(_name), icon(_icon), meta(_meta)
-    {
-
-    }
-    QString role;  //算子功能
-    EXvFuncType type;//算子分类
-    QString name;  //算子名称
-    QPixmap icon;  //算子图标
-    QMetaObject meta;//算子元数据
-}XvFuncBaseInfo,*PXvFuncBaseInfo;
-
-
-
-#define XvFuncAsm XvFuncAssembly::getInstance()
+class XvFuncBase;
 ///算子集合
 class XVCORE_EXPORT XvFuncAssembly : public QObject
 {
     Q_OBJECT
-    friend class XvPluginMgr;
+    friend class XvPluginManager;
 public:
     ///获取单例
     static XvFuncAssembly *getInstance();
@@ -46,14 +24,30 @@ private:
     static XvFuncAssembly* s_Instance;
 
 signals:
-    void sgRegisterNewXvFunc(const S_XVFUNC_BASE_INFO &funcInfo);
+    void sgRegisterNewXvFunc(const XvFuncBaseInfo &info);
     /***************算子模块***************/
 public:
+//*[算子类型]*
+    ///获取算子类型信息列表
+    static QList<XvFuncTypeInfo> getXvFuncTypeInfos();
+    ///获取算子类型信息
+    static XvFuncTypeInfo getXvFuncTypeInfo(const XvCore::EXvFuncType& type);
 
+
+//*[算子]*
     ///通过标识符创建一个算子
     XvFuncBase* createNewXvFunc(QString role);
-    ///获取算子标识符列表
-    QList<QString> getRoleList();
+    ///通过标识符获取算子信息
+    XvFuncBaseInfo getXvFuncInfo(QString role);
+    ///通过信息创建一个算子
+    inline XvFuncBase* createNewXvFunc(const XvFuncBaseInfo &info);
+
+    ///获取算子信息列表
+    QList<XvFuncBaseInfo> getXvFuncInfos();
+    ///通过类型获取算子信息列表
+    QList<XvFuncBaseInfo> getXvFuncInfos(const EXvFuncType &type);
+    ///通过类型获取算子信息列表
+    QList<XvFuncBaseInfo> getXvFuncInfos(const XvFuncTypeInfo &info);
 protected:
     ///算子注册
     bool registerXvFunc(XvFuncBase* func);
@@ -64,4 +58,14 @@ protected:
     QMap<QString,XvFuncBaseInfo> m_mapXvFuncInfo;
 };
 
+inline XvFuncBase *XvFuncAssembly::createNewXvFunc(const XvFuncBaseInfo &info)
+{
+    return createNewXvFunc(info.name);
+}
+
+inline QList<XvFuncBaseInfo> XvFuncAssembly::getXvFuncInfos(const XvFuncTypeInfo &info)
+{
+    return getXvFuncInfos(info.type);
+}
+}
 #endif // XVFUNCASSEMBLY_H

@@ -21,9 +21,10 @@ public:
     void init();
 
     XMatLabel                      *const q_ptr;
-    XMatRippleOverlay              *rippleOverlay;
 
-    QColor                            rippleColor;
+    XMatRippleOverlay              *rippleOverlay;
+    XMatCommonDef::RippleStyle      rippleStyle;
+    QColor                          rippleColor;
 
 };
 

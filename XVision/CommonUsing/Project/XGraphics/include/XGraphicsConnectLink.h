@@ -6,89 +6,28 @@
 #include <QPainter>
 #include "XGraphicsGlobal.h"
 
-#pragma region ConnectLink结构体{
-///XLink配置
-struct SXLinkConfig
-{
-    SXLinkConfig()
-    {
-        penLinkingCircle=QPen(QColor(Qt::white));
-        brushLinkingCircle=QBrush(QColor(50, 125, 255));
-        rLinkingCircleRadius=4;
-
-
-        penLinking=QColor(25, 150, 255);
-        penLinking.setWidth(3);
-        penLinking.setStyle(Qt::SolidLine);
-
-        penLinked=QColor(25, 150, 255);
-        penLinked.setWidth(3);
-        penLinked.setStyle(Qt::SolidLine);
-
-        penLinkSelected=QColor(255, 150, 50);
-        penLinkSelected.setWidth(5);
-        penLinkSelected.setStyle(Qt::SolidLine);
-
-
-        penSelectBoundingRect.setColor(QColor(255, 255, 255));
-        penSelectBoundingRect.setWidth(1);
-        penSelectBoundingRect.setStyle(Qt::DashLine);
-
-        rArrowSize=15;
-
-        penHighLight.setColor(QColor(255,242,0));
-        penHighLight.setWidth(3);
-        penHighLight.setStyle(Qt::SolidLine);
-
-        penText = QPen();
-        penText.setColor(QColor(255, 255, 255));
-        penText.setWidth(1);
-        fontText = QFont("YouYuan", 12, 2);
-        fontText.setBold(false);
-    }
-    ///连接拖动圆形画笔
-    QPen penLinkingCircle;
-    ///连接拖动圆形笔刷
-    QBrush brushLinkingCircle;
-    ///连接拖动圆半径
-    double rLinkingCircleRadius=4;
-
-
-    ///正在连线画笔
-    QPen penLinking;
-
-    ///连线完毕画笔
-    QPen penLinked;
-
-    ///连线被选择时
-    QPen penLinkSelected;
-
-    ///选中时边框画笔
-    QPen penSelectBoundingRect;
-
-    ///末端箭头大小
-    double rArrowSize=15;
-
-    ///连线高亮时的画笔
-    QPen penHighLight;
-
-    ///Link文本画笔
-    QPen penText;
-    ///Link文本字体
-    QFont fontText;
-};
-#pragma endregion}
-
-
 #pragma region ConnectLink类{
 
 class XGraphicsScene;
 class XGraphicsItem;
+class XGraphicsConnectLinkPrivate;
 ///连线边框大小
 #define LINK_BOUNDING_SIZE 20
 class XGRAPHICS_PUBLIC XGraphicsConnectLink:public QObject,public QGraphicsLineItem
 {
     Q_OBJECT
+    Q_PROPERTY(QPen linkingCirclePen READ linkingCirclePen WRITE setLinkingCirclePen)
+    Q_PROPERTY(QBrush linkingCircleBrush READ linkingCircleBrush WRITE setLinkingCircleBrush)
+    Q_PROPERTY(double linkingCircleRadius READ linkingCircleRadius WRITE setLinkingCircleRadius)
+    Q_PROPERTY(QPen linkingPen READ linkingPen WRITE setLinkingPen)
+    Q_PROPERTY(QPen linkedPen READ linkedPen WRITE setLinkedPen)
+    Q_PROPERTY(QPen linkSelectedPen READ linkSelectedPen WRITE setLinkSelectedPen)
+    Q_PROPERTY(QPen selectBoundingRectPen READ selectBoundingRectPen WRITE setSelectBoundingRectPen)
+    Q_PROPERTY(double arrowSize READ arrowSize WRITE setArrowSize)
+    Q_PROPERTY(QPen highLightPen READ highLightPen WRITE setHighLightPen)
+    Q_PROPERTY(QPen textPen READ textPen WRITE setTextPen)
+    Q_PROPERTY(QFont textFont READ textFont WRITE setTextFont)
+
     friend XGraphicsScene;
     friend XGraphicsItem;
 public:
@@ -98,6 +37,65 @@ public:
                          XGraphicsItem *xItemSon,const QString &sonKey,
                          QObject *parent = nullptr);
     ~XGraphicsConnectLink();
+public:
+ //*[属性接口]*
+    ///连接拖动圆形画笔
+    QPen linkingCirclePen() const;
+    ///设置连接拖动圆形画笔
+    void setLinkingCirclePen(const QPen &pen);
+
+    ///连接拖动圆形笔刷
+    QBrush linkingCircleBrush() const;
+    ///设置连接拖动圆形笔刷
+    void setLinkingCircleBrush(const QBrush &brush);
+
+    ///连接拖动圆半径
+    double linkingCircleRadius() const;
+    ///设置连接拖动圆半径
+    void setLinkingCircleRadius(const double &radius);
+
+    ///连接正在连线画笔
+    QPen linkingPen() const;
+    ///设置正在连线画笔
+    void setLinkingPen(const QPen &pen);
+
+    ///连接连线完毕画笔
+    QPen linkedPen() const;
+    ///设置连线完毕画笔
+    void setLinkedPen(const QPen &pen);
+
+    ///连线被选择时
+    QPen linkSelectedPen() const;
+    ///设置连线被选择时
+    void setLinkSelectedPen(const QPen &pen);
+
+    ///选中时边框画笔
+    QPen selectBoundingRectPen() const;
+    ///设置选中时边框画笔
+    void setSelectBoundingRectPen(const QPen &pen);
+
+
+    ///连接末端箭头大小
+    double arrowSize() const;
+    ///设置末端箭头大小
+    void setArrowSize(const double &size);
+
+
+    ///连线高亮时的画笔
+    QPen highLightPen() const;
+    ///设置连线高亮时的画笔
+    void setHighLightPen(const QPen &pen);
+
+    ///连线文本画笔
+    QPen textPen() const;
+    ///设置文本画笔
+    void setTextPen(const QPen &pen);
+
+    ///文本字体
+    QFont textFont() const;
+    ///设置文本字体
+    void setTextFont(const QFont &font);
+
 protected:
     void initConnectLink();
 
@@ -237,18 +235,10 @@ public:
         return m_bHighlight;
     }
 
-    ///item配置
-    SXLinkConfig* linkConfig()
-    {
-        return &m_LinkConfig;
-    }
 protected:
 //*[XLink数据]*
     ///节点父Scene
     XGraphicsScene* m_parScene;
-
-    ///连接配置
-    SXLinkConfig m_LinkConfig;
 
     ///连线Id
     QString m_LinkId;
@@ -282,7 +272,10 @@ protected:
     QPolygonF m_polyArrowHead;
     ///高亮显示
     bool m_bHighlight=false;
-
+protected:
+    const QScopedPointer<XGraphicsConnectLinkPrivate> d_ptr;
+private:
+    Q_DECLARE_PRIVATE(XGraphicsConnectLink)
 };
 
 #pragma endregion}

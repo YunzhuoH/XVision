@@ -13,12 +13,16 @@ class XWIDGET_EXPORT XMatLabel : public QLabel
 {
     Q_OBJECT
     Q_PROPERTY(QColor rippleColor WRITE setRippleColor READ rippleColor)
+    Q_PROPERTY(XMatCommonDef::RippleStyle rippleStyle WRITE setRippleStyle READ rippleStyle)
 
 
 public:
     explicit XMatLabel(QWidget *parent=nullptr, Qt::WindowFlags f=Qt::WindowFlags());
     explicit XMatLabel(const QString &text, QWidget *parent=nullptr, Qt::WindowFlags f=Qt::WindowFlags());
     ~XMatLabel();
+
+    void setRippleStyle(XMatCommonDef::RippleStyle style);
+    XMatCommonDef::RippleStyle rippleStyle() const;
 
     void setRippleColor(const QColor &color);
     QColor rippleColor() const;

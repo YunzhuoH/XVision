@@ -25,6 +25,8 @@ public:
     QWidget                      *window;
 
     int                           width;
+    int                           height;
+    int                           offsetY;
     bool                          clickToClose;
     bool                          autoRaise;
     bool                          closed;

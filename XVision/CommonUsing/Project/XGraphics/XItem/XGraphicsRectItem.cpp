@@ -3,17 +3,69 @@
 #include <QStaticText>
 #include <QGraphicsSceneMouseEvent>
 
+/*******************************/
+//* [XGraphicsRectItemPrivate]
+/*******************************/
+class XGraphicsRectItemPrivate
+{
+    Q_DISABLE_COPY(XGraphicsRectItemPrivate)
+    Q_DECLARE_PUBLIC(XGraphicsRectItem)
+
+public:
+    XGraphicsRectItemPrivate(XGraphicsRectItem *q):q_ptr(q)
+    {
+        rectRounded=5;
+
+        itemRectPen.setColor(QColor(25, 150, 255));
+        itemRectPen.setWidth(3);
+        itemRectBrush=QBrush(QColor(Qt::white));
+
+        selectRectPen.setColor(QColor(255, 150, 50));
+        selectRectPen.setWidth(5);
+        selectRectBrush=QBrush(QColor(Qt::white));
+
+        selectBoundingRectPen.setColor(Qt::white);
+        selectBoundingRectPen.setWidth(1);
+        selectBoundingRectPen.setStyle(Qt::DashLine);
+
+        connectRectSize=20;
+
+    };
+    virtual ~XGraphicsRectItemPrivate(){};
+
+    XGraphicsRectItem              *const q_ptr;
+
+    ///矩形圆角大小
+    double                          rectRounded;
+
+    ///连接矩形尺寸
+    double                          connectRectSize;
+
+    ///常规矩形画笔
+    QPen                            itemRectPen;
+    ///常规矩形笔刷
+    QBrush                          itemRectBrush;
+
+    ///选中时矩形画笔
+    QPen                            selectRectPen;
+    ///选中时矩形笔刷
+    QBrush                          selectRectBrush;
+
+    ///选中时边框画笔
+    QPen                            selectBoundingRectPen;
+
+};
 
 
 /***************************构造析构***************************/
 XGraphicsRectItem::XGraphicsRectItem(QObject *parent)
-    :XGraphicsItem{"","",parent}
+    :XGraphicsItem{"","",parent},d_ptr(new XGraphicsRectItemPrivate(this))
 {
     initItem();
 }
 
 XGraphicsRectItem::XGraphicsRectItem(QString type,QString id,QObject *parent)
-    :XGraphicsItem{type,id,parent}
+    :XGraphicsItem{type,id,parent},d_ptr(new XGraphicsRectItemPrivate(this))
 {
     initItem();
 }
@@ -22,6 +74,99 @@ XGraphicsRectItem::~XGraphicsRectItem()
 {
 
 }
+/***************************属性接口***************************/
+
+double XGraphicsRectItem::rectRounded() const
+{
+    Q_D(const XGraphicsRectItem);
+    return d->rectRounded;
+}
+
+void XGraphicsRectItem::setRectRounded(const double &rounded)
+{
+    Q_D(XGraphicsRectItem);
+    d->rectRounded=rounded;
+}
+
+double XGraphicsRectItem::connectRectSize() const
+{
+    Q_D(const XGraphicsRectItem);
+    return d->connectRectSize;
+}
+
+void XGraphicsRectItem::setConnectRectSize(const double &size)
+{
+    Q_D(XGraphicsRectItem);
+    d->connectRectSize=size;
+}
+
+
+
+QPen XGraphicsRectItem::itemRectPen() const
+{
+    Q_D(const XGraphicsRectItem);
+    return d->itemRectPen;
+}
+
+void XGraphicsRectItem::setItemRectPen(const QPen &pen)
+{
+    Q_D(XGraphicsRectItem);
+    d->itemRectPen=pen;
+}
+
+QBrush XGraphicsRectItem::itemRectBrush() const
+{
+    Q_D(const XGraphicsRectItem);
+    return d->itemRectBrush;
+}
+
+void XGraphicsRectItem::setItemRectBrush(const QBrush &brush)
+{
+    Q_D(XGraphicsRectItem);
+    d->itemRectBrush=brush;
+}
+
+
+QPen XGraphicsRectItem::selectRectPen() const
+{
+    Q_D(const XGraphicsRectItem);
+    return d->selectRectPen;
+}
+
+void XGraphicsRectItem::setSelectRectPen(const QPen &pen)
+{
+    Q_D(XGraphicsRectItem);
+    d->selectRectPen=pen;
+}
+
+
+
+QBrush XGraphicsRectItem::selectRectBrush() const
+{
+    Q_D(const XGraphicsRectItem);
+    return d->selectRectBrush;
+}
+
+void XGraphicsRectItem::setSelectRectBrush(const QBrush &brush)
+{
+    Q_D(XGraphicsRectItem);
+    d->selectRectBrush=brush;
+}
+
+
+QPen XGraphicsRectItem::selectBoundingRectPen() const
+{
+    Q_D(const XGraphicsRectItem);
+    return d->selectBoundingRectPen;
+}
+
+void XGraphicsRectItem::setSelectBoundingRectPen(const QPen &pen)
+{
+    Q_D(XGraphicsRectItem);
+    d->selectBoundingRectPen=pen;
+}
+
+
 
 /***************************初始化***************************/
 void XGraphicsRectItem::initItem()
@@ -49,7 +194,7 @@ void XGraphicsRectItem::initConnectArea()
 
 void XGraphicsRectItem::addConnectRect(const QString &key, const QPointF &pt)
 {
-    double rSize=m_config.rConnectRectSize;
+    double rSize=connectRectSize();
     double rPos=rSize/2;
     QRectF rect = QRectF((pt - QPointF(rPos, rPos)), QSizeF(rSize, rSize));
     if(!m_mapConnectRectArea.contains(key))
@@ -131,7 +276,7 @@ bool XGraphicsRectItem::getConnectData(const QPointF &sPt, SConnectData &connDat
 
 QRectF XGraphicsRectItem::boundingRect() const
 {
-    double rSize=m_config.rConnectRectSize;
+    double rSize=connectRectSize();
     double r=rSize/2;
     QRectF rect = QGraphicsRectItem::boundingRect();
     rect.setRect(rect.x()+r,rect.y()+r,rect.width()-rSize,rect.height()-rSize);
@@ -140,30 +285,31 @@ QRectF XGraphicsRectItem::boundingRect() const
 
 void XGraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_D(XGraphicsRectItem);
     painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
 
     painter->save();
     if(isSelected())
     {
-        painter->setPen(m_config.penSelectRect);
-        painter->setBrush(m_config.brushSelectRect);
+        painter->setPen(d->selectRectPen);
+        painter->setBrush(d->selectRectBrush);
     }
     else
     {
-        painter->setPen(m_config.penItemRect);
-        painter->setBrush(m_config.brushItemRect);
+        painter->setPen(d->itemRectPen);
+        painter->setBrush(d->itemRectBrush);
     }
     if(m_bHighlight)
     {
-        painter->setPen(m_ItemConfig.penHighlight);
-        painter->setBrush(m_ItemConfig.brushHighlight);
+        painter->setPen(highlightPen());
+        painter->setBrush(highlightBrush());
     }
-    painter->drawRoundedRect(this->boundingRect(),m_config.rRoundedRect,m_config.rRoundedRect);
+    painter->drawRoundedRect(this->boundingRect(),d->rectRounded,d->rectRounded);
     painter->restore();
 
     if(isSelected())
     {
-        painter->setPen(m_config.penSelectBoundingRect);
+        painter->setPen(d->selectBoundingRectPen);
         painter->setBrush(Qt::NoBrush);
         painter->drawRect(QGraphicsRectItem::boundingRect());
     }
@@ -203,8 +349,8 @@ void XGraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     };
     if (m_eShowConnectAreaType==EShowConnectAreaType::ShowFull)
     {
-        painter->setPen(m_ItemConfig.penConnectArea);
-        painter->setBrush(m_ItemConfig.brushConnectArea);
+        painter->setPen(connectAreaPen());
+        painter->setBrush(connectAreaBrush());
 
         int nCount=m_mapConnectRectArea.count();
 
@@ -225,8 +371,8 @@ void XGraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     }
     else if(m_eShowConnectAreaType==EShowConnectAreaType::ShowLittle)
     {
-        painter->setPen(m_ItemConfig.penConnectArea);
-        painter->setBrush(m_ItemConfig.brushConnectArea);
+        painter->setPen(connectAreaPen());
+        painter->setBrush(connectAreaBrush());
         foreach (auto data, m_mapConnectRectArea)
         {
             painter->drawRect(funcGetLittleRect(data.rect));
@@ -239,9 +385,9 @@ void XGraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 void XGraphicsRectItem::drawItemText(QPainter *painter,const QString &text,const QRectF &rect)
 {
     painter->save();
-    painter->setFont(m_ItemConfig.fontText);
+    painter->setFont(textFont());
     QFontMetrics fontMetrics = painter->fontMetrics();
-    painter->setPen(m_ItemConfig.penText);
+    painter->setPen(textPen());
     painter->drawText(rect, Qt::AlignCenter | Qt::TextWrapAnywhere, text);
     painter->restore();
 
@@ -249,6 +395,7 @@ void XGraphicsRectItem::drawItemText(QPainter *painter,const QString &text,const
 
 void XGraphicsRectItem::drawItemPix(QPainter *painter,  SXItemPixData* data,double widthOffset)
 {
+    Q_D(XGraphicsRectItem);
     if(!data) return;
     if(!data->pixmap) return;
     if(data->pixmap.isNull()) return;
@@ -262,7 +409,7 @@ void XGraphicsRectItem::drawItemPix(QPainter *painter,  SXItemPixData* data,doub
          QRectF rectShow=QRectF(rect.x(),rect.y(),rect.height(),rect.height());
          painter->setPen(data->penShowRect);
          painter->setBrush(data->brushShowRect);
-         painter->drawRoundedRect(rectShow,m_config.rRoundedRect,m_config.rRoundedRect);
+         painter->drawRoundedRect(rectShow,d->rectRounded,d->rectRounded);
      }
      painter->drawPixmap(rectResize.toRect(),data->pixmap);
      painter->restore();

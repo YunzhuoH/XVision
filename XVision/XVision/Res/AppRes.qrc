@@ -7,5 +7,24 @@
         <file>images/LightStyle/MaximizeMax.svg</file>
         <file>images/LightStyle/Minimize.svg</file>
         <file>images/App/XVision.png</file>
+        <file>config/DockMainManagerDefault.ini</file>
+        <file>images/Ui/FrmLogShow.svg</file>
+        <file>images/Ui/FrmVisionWork.svg</file>
+        <file>images/Ui/FrmVisionImage.svg</file>
+        <file>images/Ui/FrmLogShowActionClearLog.svg</file>
+        <file>images/Ui/FrmLogShowActionOpenLogDir.svg</file>
+        <file>images/Ui/FrmXvFuncAsmCollapse.svg</file>
+        <file>images/Ui/FrmXvFuncAsmExpand.svg</file>
+        <file>images/Ui/FrmXvFuncAsmDown.svg</file>
+        <file>images/Ui/FrmXvFuncAsmUp.svg</file>
+        <file>images/Ui/FrmXvFuncTypeClose.svg</file>
+        <file>images/Ui/UiCommonFlowAdd.svg</file>
+        <file>images/Ui/UiCommonFlowDel.svg</file>
+        <file>images/Ui/UiCommonFlowLoopRun.svg</file>
+        <file>images/Ui/UiCommonFlowOnceRun.svg</file>
+        <file>images/Ui/UiCommonFlowProp.svg</file>
+        <file>images/Ui/UiCommonFlowStop.svg</file>
+        <file>style/DockFlow_Default.css</file>
+        <file>style/DockMain_Default.css</file>
     </qresource>
 </RCC>

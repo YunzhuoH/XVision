@@ -2,10 +2,6 @@
 #define XGRAPHICSSCENE_H
 
 #include <QGraphicsScene>
-#include "XGraphicsView.h"
-#include "XGraphicsDelegateFactory.h"
-#include "XGraphicsItem.h"
-#include "XGraphicsConnectLink.h"
 #include "XGraphicsGlobal.h"
 
 /*
@@ -16,45 +12,36 @@
 *
 */
 
-#pragma region Scene结构体{
-
-///场景风格
-struct SXGraphicsSceneConfig
-{
-    SXGraphicsSceneConfig()
-    {
-        penMagneticLine=QPen();
-        penMagneticLine.setBrush(QColor(Qt::white));
-        penMagneticLine.setStyle(Qt::DashLine);
-        penMagneticLine.setWidth(1);
-
-    }
-    ///磁吸线画笔
-    QPen penMagneticLine;
-
-};
-
-#pragma endregion}
 
 #pragma region Scene类{
-
+class XGraphicsView;
+class XGraphicsItemDelegateFactory;
+class XGraphicsLinkDelegateFactory;
+class XGraphicsItem;
+class XGraphicsConnectLink;
+class XGraphicsScenePrivate;
 ///XScene场景类
 class XGRAPHICS_PUBLIC XGraphicsScene: public QGraphicsScene
 {
     Q_OBJECT
+
 public:
     XGraphicsScene(QObject *parent = nullptr);
     ~XGraphicsScene();
 public:
 //*[常规公共接口]*
+    ///场景Tag
+    QVariant sceneTag() const
+    {
+        return m_SceneTag;
+    }
+    ///设置场景Tag
+    void setSceneTag(const QVariant& tag)
+    {
+        m_SceneTag=tag;
+    }
     ///获取View视图
     XGraphicsView* getView();
-    ///场景配置
-    SXGraphicsSceneConfig* config()
-    {
-        return &m_config;
-    }
-
     ///设置Item委托生产工厂
     void setXItemDelegateFactory(XGraphicsItemDelegateFactory* factory);
     ///设置Link委托生产工厂
@@ -67,6 +54,7 @@ public:
 
     ///缩放到Item范围
     void zoomToItemRect();
+public:
 
 //*[XItem字典]*
     ///添加Item
@@ -186,6 +174,9 @@ protected:
 
 
 protected: //数据区域
+//*[场景属性]*
+    ///场景Tag
+    QVariant m_SceneTag;
 //*[场景数据]*
     ///view视图类
     XGraphicsView *m_pView=nullptr;
@@ -193,8 +184,6 @@ protected: //数据区域
     XGraphicsItemDelegateFactory *m_pXItemFactory=nullptr;
     ///Link委托工厂
     XGraphicsLinkDelegateFactory *m_pXLinkFactory=nullptr;
-    ///场景配置
-    SXGraphicsSceneConfig m_config;
     ///场景图元XItem字典
     QMap<QString,XGraphicsItem*> m_mapXItem;
     ///场景连线XLink字典
@@ -221,6 +210,11 @@ protected: //数据区域
     /// 水平磁吸线	垂直磁吸线
     QGraphicsLineItem *m_itemMagneticHLine=nullptr;
     QGraphicsLineItem *m_itemMagneticVLine=nullptr;
+
+protected:
+    const QScopedPointer<XGraphicsScenePrivate> d_ptr;
+private:
+     Q_DECLARE_PRIVATE(XGraphicsScene)
 
 };
 

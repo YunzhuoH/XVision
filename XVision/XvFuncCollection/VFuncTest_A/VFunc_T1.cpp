@@ -2,7 +2,7 @@
 
 #include <thread>
 #include <chrono>
-
+using namespace XvCore;
 VFunc_T1::VFunc_T1(QObject *parent)
     :XvFuncBase(parent)
 {
@@ -11,10 +11,10 @@ VFunc_T1::VFunc_T1(QObject *parent)
     _VFuncType=EXvFuncType::Other;
 }
 
-XvFuncBase::EVFucRunResult VFunc_T1::run()
+XvFuncBase::EVFucRunStatus VFunc_T1::run()
 {
      std::this_thread::sleep_for(std::chrono::milliseconds(66));
-     return EVFucRunResult::Fail;
+     return EVFucRunStatus::Fail;
 }
 
 QVariant VFunc_T1::onReciveTokenMsg(const TokenMsg &tokenMsg, QList<QVariant> &params)
@@ -32,4 +32,18 @@ QVariant VFunc_T1::onReciveTokenMsg(const TokenMsg &tokenMsg, QList<QVariant> &p
         }
     }
     return QVariant();
+}
+
+VFunc_T3::VFunc_T3(QObject *parent)
+    :XvFuncBase(parent)
+{
+    _VFuncRole="V-T3";
+    _VFuncName="算子-T3";
+    _VFuncType=EXvFuncType::Other;
+}
+
+XvFuncBase::EVFucRunStatus VFunc_T3::run()
+{
+     std::this_thread::sleep_for(std::chrono::milliseconds(66));
+     return EVFucRunStatus::Fail;
 }

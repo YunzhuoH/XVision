@@ -3,9 +3,29 @@
 
 #include "XvCoreGlobal.h"
 #include <QObject>
-#include <QtCore>
 #include "XvFuncDef.h"
 #include "IXvTokenMsgable.h"
+
+/*算子4种状态:
+1.未运行:Init
+2.运行成功:Ok
+3.运行失败:Fail
+4.运行错误:Error
+*/
+#define XvFuncStatus_Init   0
+#define XvFuncStatus_Ok     1
+#define XvFuncStatus_Fail   2
+#define XvFuncStatus_Error  3
+
+#define XvFuncStatus_Init_Str   "Init"
+#define XvFuncStatus_Ok_Str     "Ok"
+#define XvFuncStatus_Fail_Str   "Fail"
+#define XvFuncStatus_Error_Str  "Error"
+
+#define XvFuncStatusStrs { XvFuncStatus_Init_Str,XvFuncStatus_Ok_Str,XvFuncStatus_Fail_Str,XvFuncStatus_Error_Str }
+
+namespace XvCore
+{
 
 class XVCORE_EXPORT XvFuncBase:public QObject,public IXvTokenMsgable
 {
@@ -71,21 +91,22 @@ protected:
 
 /**********************算子运行操作及其状态更新**********************/
 public:
-    enum EVFucRunResult
+    enum EVFucRunStatus
     {
-        OK=0, //运行成功    运行成功返回
-        Fail=1, //运行失败  运行存在错误
-        Error=2,//运行错误  中断强制退出运行
+        Init=XvFuncStatus_Init,//初始状态 未运行
+        OK=XvFuncStatus_Ok, //运行成功    运行成功返回
+        Fail=XvFuncStatus_Fail, //运行失败  运行存在错误
+        Error=XvFuncStatus_Error,//运行错误  中断强制退出运行
     };
-    Q_ENUMS(EVFucRunResult)
+    Q_ENUMS(EVFucRunStatus)
     ///算子运行接口
-    virtual EVFucRunResult runVFunc();
+    virtual EVFucRunStatus runVFunc();
 
 
     ///获取算子运行状态
-    EVFucRunResult getVFuncRunRet() const
+    EVFucRunStatus getVFuncRunStatus() const
     {
-        return VFuncRunResult;
+        return VFuncRunStatus;
     }
     ///获取算子最后运行信息
     QString getLastInfo() const
@@ -104,13 +125,13 @@ signals:
     void sgVFuncRunEnd();
 protected:
     ///算子运行虚接口
-    virtual EVFucRunResult run()
+    virtual EVFucRunStatus run()
     {
-        return EVFucRunResult::Fail;
+        return EVFucRunStatus::Fail;
     }
 protected:
     ///算子运行结果
-    EVFucRunResult VFuncRunResult=EVFucRunResult::OK;
+    EVFucRunStatus VFuncRunStatus=EVFucRunStatus::Init;
     ///最后运行信息
     QString VFuncLastInfo="";
     ///最后一次运行耗时
@@ -119,5 +140,5 @@ protected:
 
 
 };
-
+}
 #endif // VFUNCBASE_H

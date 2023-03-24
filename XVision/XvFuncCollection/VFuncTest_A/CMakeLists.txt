@@ -19,6 +19,7 @@ add_library(VFuncTest_A SHARED
   VFuncTest_A_FactoryPlugin.h VFuncTest_A_FactoryPlugin.cpp
   VFunc_T1.h VFunc_T1.cpp
   VFunc_T2.h VFunc_T2.cpp
+  XvFuncTest.h XvFuncTest.cpp
   VTest1.h VTest1.cpp
 )
 

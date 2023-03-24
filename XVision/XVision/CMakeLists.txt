@@ -47,6 +47,7 @@ list(APPEND APP_LIBS
     SingleApplication
     XvCore #核心库
     XvTokenMsg #Token消息库
+    XvUtils #工具库
 )
 #添加公共库
 list(APPEND APP_LIBS
@@ -68,6 +69,7 @@ list(APPEND APP_INCLUDE_DIR
     ../SingleApplication
     ../XvCore/include
     ../XvTokenMsg/include
+    ../XvUtils/include
 )
 #添加第三方库
 list(APPEND APP_INCLUDE_DIR
@@ -96,11 +98,19 @@ link_directories(${APP_LINK_DIR})
 
 #[[**************添加工程文件**************]]
 
+file(GLOB MODEL      Model/*.*)
+file(GLOB CORE       Core/*.*)
+file(GLOB DEF        Def/*.*)
+file(GLOB UTILS      Utils/*.*)
 
-file(GLOB MAINFRM   MainFrm/*.*)
-file(GLOB COREFRM   CoreFrm/*.*)
-file(GLOB CORE      Core/*.*)
-file(GLOB DEF      Def/*.*)
+file(GLOB UIMAIN     UiMain/*.*)
+file(GLOB UICORE     UiCore/*.*)
+file(GLOB UIWORK     UiWork/*.*)
+file(GLOB UIWORK_UIXVFLOW     UiWork/UiXvFlow/*.*)
+file(GLOB UIWORK_UIXVFUNC     UiWork/UiXvFunc/*.*)
+file(GLOB UIOUTPUT   UIOutput/*.*)
+
+
 
 set(PROJECT_RES
     Res/AppRes.qrc
@@ -109,10 +119,17 @@ set(PROJECT_RES
 
 set(PROJECT_SOURCES
     main.cpp
+    ${MODEL}
     ${CORE}
     ${DEF}
-    ${MAINFRM}
-    ${COREFRM}
+    ${UTILS}
+
+    ${UIMAIN}
+    ${UICORE}
+    ${UIWORK}
+    ${UIWORK_UIXVFLOW}
+    ${UIWORK_UIXVFUNC}
+    ${UIOUTPUT}
 )
 
 #生成可执行文件
@@ -123,10 +140,18 @@ add_executable(${PROJECT_NAME}
 
 #添加当前工程包含
 list(APPEND APP_INCLUDE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/MainFrm
-    ${CMAKE_CURRENT_SOURCE_DIR}/CoreFrm
+    ${CMAKE_CURRENT_SOURCE_DIR}/Model
     ${CMAKE_CURRENT_SOURCE_DIR}/Core
     ${CMAKE_CURRENT_SOURCE_DIR}/Def
+    ${CMAKE_CURRENT_SOURCE_DIR}/Utils
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/UiMain
+    ${CMAKE_CURRENT_SOURCE_DIR}/UiCore
+    ${CMAKE_CURRENT_SOURCE_DIR}/UiWork
+    ${CMAKE_CURRENT_SOURCE_DIR}/UiWork/UiXvFlow
+    ${CMAKE_CURRENT_SOURCE_DIR}/UiWork/UiXvFunc
+    ${CMAKE_CURRENT_SOURCE_DIR}/UIOutput 
+
 )
 
 

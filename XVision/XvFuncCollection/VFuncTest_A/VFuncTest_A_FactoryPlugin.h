@@ -5,11 +5,12 @@
 #include "IXvFactoryPlugin.h"
 
 #include <QObject>
-
+namespace XvCore
+{
 class VFUNCTEST_A_EXPORT VFuncTest_A_FactoryPlugin:public QObject, public IXvFactoryPlugin
 {
     Q_OBJECT
-    Q_INTERFACES(IXvFactoryPlugin)
+    Q_INTERFACES(XvCore::IXvFactoryPlugin)
     Q_PLUGIN_METADATA(IID XV_FACTORY_PLG)
 
 public:
@@ -23,5 +24,5 @@ public:
 
 
 };
-
+}
 #endif // VFUNCTEST_A_FACTORYPLUGIN_H

@@ -40,7 +40,7 @@ void XMatSpinBoxPrivate::init()
     Q_Q(XMatSpinBox);
 
     rippleOverlay        = new XMatRippleOverlay(q);
-
+    rippleStyle          = XMatCommonDef::PositionedRipple;
 
     q->setAttribute(Qt::WA_Hover);
     q->setMouseTracking(true);
@@ -66,6 +66,19 @@ XMatSpinBox::~XMatSpinBox()
 
 }
 
+void XMatSpinBox::setRippleStyle(XMatCommonDef::RippleStyle style)
+{
+    Q_D(XMatSpinBox);
+    d->rippleStyle = style;
+}
+
+XMatCommonDef::RippleStyle XMatSpinBox::rippleStyle() const
+{
+    Q_D(const XMatSpinBox);
+    return d->rippleStyle;
+}
+
+
 
 void XMatSpinBox::setRippleColor(const QColor &color)
 {
@@ -88,33 +101,55 @@ XMatSpinBox::XMatSpinBox(XMatSpinBoxPrivate &d, QWidget *parent)
 
 void XMatSpinBox::mousePressEvent(QMouseEvent *event)
 {
-
     Q_D(XMatSpinBox);
-    QPoint pos = event->pos();
-    XMatRipple *ripple = new XMatRipple(pos);
-    qreal  radiusEndValue = static_cast<qreal>(width())/2;
-    ripple->setRadiusEndValue(radiusEndValue);
-    ripple->setOpacityStartValue(0.35);
-    ripple->setColor(rippleColor());
-    ripple->radiusAnimation()->setDuration(600);
-    ripple->opacityAnimation()->setDuration(1300);
-    d->rippleOverlay->addRipple(ripple);
+    if (XMatCommonDef::NoRipple != d->rippleStyle)
+    {
+        QPoint pos;
+        qreal radiusEndValue;
 
+        if (XMatCommonDef::CenteredRipple == d->rippleStyle) {
+            pos = rect().center();
+        } else {
+            pos = event->pos();
+        }
+
+        radiusEndValue = static_cast<qreal>(width())/2;
+
+        XMatRipple *ripple = new XMatRipple(pos);
+        ripple->setRadiusEndValue(radiusEndValue);
+        ripple->setOpacityStartValue(0.35);
+        ripple->setColor(rippleColor());
+        ripple->radiusAnimation()->setDuration(600);
+        ripple->opacityAnimation()->setDuration(1300);
+        d->rippleOverlay->addRipple(ripple);
+    }
     QSpinBox::mousePressEvent(event);
 }
 
 void XMatSpinBox::wheelEvent(QWheelEvent *event)
 {
     Q_D(XMatSpinBox);
-    QPoint pos = event->position().toPoint();
-    XMatRipple *ripple = new XMatRipple(pos);
-    qreal  radiusEndValue = static_cast<qreal>(width())/2;
-    ripple->setRadiusEndValue(radiusEndValue);
-    ripple->setOpacityStartValue(0.35);
-    ripple->setColor(rippleColor());
-    ripple->radiusAnimation()->setDuration(600);
-    ripple->opacityAnimation()->setDuration(1300);
-    d->rippleOverlay->addRipple(ripple);
+    if (XMatCommonDef::NoRipple != d->rippleStyle)
+    {
+        QPoint pos;
+        qreal radiusEndValue;
+
+        if (XMatCommonDef::CenteredRipple == d->rippleStyle) {
+            pos = rect().center();
+        } else {
+            pos = event->position().toPoint();
+        }
+
+        radiusEndValue = static_cast<qreal>(width())/2;
+
+        XMatRipple *ripple = new XMatRipple(pos);
+        ripple->setRadiusEndValue(radiusEndValue);
+        ripple->setOpacityStartValue(0.35);
+        ripple->setColor(rippleColor());
+        ripple->radiusAnimation()->setDuration(600);
+        ripple->opacityAnimation()->setDuration(1300);
+        d->rippleOverlay->addRipple(ripple);
+    }
 
     QSpinBox::wheelEvent(event);
 }

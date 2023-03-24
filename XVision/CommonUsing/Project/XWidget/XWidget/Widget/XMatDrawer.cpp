@@ -41,7 +41,8 @@ void XMatDrawerPrivate::init()
     stateMachine = new XMatDrawerStateMachine(widget, q);
     window       = new QWidget;
     width        = 250;
-
+    height       = 250;
+    offsetY      = 0;
     clickToClose = false;
     autoRaise    = true;
     closed       = true;
@@ -95,6 +96,37 @@ int XMatDrawer::drawerWidth() const
     Q_D(const XMatDrawer);
 
     return d->width;
+}
+
+void XMatDrawer::setDrawerHeight(int height)
+{
+    Q_D(XMatDrawer);
+    d->height = height;
+    d->widget->setFixedHeight(height);
+    d->stateMachine->updatePropertyAssignments();
+
+}
+
+int XMatDrawer::drawerHeight() const
+{
+    Q_D(const XMatDrawer);
+
+    return d->height;
+}
+
+void XMatDrawer::setDrawerOffsetY(int offsetY)
+{
+    Q_D(XMatDrawer);
+    d->offsetY = offsetY;
+    d->stateMachine->updatePropertyAssignments();
+    updateMask();
+}
+
+int XMatDrawer::drawerOffsetY() const
+{
+    Q_D(const XMatDrawer);
+
+    return d->offsetY;
 }
 
 void XMatDrawer::setDrawerLayout(QLayout *layout)
@@ -184,38 +216,44 @@ void XMatDrawer::closeDrawer()
 
 }
 
+void XMatDrawer::updateMask()
+{
+    Q_D(XMatDrawer);
+    if (!d->overlay)
+    {
+        switch (m_dir)
+        {
+        case XMatDrawer::Left:
+        {
+            auto rect= QRect(QPoint(0,d->offsetY),QSize(d->widget->rect().width()-16,d->widget->rect().height()));
+            setMask(QRegion(rect));
+        }
+            break;
+        case XMatDrawer::Right:
+        {
+            auto parWdg=parentWidget();
+            if(parWdg)
+            {
+                auto dx=parWdg->width()-d->widget->width()+16;
+                auto rect= QRect(QPoint(dx,d->offsetY),d->widget->rect().size());
+                setMask(QRegion(rect));
+            }
+        }
+            break;
+        }
+
+    }
+}
+
 bool XMatDrawer::event(QEvent *event)
 {
-     Q_D(XMatDrawer);
+    Q_D(XMatDrawer);
     switch (event->type())
     {
     case QEvent::Move:
     case QEvent::Resize:
-        if (!d->overlay)
-        {
-            switch (m_dir)
-            {
-            case XMatDrawer::Left:
-            {
-                auto rect= QRect(QPoint(0,0),QSize(d->widget->rect().width()-16,d->widget->rect().height()));
-                setMask(QRegion(rect));
-            }
-                break;
-            case XMatDrawer::Right:
-            {
-                auto parWdg=parentWidget();
-                if(parWdg)
-                {
-                    auto dx=parWdg->width()-d->widget->width()+16;
-                    auto rect= QRect(QPoint(dx,0),d->widget->rect().size());
-                    setMask(QRegion(rect));
-                }
-            }
-                break;
-            }
-
-        }
-        break;
+          updateMask();
+          break;
     default:
         break;
     }

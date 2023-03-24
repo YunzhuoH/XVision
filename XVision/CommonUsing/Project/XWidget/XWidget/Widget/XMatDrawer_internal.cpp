@@ -137,7 +137,7 @@ void XMatDrawerWidget::setOffset(QPoint offset)
     m_offset = offset;
     QWidget *widget = parentWidget();
     if (widget) {
-        setGeometry(widget->rect().translated(offset.x(), offset.y()));
+        setGeometry(widget->rect().translated(offset.x(),offset.y()));
     }
     update();
 }
@@ -145,55 +145,57 @@ void XMatDrawerWidget::setOffset(QPoint offset)
 QPoint XMatDrawerWidget::closedOffset()
 {
     auto dir=m_drawer->drawerDir();
+    int offsetY=m_drawer->drawerOffsetY();
     switch (dir)
     {
     case XMatDrawer::Left:
-        return  QPoint(-(width()+32),0);
+        return  QPoint(-(width()+32),offsetY);
         break;
     case XMatDrawer::Right:
     {
         auto parWdg=m_drawer->parentWidget();
         if(!parWdg)
         {
-            return  QPoint(-(width()+32),0);
+            return  QPoint(-(width()+32),offsetY);
         }
         else
         {
             const int dx=parWdg->width();
-            return QPoint(dx,0);
+            return QPoint(dx,offsetY);
         }
     }
         break;
     }
-    return  QPoint(-(width()+32),0);
+    return QPoint(-(width()+32),offsetY);
 }
 
 QPoint XMatDrawerWidget::openingOffset()
 {
     auto dir=m_drawer->drawerDir();
+    int offsetY=m_drawer->drawerOffsetY();
     switch (dir)
     {
     case XMatDrawer::Left:
-         return  QPoint(0,0);
+         return  QPoint(0,offsetY);
         break;
     case XMatDrawer::Right:
     {
         auto parWdg=m_drawer->parentWidget();
         if(!parWdg)
         {
-            return  QPoint(0,0);
+            return  QPoint(0,offsetY);
         }
         else
         {
 
             const int dx=parWdg->width()-width()+16;
-            return QPoint(dx,0);
+            return QPoint(dx,offsetY);
         }
     }
         break;
 
     }
-    return  QPoint(0,0);
+    return  QPoint(0,offsetY);
 }
 
 void XMatDrawerWidget::updateOffset()
@@ -214,7 +216,7 @@ void XMatDrawerWidget::updateOffset()
 
 QRect XMatDrawerWidget::overlayGeometry() const
 {
-    return XMatOverlayWidget::overlayGeometry().translated(m_offset.x(), m_offset.y());
+    return XMatOverlayWidget::overlayGeometry().translated(m_offset.x(),m_offset.y());
 }
 
 void XMatDrawerWidget::paintEvent(QPaintEvent *event)

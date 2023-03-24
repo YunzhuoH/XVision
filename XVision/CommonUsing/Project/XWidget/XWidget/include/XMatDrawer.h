@@ -26,6 +26,12 @@ public:
     void setDrawerWidth(int width);
     int drawerWidth() const;
 
+    void setDrawerHeight(int height);
+    int drawerHeight() const;
+
+    void setDrawerOffsetY(int offsetY);
+    int drawerOffsetY() const;
+
     void setDrawerLayout(QLayout *layout);
     QLayout *drawerLayout() const;
 
@@ -42,7 +48,8 @@ public:
 public slots:
     void openDrawer();
     void closeDrawer();
-
+protected:
+    void updateMask();
 protected:
     bool event(QEvent *event) Q_DECL_OVERRIDE;
     bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;

@@ -6,43 +6,7 @@
 #include <QPainter>
 #include "XGraphicsGlobal.h"
 
-#pragma region XItem 结构体{
 
-///XItem通用配置
-struct SXCommonItemConfig
-{
-    SXCommonItemConfig()
-    {
-        penConnectArea=QPen(QColor(30,30,30));
-        brushConnectArea=QBrush(QColor(100,130,250));
-
-        penText = QPen();
-        penText.setColor(QColor(75, 75, 75));
-        penText.setWidth(1);
-        fontText = QFont("YouYuan", 12, 2);
-        fontText.setBold(true);
-
-        penHighlight.setColor(QColor(255,242,0));
-        penHighlight.setWidth(5);
-        brushHighlight=QBrush(QColor(Qt::white));
-    }
-
-    ///连接区域边框画笔
-    QPen penConnectArea;
-    ///连接区域内部笔刷
-    QBrush brushConnectArea;
-
-    ///Item文本画笔
-    QPen penText;
-    ///Item文本字体
-    QFont fontText;
-
-    ///高亮时画笔
-    QPen penHighlight;
-    ///高亮时笔刷
-    QBrush brushHighlight;
-
-};
 ///XItem图像显示数据
 struct SXItemPixData
 {
@@ -79,17 +43,24 @@ struct SXItemPixData
 
 };
 
-#pragma endregion}
 
 #pragma region XItem类{
 
 class XGraphicsScene;//场景类
 class XGraphicsConnectLink;//XLink连线类
 
+class XGraphicsItemPrivate;
 ///XItem基类
 class XGRAPHICS_PUBLIC XGraphicsItem:public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QPen connectAreaPen READ connectAreaPen WRITE setConnectAreaPen)
+    Q_PROPERTY(QBrush connectAreaBrush READ connectAreaBrush WRITE setConnectAreaBrush)
+    Q_PROPERTY(QPen textPen READ textPen WRITE setTextPen)
+    Q_PROPERTY(QFont textFont READ textFont WRITE setTextFont)
+    Q_PROPERTY(QPen highlightPen READ highlightPen WRITE setHighlightPen)
+    Q_PROPERTY(QBrush highlightBrush READ highlightBrush WRITE setHighlightBrush)
+
     friend class XGraphicsScene;//友元XGraphicsScene
     friend class XGraphicsConnectLink; //友元XGraphicsConnectLink
 public:
@@ -99,6 +70,37 @@ public:
 //*[常规公共接口]*
     ///转换为GItem图元
     virtual QGraphicsItem* item()=0;
+public:
+ //*[属性接口]*
+    ///连接区域边框画笔
+    QPen connectAreaPen() const;
+    ///设置连接区域边框画笔
+    void setConnectAreaPen(const QPen &pen);
+
+    ///连接区域内部笔刷
+    QBrush connectAreaBrush() const;
+    ///设置连接区域内部笔刷
+    void setConnectAreaBrush(const QBrush &brush);
+
+    ///Item文本画笔
+    QPen textPen() const;
+    ///设置Item文本画笔
+    void setTextPen(const QPen &pen);
+
+    ///Item文本字体
+    QFont textFont() const;
+    ///设置Item文本字体
+    void setTextFont(const QFont &font);
+
+    ///高亮时画笔
+    QPen highlightPen() const;
+    ///设置高亮时画笔
+    void setHighlightPen(const QPen &pen);
+
+    ///高亮时笔刷
+    QBrush highlightBrush() const;
+    ///设置高亮时笔刷
+    void setHighlightBrush(const QBrush &brush);
 protected:
     ///初始化Item
     virtual void initItem()=0;
@@ -361,18 +363,10 @@ public:
     }
     ///切换图像显示
     virtual bool switchShowPixKey(const QString &key,bool bUpdate=true);
-//[item配置]
-    ///item配置
-    SXCommonItemConfig* itemConfig()
-    {
-        return &m_ItemConfig;
-    }
+
 protected:
     ///节点父Scene
     XGraphicsScene* m_parScene;
-    ///通用配置
-    SXCommonItemConfig m_ItemConfig;
-
     ///Item类型
     QString m_ItemType;
     ///ItemID
@@ -391,7 +385,10 @@ protected:
 
     ///Item跟随数据
     QMap<QString,QVariant> m_mapTagData;
-
+protected:
+    const QScopedPointer<XGraphicsItemPrivate> d_ptr;
+private:
+     Q_DECLARE_PRIVATE(XGraphicsItem)
 };
 
 #pragma endregion}

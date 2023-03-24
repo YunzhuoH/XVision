@@ -40,7 +40,7 @@ void XMatToolBarPrivate::init()
     Q_Q(XMatToolBar);
 
     rippleOverlay        = new XMatRippleOverlay(q);
-
+    rippleStyle          = XMatCommonDef::PositionedRipple;
 
     q->setAttribute(Qt::WA_Hover);
     q->setMouseTracking(true);
@@ -73,6 +73,18 @@ XMatToolBar::~XMatToolBar()
 
 }
 
+void XMatToolBar::setRippleStyle(XMatCommonDef::RippleStyle style)
+{
+    Q_D(XMatToolBar);
+    d->rippleStyle = style;
+}
+
+XMatCommonDef::RippleStyle XMatToolBar::rippleStyle() const
+{
+    Q_D(const XMatToolBar);
+    return d->rippleStyle;
+}
+
 void XMatToolBar::setRippleColor(const QColor &color)
 {
     Q_D(XMatToolBar);
@@ -95,16 +107,27 @@ XMatToolBar::XMatToolBar(XMatToolBarPrivate &d, QWidget *parent)
 void XMatToolBar::mousePressEvent(QMouseEvent *event)
 {
     Q_D(XMatToolBar);
-    QPoint pos = event->pos();
-    XMatRipple *ripple = new XMatRipple(pos);
-    qreal  radiusEndValue = static_cast<qreal>(width())/2;
-    ripple->setRadiusEndValue(radiusEndValue);
-    ripple->setOpacityStartValue(0.35);
-    ripple->setColor(rippleColor());
-    ripple->radiusAnimation()->setDuration(600);
-    ripple->opacityAnimation()->setDuration(1300);
+    if (XMatCommonDef::NoRipple != d->rippleStyle)
+    {
+        QPoint pos;
+        qreal radiusEndValue;
 
-    d->rippleOverlay->addRipple(ripple);
+        if (XMatCommonDef::CenteredRipple == d->rippleStyle) {
+            pos = rect().center();
+        } else {
+            pos = event->pos();
+        }
+
+        radiusEndValue = static_cast<qreal>(width())/2;
+
+        XMatRipple *ripple = new XMatRipple(pos);
+        ripple->setRadiusEndValue(radiusEndValue);
+        ripple->setOpacityStartValue(0.35);
+        ripple->setColor(rippleColor());
+        ripple->radiusAnimation()->setDuration(600);
+        ripple->opacityAnimation()->setDuration(1300);
+        d->rippleOverlay->addRipple(ripple);
+    }
 
     QToolBar::mousePressEvent(event);
 }

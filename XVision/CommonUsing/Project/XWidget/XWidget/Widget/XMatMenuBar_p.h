@@ -22,7 +22,7 @@ public:
 
     XMatMenuBar                      *const q_ptr;
     XMatRippleOverlay                *rippleOverlay;
-
+    XMatCommonDef::RippleStyle        rippleStyle;
     QColor                            rippleColor;
 
 };

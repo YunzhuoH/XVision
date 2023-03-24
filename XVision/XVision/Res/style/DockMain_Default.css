@@ -1,0 +1,106 @@
+﻿/***************************主界面AdsDocking风格***************************/
+
+ads--CDockContainerWidget {
+    background: white;
+}
+
+ads--CDockContainerWidget QSplitter::handle {
+    background: white;
+}
+
+ads--CDockAreaWidget {
+    background: #EEEEEE;
+}
+
+ads--CDockAreaWidget #tabsMenuButton::menu-indicator {
+    image: none;
+}
+/*Dock之间的水平间隔线样式*/
+ads--CDockSplitter::handle:horizontal {
+    width: 1px;
+    background: #EEEEEE;
+}
+/*Dock之间的垂直间隔线样式*/
+ads--CDockSplitter::handle:vertical {
+    height: 1px;
+    background: #EEEEEE;
+}
+
+/*Tab 样式*/
+
+/*Tab字体颜色*/
+ads--CDockWidgetTab QLabel {
+    color: #1A1A1A;
+}
+/*Tab背景颜色 活动=True*/
+ads--CDockWidgetTab[activeTab="true"] {
+    background: #BB3282FA;
+}
+/*Tab字体颜色 活动=True*/
+ads--CDockWidgetTab[activeTab="true"] QLabel {
+    color: white;
+}
+
+/*Tab关闭hover颜色*/
+ads--CDockWidgetTab[activeTab="true"] > #tabCloseButton:hover {
+    background:#f00404;
+}
+/*Tab关闭pressed颜色*/
+ads--CDockWidgetTab[activeTab="true"] > #tabCloseButton:pressed {
+    background:#f04b4b;
+}
+
+/*标题栏样式*/
+ads--CDockAreaTitleBar {
+    background: #EEEEEE;
+    border-bottom: 3px solid #BB3282FA;
+    padding-bottom: 0px;
+}
+
+
+
+ads--CDockWidget {
+    background: white;
+    border: 1px solid #BBBBBB;
+}
+
+QWidget#tabsContainerWidget {
+    background:white;
+}
+
+ads--CTitleBarButton {
+    margin: 1px;
+    background: none;
+    border: none;
+}
+/*标题栏 三按钮样式:hover*/
+ads--CTitleBarButton:hover {
+    background-color:#BBBBBB;
+}
+/*标题栏 三按钮样式:press*/
+ads--CTitleBarButton:press {
+    background-color: #AAAAAA;
+}
+
+
+QScrollArea#dockWidgetScrollArea {
+    background-color: white;
+    padding: 0px;
+    border: none;
+}
+
+#tabCloseButton {
+    margin: 1px;
+    background: none;
+    border: none;
+}
+
+#tabCloseButton:hover {
+    background:#f00404;
+}
+
+#tabCloseButton:pressed {
+   background:#f04b4b;
+}
+
+/********************************************************************/

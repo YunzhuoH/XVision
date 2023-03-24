@@ -40,7 +40,7 @@ void XMatPlainTextEditPrivate::init()
     Q_Q(XMatPlainTextEdit);
 
     rippleOverlay        = new XMatRippleOverlay(q);
-
+    rippleStyle          = XMatCommonDef::PositionedRipple;
 
     q->setAttribute(Qt::WA_Hover);
     q->setMouseTracking(true);
@@ -72,6 +72,20 @@ XMatPlainTextEdit::~XMatPlainTextEdit()
 
 }
 
+void XMatPlainTextEdit::setRippleStyle(XMatCommonDef::RippleStyle style)
+{
+    Q_D(XMatPlainTextEdit);
+    d->rippleStyle = style;
+}
+
+XMatCommonDef::RippleStyle XMatPlainTextEdit::rippleStyle() const
+{
+    Q_D(const XMatPlainTextEdit);
+    return d->rippleStyle;
+}
+
+
+
 void XMatPlainTextEdit::setRippleColor(const QColor &color)
 {
     Q_D(XMatPlainTextEdit);
@@ -94,17 +108,28 @@ XMatPlainTextEdit::XMatPlainTextEdit(XMatPlainTextEditPrivate &d, QWidget *paren
 void XMatPlainTextEdit::mousePressEvent(QMouseEvent *event)
 {
     Q_D(XMatPlainTextEdit);
-    QPoint pos = event->pos();
-    XMatRipple *ripple = new XMatRipple(pos);
-    qreal  radiusEndValue = static_cast<qreal>(width())/2;
-    ripple->setRadiusEndValue(radiusEndValue);
-    ripple->setOpacityStartValue(0.35);
-    ripple->setColor(rippleColor());
-    ripple->radiusAnimation()->setDuration(600);
-    ripple->opacityAnimation()->setDuration(1300);
 
-    d->rippleOverlay->addRipple(ripple);
+    if (XMatCommonDef::NoRipple != d->rippleStyle)
+    {
+        QPoint pos;
+        qreal radiusEndValue;
 
+        if (XMatCommonDef::CenteredRipple == d->rippleStyle) {
+            pos = rect().center();
+        } else {
+            pos = event->pos();
+        }
+
+        radiusEndValue = static_cast<qreal>(width())/2;
+
+        XMatRipple *ripple = new XMatRipple(pos);
+        ripple->setRadiusEndValue(radiusEndValue);
+        ripple->setOpacityStartValue(0.35);
+        ripple->setColor(rippleColor());
+        ripple->radiusAnimation()->setDuration(600);
+        ripple->opacityAnimation()->setDuration(1300);
+        d->rippleOverlay->addRipple(ripple);
+    }
     QPlainTextEdit::mousePressEvent(event);
 }
 
@@ -112,20 +137,27 @@ void XMatPlainTextEdit::wheelEvent(QWheelEvent *event)
 {
     Q_D(XMatPlainTextEdit);
 
-    QPoint pos;
-    qreal radiusEndValue;
+    if (XMatCommonDef::NoRipple != d->rippleStyle)
+    {
+        QPoint pos;
+        qreal radiusEndValue;
 
-    pos = event->position().toPoint();
+        if (XMatCommonDef::CenteredRipple == d->rippleStyle) {
+            pos = rect().center();
+        } else {
+            pos =event->position().toPoint();
+        }
 
-    radiusEndValue = static_cast<qreal>(width())/2;
-    XMatRipple *ripple = new XMatRipple(pos);
+        radiusEndValue = static_cast<qreal>(width())/2;
 
-    ripple->setRadiusEndValue(radiusEndValue);
-    ripple->setOpacityStartValue(0.35);
-    ripple->setColor(rippleColor());
-    ripple->radiusAnimation()->setDuration(600);
-    ripple->opacityAnimation()->setDuration(1300);
+        XMatRipple *ripple = new XMatRipple(pos);
+        ripple->setRadiusEndValue(radiusEndValue);
+        ripple->setOpacityStartValue(0.35);
+        ripple->setColor(rippleColor());
+        ripple->radiusAnimation()->setDuration(600);
+        ripple->opacityAnimation()->setDuration(1300);
+        d->rippleOverlay->addRipple(ripple);
+    }
 
-    d->rippleOverlay->addRipple(ripple);
     QPlainTextEdit::wheelEvent(event);
 }

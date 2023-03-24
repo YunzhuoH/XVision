@@ -66,6 +66,18 @@ XMatDoubleSpinBox::~XMatDoubleSpinBox()
 
 }
 
+void XMatDoubleSpinBox::setRippleStyle(XMatCommonDef::RippleStyle style)
+{
+    Q_D(XMatDoubleSpinBox);
+    d->rippleStyle = style;
+}
+
+XMatCommonDef::RippleStyle XMatDoubleSpinBox::rippleStyle() const
+{
+    Q_D(const XMatDoubleSpinBox);
+    return d->rippleStyle;
+}
+
 
 void XMatDoubleSpinBox::setRippleColor(const QColor &color)
 {
@@ -90,16 +102,28 @@ void XMatDoubleSpinBox::mousePressEvent(QMouseEvent *event)
 {
 
     Q_D(XMatDoubleSpinBox);
-    QPoint pos = event->pos();
-    XMatRipple *ripple = new XMatRipple(pos);
-    qreal  radiusEndValue = static_cast<qreal>(width())/2;
-    ripple->setRadiusEndValue(radiusEndValue);
-    ripple->setOpacityStartValue(0.35);
-    ripple->setColor(rippleColor());
-    ripple->radiusAnimation()->setDuration(600);
-    ripple->opacityAnimation()->setDuration(1300);
+    if (XMatCommonDef::NoRipple != d->rippleStyle)
+    {
+        QPoint pos;
+        qreal radiusEndValue;
 
-    d->rippleOverlay->addRipple(ripple);
+        if (XMatCommonDef::CenteredRipple == d->rippleStyle) {
+            pos = rect().center();
+        } else {
+            pos = event->pos();
+        }
+
+        radiusEndValue = static_cast<qreal>(width())/2;
+
+        XMatRipple *ripple = new XMatRipple(pos);
+        ripple->setRadiusEndValue(radiusEndValue);
+        ripple->setOpacityStartValue(0.35);
+        ripple->setColor(rippleColor());
+        ripple->radiusAnimation()->setDuration(600);
+        ripple->opacityAnimation()->setDuration(1300);
+        d->rippleOverlay->addRipple(ripple);
+    }
+
     QDoubleSpinBox::mousePressEvent(event);
 
 }
@@ -107,15 +131,28 @@ void XMatDoubleSpinBox::mousePressEvent(QMouseEvent *event)
 void XMatDoubleSpinBox::wheelEvent(QWheelEvent *event)
 {
     Q_D(XMatDoubleSpinBox);
-    QPoint pos = event->position().toPoint();
-    XMatRipple *ripple = new XMatRipple(pos);
-    qreal  radiusEndValue = static_cast<qreal>(width())/2;
-    ripple->setRadiusEndValue(radiusEndValue);
-    ripple->setOpacityStartValue(0.35);
-    ripple->setColor(rippleColor());
-    ripple->radiusAnimation()->setDuration(600);
-    ripple->opacityAnimation()->setDuration(1300);
-    d->rippleOverlay->addRipple(ripple);
+
+    if (XMatCommonDef::NoRipple != d->rippleStyle)
+    {
+        QPoint pos;
+        qreal radiusEndValue;
+
+        if (XMatCommonDef::CenteredRipple == d->rippleStyle) {
+            pos = rect().center();
+        } else {
+            pos = event->position().toPoint();
+        }
+
+        radiusEndValue = static_cast<qreal>(width())/2;
+
+        XMatRipple *ripple = new XMatRipple(pos);
+        ripple->setRadiusEndValue(radiusEndValue);
+        ripple->setOpacityStartValue(0.35);
+        ripple->setColor(rippleColor());
+        ripple->radiusAnimation()->setDuration(600);
+        ripple->opacityAnimation()->setDuration(1300);
+        d->rippleOverlay->addRipple(ripple);
+    }
 
     QDoubleSpinBox::wheelEvent(event);
 }

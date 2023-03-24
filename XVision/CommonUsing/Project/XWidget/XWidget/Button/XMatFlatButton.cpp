@@ -457,13 +457,11 @@ void XMatFlatButton::mousePressEvent(QMouseEvent *event)
         }
 
         XMatRipple *ripple = new XMatRipple(pos);
-
         ripple->setRadiusEndValue(radiusEndValue);
         ripple->setOpacityStartValue(0.35);
         ripple->setColor(rippleColor());
         ripple->radiusAnimation()->setDuration(600);
         ripple->opacityAnimation()->setDuration(1300);
-
         d->rippleOverlay->addRipple(ripple);
     }
 

@@ -4,12 +4,93 @@
 #include "XGraphicsUtils.h"
 
 #include <QUuid>
+/*******************************/
+//* [XGraphicsConnectLinkPrivate]
+/*******************************/
+class XGraphicsConnectLinkPrivate
+{
+    Q_DISABLE_COPY(XGraphicsConnectLinkPrivate)
+    Q_DECLARE_PUBLIC(XGraphicsConnectLink)
+
+public:
+    XGraphicsConnectLinkPrivate(XGraphicsConnectLink *q):q_ptr(q)
+    {
+        linkingCirclePen=QPen(QColor(Qt::white));
+        linkingCircleBrush=QBrush(QColor(50, 125, 255));
+        linkingCircleRadius=4;
+
+
+        linkingPen=QColor(25, 150, 255);
+        linkingPen.setWidth(3);
+        linkingPen.setStyle(Qt::SolidLine);
+
+        linkedPen=QColor(25, 150, 255);
+        linkedPen.setWidth(3);
+        linkedPen.setStyle(Qt::SolidLine);
+
+        linkSelectedPen=QColor(255, 150, 50);
+        linkSelectedPen.setWidth(5);
+        linkSelectedPen.setStyle(Qt::SolidLine);
+
+
+        selectBoundingRectPen.setColor(QColor(255, 255, 255));
+        selectBoundingRectPen.setWidth(1);
+        selectBoundingRectPen.setStyle(Qt::DashLine);
+
+        arrowSize=15;
+
+        highLightPen.setColor(QColor(255,242,0));
+        highLightPen.setWidth(3);
+        highLightPen.setStyle(Qt::SolidLine);
+
+        textPen = QPen();
+        textPen.setColor(QColor(255, 255, 255));
+        textPen.setWidth(1);
+        textFont = QFont("YouYuan", 12, 2);
+        textFont.setBold(false);
+    };
+    virtual ~XGraphicsConnectLinkPrivate(){};
+
+    XGraphicsConnectLink                *const q_ptr;
+
+    ///连接拖动圆形画笔
+    QPen                                linkingCirclePen;
+    ///连接拖动圆形笔刷
+    QBrush                              linkingCircleBrush;
+    ///连接拖动圆半径
+    double                              linkingCircleRadius;
+
+
+    ///正在连线画笔
+    QPen                                linkingPen;
+
+    ///连线完毕画笔
+    QPen                                linkedPen;
+
+    ///连线被选择时
+    QPen                                linkSelectedPen;
+
+    ///选中时边框画笔
+    QPen                                selectBoundingRectPen;
+
+    ///末端箭头大小
+    double                              arrowSize=15;
+
+    ///连线高亮时的画笔
+    QPen                                highLightPen;
+
+    ///Link文本画笔
+    QPen                                textPen;
+    ///Link文本字体
+    QFont                               textFont;
+
+};
 
 /****************************构建与析构****************************/
 
 XGraphicsConnectLink::XGraphicsConnectLink(QObject *parent)
     :QObject{parent},   m_LinkId(QUuid::createUuid().toString(QUuid::Id128)),
-    m_ptFatherStart(QPointF(0,0)),m_ptSonEnd(QPointF(0,0))
+    m_ptFatherStart(QPointF(0,0)),m_ptSonEnd(QPointF(0,0)),d_ptr(new XGraphicsConnectLinkPrivate(this))
 {
     if(parent)
     {
@@ -24,7 +105,7 @@ XGraphicsConnectLink::XGraphicsConnectLink(QObject *parent)
 
 XGraphicsConnectLink::XGraphicsConnectLink(QPointF ptStart, QPointF ptEnd,QObject *parent)
     :QObject{parent},   m_LinkId(QUuid::createUuid().toString(QUuid::Id128)),
-      m_ptFatherStart(ptStart),m_ptSonEnd(ptEnd)
+      m_ptFatherStart(ptStart),m_ptSonEnd(ptEnd),d_ptr(new XGraphicsConnectLinkPrivate(this))
 {
     if(parent)
     {
@@ -39,7 +120,7 @@ XGraphicsConnectLink::XGraphicsConnectLink(QPointF ptStart, QPointF ptEnd,QObjec
 
 XGraphicsConnectLink::XGraphicsConnectLink(XGraphicsItem *xItemFather, const QString &fatherKey,
                                            XGraphicsItem *xItemSon, const QString &sonKey, QObject *parent)
-    :QObject{parent},   m_LinkId(QUuid::createUuid().toString(QUuid::Id128))
+    :QObject{parent},   m_LinkId(QUuid::createUuid().toString(QUuid::Id128)),d_ptr(new XGraphicsConnectLinkPrivate(this))
 {
     if(parent)
     {
@@ -72,7 +153,144 @@ XGraphicsConnectLink::~XGraphicsConnectLink()
         m_sonXItem->removeFatherConnect(this);
     }
 }
+/***************************属性接口***************************/
 
+QPen XGraphicsConnectLink::linkingCirclePen() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->linkingCirclePen;
+}
+
+void XGraphicsConnectLink::setLinkingCirclePen(const QPen &pen)
+{
+    Q_D(XGraphicsConnectLink);
+    d->linkingCirclePen=pen;
+}
+
+
+QBrush XGraphicsConnectLink::linkingCircleBrush() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->linkingCircleBrush;
+}
+
+void XGraphicsConnectLink::setLinkingCircleBrush(const  QBrush &brush)
+{
+    Q_D(XGraphicsConnectLink);
+    d->linkingCircleBrush=brush;
+}
+
+double XGraphicsConnectLink::linkingCircleRadius() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->linkingCircleRadius;
+}
+
+void XGraphicsConnectLink::setLinkingCircleRadius(const double &radius)
+{
+    Q_D(XGraphicsConnectLink);
+    d->linkingCircleRadius=radius;
+}
+
+QPen XGraphicsConnectLink::linkingPen() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->linkingPen;
+}
+
+void XGraphicsConnectLink::setLinkingPen(const QPen &pen)
+{
+    Q_D(XGraphicsConnectLink);
+    d->linkingPen=pen;
+}
+
+QPen XGraphicsConnectLink::linkedPen() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->linkedPen;
+}
+
+void XGraphicsConnectLink::setLinkedPen(const QPen &pen)
+{
+    Q_D(XGraphicsConnectLink);
+    d->linkedPen=pen;
+}
+
+QPen XGraphicsConnectLink::linkSelectedPen() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->linkSelectedPen;
+}
+
+void XGraphicsConnectLink::setLinkSelectedPen(const QPen &pen)
+{
+    Q_D(XGraphicsConnectLink);
+    d->linkSelectedPen=pen;
+}
+
+
+QPen XGraphicsConnectLink::selectBoundingRectPen() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->selectBoundingRectPen;
+}
+
+void XGraphicsConnectLink::setSelectBoundingRectPen(const QPen &pen)
+{
+    Q_D(XGraphicsConnectLink);
+    d->selectBoundingRectPen=pen;
+}
+
+double XGraphicsConnectLink::arrowSize() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->arrowSize;
+}
+
+void XGraphicsConnectLink::setArrowSize(const double &size)
+{
+    Q_D(XGraphicsConnectLink);
+    d->arrowSize=size;
+}
+
+QPen XGraphicsConnectLink::highLightPen() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->highLightPen;
+}
+
+void XGraphicsConnectLink::setHighLightPen(const QPen &pen)
+{
+    Q_D(XGraphicsConnectLink);
+    d->highLightPen=pen;
+}
+
+QPen XGraphicsConnectLink::textPen() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->textPen;
+}
+
+void XGraphicsConnectLink::setTextPen(const QPen &pen)
+{
+    Q_D(XGraphicsConnectLink);
+    d->textPen=pen;
+}
+
+QFont XGraphicsConnectLink::textFont() const
+{
+    Q_D(const XGraphicsConnectLink);
+    return d->textFont;
+}
+
+void XGraphicsConnectLink::setTextFont(const QFont &font)
+{
+    Q_D(XGraphicsConnectLink);
+    d->textFont=font;
+}
+
+
+/***************************初始化接口***************************/
 void XGraphicsConnectLink::initConnectLink()
 {
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -290,6 +508,7 @@ QPainterPath XGraphicsConnectLink::shape() const
 
 void XGraphicsConnectLink::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_D(XGraphicsConnectLink);
 
     painter->save();
     if(m_bLinked) //已经连接
@@ -297,18 +516,18 @@ void XGraphicsConnectLink::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
         if(isSelected())
         {
-            painter->setPen(m_LinkConfig.penLinkSelected);
-            painter->setBrush(m_LinkConfig.penLinkSelected.color());
+            painter->setPen(d->linkSelectedPen);
+            painter->setBrush(d->linkSelectedPen.color());
         }
         else
         {
-            painter->setPen(m_LinkConfig.penLinked);
-            painter->setBrush(m_LinkConfig.penLinked.color());
+            painter->setPen(d->linkedPen);
+            painter->setBrush(d->linkedPen.color());
         }
         if(m_bHighlight)
         {
-            painter->setPen(m_LinkConfig.penHighLight);
-            painter->setBrush(m_LinkConfig.penHighLight.color());
+            painter->setPen(d->highLightPen);
+            painter->setBrush(d->highLightPen.color());
         }
         painter->drawLine(this->line());
         painter->drawPolygon(m_polyArrowHead);
@@ -316,9 +535,9 @@ void XGraphicsConnectLink::paint(QPainter *painter, const QStyleOptionGraphicsIt
         if(isSelected()) //选择状态绘制外框
         {
 
-            painter->setPen(m_LinkConfig.penSelectBoundingRect);
+            painter->setPen(d->selectBoundingRectPen);
             painter->setBrush(Qt::NoBrush);
-            double size=m_LinkConfig.rArrowSize/2.0;
+            double size=d->arrowSize/2.0;
             double angle = std::atan2(-line().dy(), line().dx());
 
             QPointF p1 = m_ptFatherStart + QPointF(sin(angle + M_PI) * size,cos(angle + M_PI) * size);
@@ -335,13 +554,13 @@ void XGraphicsConnectLink::paint(QPainter *painter, const QStyleOptionGraphicsIt
     }
     else //未连接时
     {
-       painter->setPen(m_LinkConfig.penLinking);
-       painter->setBrush(m_LinkConfig.penLinking.color());
+       painter->setPen(d->linkingPen);
+       painter->setBrush(d->linkingPen.color());
        painter->drawLine(this->line());
        painter->drawPolygon(m_polyArrowHead);
-       painter->setPen(m_LinkConfig.penLinkingCircle);
-       painter->setBrush(m_LinkConfig.brushLinkingCircle);
-       double radius=m_LinkConfig.rLinkingCircleRadius;
+       painter->setPen(d->linkingCirclePen);
+       painter->setBrush(d->linkingCircleBrush);
+       double radius=d->linkingCircleRadius;
        painter->drawEllipse(this->sonEndPos(),radius,radius);
     }
 
@@ -372,7 +591,7 @@ void XGraphicsConnectLink::paint(QPainter *painter, const QStyleOptionGraphicsIt
 void XGraphicsConnectLink::updateArrow()
 {
     double angle = std::atan2(-line().dy(), line().dx());
-    double arrowSize=m_LinkConfig.rArrowSize;
+    double arrowSize=this->arrowSize();
     const double coef=2.5;
     QPointF arrowP1 = m_ptSonEnd + QPointF(sin(angle + M_PI / coef) * arrowSize,
                                     cos(angle + M_PI / coef) * arrowSize);
@@ -386,9 +605,9 @@ void XGraphicsConnectLink::updateArrow()
 void XGraphicsConnectLink::drawLinkText(QPainter *painter, const QString &text)
 {
     painter->save();
-    painter->setFont(m_LinkConfig.fontText);
+    painter->setFont(textFont());
     QFontMetrics fontMetrics = painter->fontMetrics();
-    painter->setPen(m_LinkConfig.penText);
+    painter->setPen(textPen());
     QRect rect = fontMetrics.boundingRect(text);
     QPointF pos=line().center()-QPointF(rect.width()/2,rect.height()/2);
     rect.moveTo(pos.toPoint());

@@ -2,57 +2,55 @@
 #define XGRAPHICSELLIPSEITEM_H
 
 #include "XGraphicsItem.h"
-#include "CommonUtils.h"
+#include "XGraphicsUtils.h"
 
-///椭圆Item风格
-struct SXEllipseItemConfig
-{
-    SXEllipseItemConfig()
-    {
-
-
-        penItemEllipse.setColor(QColor(25, 150, 255));
-        penItemEllipse.setWidth(3);
-        brushItemEllipse=QBrush(QColor(Qt::white));
-
-        penSelectEllipse.setColor(QColor(255, 150, 50));
-        penSelectEllipse.setWidth(5);
-        brushSelectEllipse=QBrush(QColor(Qt::white));
-
-        penSelectBoundingEllipse.setColor(Qt::white);
-        penSelectBoundingEllipse.setWidth(1);
-        penSelectBoundingEllipse.setStyle(Qt::DashLine);
-
-        rConnectEllipseSize=10;
-    }
-
-
-    ///常规椭圆画笔
-    QPen penItemEllipse;
-    ///常规椭圆笔刷
-    QBrush brushItemEllipse;
-
-    ///选中时矩形画笔
-    QPen penSelectEllipse;
-    ///选中时矩形笔刷
-    QBrush brushSelectEllipse;
-
-    ///选中时边框画笔
-    QPen penSelectBoundingEllipse;
-
-    ///连接椭圆环尺寸
-    double rConnectEllipseSize;
-
-};
-
+class XGraphicsEllipseItemPrivate;
 class XGRAPHICS_PUBLIC XGraphicsEllipseItem:public XGraphicsItem,public QGraphicsEllipseItem
 {
     Q_OBJECT
+    Q_PROPERTY(QPen itemEllipsePen READ itemEllipsePen WRITE setItemEllipsePen)
+    Q_PROPERTY(QBrush itemEllipseBrush READ itemEllipseBrush WRITE setItemEllipseBrush)
+    Q_PROPERTY(QPen selectEllipsePen READ selectEllipsePen WRITE setSelectEllipsePen)
+    Q_PROPERTY(QBrush selectEllipseBrush READ selectEllipseBrush WRITE setSelectEllipseBrush)
+    Q_PROPERTY(QPen selectBoundingEllipsePen READ selectBoundingEllipsePen WRITE setSelectBoundingEllipsePen)
+    Q_PROPERTY(double connectEllipseSize READ connectEllipseSize WRITE setConnectEllipseSize)
 public:
     XGraphicsEllipseItem(QObject *parent = nullptr);
     XGraphicsEllipseItem(QString type,QString id,QObject *parent = nullptr);
     ~XGraphicsEllipseItem();
     // XGraphicsItem interface
+public:
+ //*[属性接口]*
+    ///常规椭圆画笔
+    QPen itemEllipsePen() const;
+    ///设置常规椭圆画笔
+    void setItemEllipsePen(const QPen &pen);
+
+    ///常规常规椭圆笔刷
+    QBrush itemEllipseBrush() const;
+    ///设置常规椭圆笔刷
+    void setItemEllipseBrush(const QBrush &brush);
+
+    ///选中时矩形画笔
+    QPen selectEllipsePen() const;
+    ///设置选中时矩形画笔
+    void setSelectEllipsePen(const QPen &pen);
+
+    ///选中时矩形笔刷
+    QBrush selectEllipseBrush() const;
+    ///设置选中时矩形笔刷
+    void setSelectEllipseBrush(const QBrush &brush);
+
+    ///选中时边框画笔
+    QPen selectBoundingEllipsePen() const;
+    ///设置选中时边框画笔
+    void setSelectBoundingEllipsePen(const QPen &pen);
+
+
+    ///连接椭圆环尺寸
+    double connectEllipseSize() const;
+    ///设置连接椭圆环尺寸
+    void setConnectEllipseSize(const double &size);
 protected:
     ///初始化Item
     void initItem() override;
@@ -89,15 +87,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-public:
-    ///配置
-    SXEllipseItemConfig* config()
-    {
-        return &m_config;
-    }
 protected:
-    ///Item配置
-    SXEllipseItemConfig m_config;
 
     ///椭圆中心点
     QPointF m_ptCenter;
@@ -140,7 +130,10 @@ protected:
     ///连接椭圆环区域
     SConnectEllipseRing m_connectEllipseRingArea;
 
-
+protected:
+    const QScopedPointer<XGraphicsEllipseItemPrivate> d_ptr;
+private:
+     Q_DECLARE_PRIVATE(XGraphicsEllipseItem)
 };
 
 #endif // XGRAPHICSELLIPSEITEM_H

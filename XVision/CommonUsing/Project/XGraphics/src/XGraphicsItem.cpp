@@ -4,10 +4,58 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QUuid>
 
+/*******************************/
+//* [XGraphicsItemPrivate]
+/*******************************/
+class XGraphicsItemPrivate
+{
+    Q_DISABLE_COPY(XGraphicsItemPrivate)
+    Q_DECLARE_PUBLIC(XGraphicsItem)
+
+public:
+    XGraphicsItemPrivate(XGraphicsItem *q):q_ptr(q)
+    {
+        connectAreaPen=QPen(QColor(30,30,30));
+        connectAreaBrush=QBrush(QColor(100,130,250));
+
+        textPen = QPen();
+        textPen.setColor(QColor(75, 75, 75));
+        textPen.setWidth(1);
+        textFont = QFont("YouYuan", 12, 2);
+        textFont.setBold(true);
+
+        highlightPen.setColor(QColor(255,242,0));
+        highlightPen.setWidth(5);
+        highlightBrush=QBrush(QColor(Qt::white));
+
+    };
+    virtual ~XGraphicsItemPrivate(){};
+
+    XGraphicsItem              *const q_ptr;
+
+    ///连接区域边框画笔
+    QPen                        connectAreaPen;
+    ///连接区域内部笔刷
+    QBrush                      connectAreaBrush;
+
+    ///Item文本画笔
+    QPen                        textPen;
+    ///Item文本字体
+    QFont                       textFont;
+
+    ///高亮时画笔
+    QPen                        highlightPen;
+    ///高亮时笔刷
+    QBrush                      highlightBrush;
+
+};
+
+
+
 /****************************构建与析构****************************/
 
 XGraphicsItem::XGraphicsItem(QString type,QString id,QObject *parent)
-    :QObject{parent},m_ItemType(type)
+    :QObject{parent},m_ItemType(type),d_ptr(new XGraphicsItemPrivate(this))
 {
     if(id.isEmpty())
     {
@@ -43,6 +91,84 @@ XGraphicsItem::~XGraphicsItem()
         }
     }
 }
+
+/****************************属性接口****************************/
+QPen XGraphicsItem::connectAreaPen() const
+{
+    Q_D(const XGraphicsItem);
+    return d->connectAreaPen;
+}
+
+void XGraphicsItem::setConnectAreaPen(const QPen &pen)
+{
+    Q_D(XGraphicsItem);
+    d->connectAreaPen=pen;
+}
+
+QBrush XGraphicsItem::connectAreaBrush() const
+{
+    Q_D(const XGraphicsItem);
+    return d->connectAreaBrush;
+}
+
+void XGraphicsItem::setConnectAreaBrush(const QBrush &brush)
+{
+    Q_D(XGraphicsItem);
+    d->connectAreaBrush=brush;
+}
+
+
+QPen XGraphicsItem::textPen() const
+{
+    Q_D(const XGraphicsItem);
+    return d->textPen;
+}
+
+void XGraphicsItem::setTextPen(const QPen &pen)
+{
+    Q_D(XGraphicsItem);
+    d->textPen=pen;
+}
+
+
+QFont XGraphicsItem::textFont() const
+{
+    Q_D(const XGraphicsItem);
+    return d->textFont;
+}
+
+void XGraphicsItem::setTextFont(const QFont &font)
+{
+    Q_D(XGraphicsItem);
+    d->textFont=font;
+}
+
+
+QPen XGraphicsItem::highlightPen() const
+{
+    Q_D(const XGraphicsItem);
+    return d->highlightPen;
+}
+
+void XGraphicsItem::setHighlightPen(const QPen &pen)
+{
+    Q_D(XGraphicsItem);
+    d->highlightPen=pen;
+}
+
+
+QBrush XGraphicsItem::highlightBrush() const
+{
+    Q_D(const XGraphicsItem);
+    return d->highlightBrush;
+}
+
+void XGraphicsItem::setHighlightBrush(const QBrush &pen)
+{
+    Q_D(XGraphicsItem);
+    d->highlightBrush=pen;
+}
+
 
 /***************************Scene事件接口***************************/
 

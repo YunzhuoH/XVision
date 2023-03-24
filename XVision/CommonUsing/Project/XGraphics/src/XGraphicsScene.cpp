@@ -3,16 +3,37 @@
 #include <QGraphicsSceneEvent>
 #include <QKeyEvent>
 
+#include "XGraphicsView.h"
+#include "XGraphicsDelegateFactory.h"
 #include "XGraphicsItem.h"
+#include "XGraphicsConnectLink.h"
 #include "XGraphicsMimeData.h"
 #include "XGraphicsUtils.h"
 
-/****************************构建与析构****************************/
+/*******************************/
+//* [XGraphicsScenePrivate]
+/*******************************/
+class XGraphicsScenePrivate
+{
+    Q_DISABLE_COPY(XGraphicsScenePrivate)
+    Q_DECLARE_PUBLIC(XGraphicsScene)
 
+public:
+    XGraphicsScenePrivate(XGraphicsScene *q):q_ptr(q)
+    {
+
+    };
+    virtual ~XGraphicsScenePrivate(){};
+
+    XGraphicsScene              *const q_ptr;
+
+};
+
+/****************************构建与析构****************************/
 XGraphicsScene::XGraphicsScene(QObject *parent)
    :QGraphicsScene(parent),
-   m_pView(new XGraphicsView(this))
-{
+   m_pView(new XGraphicsView(this)),d_ptr(new XGraphicsScenePrivate(this))
+{    
     m_pView->setScene(this);
     m_pView->setAcceptDrops(true);
     m_pView->installEventFilter(this);
@@ -64,6 +85,7 @@ void XGraphicsScene::zoomToItemRect()
     auto rect= itemsBoundingRect();
     getView()->zoomToRect(rect);
 }
+
 
 
 /****************************XItem字典****************************/
@@ -700,6 +722,8 @@ QList<XGraphicsConnectLink *> XGraphicsScene::getSelectXLink()
 
 void XGraphicsScene::drawMagneticLine(XGraphicsItem *xItem,const QPointF &pt)
 {
+    auto view=getView();
+    QPen magneticLinePen(view->magneticLineColor(),view->magneticLineWidth(),view->magneticLinePenStyle());
     auto item= xItem->item();
     if(!item) return;
     {
@@ -737,8 +761,8 @@ void XGraphicsScene::drawMagneticLine(XGraphicsItem *xItem,const QPointF &pt)
                     QPointF ptTemp = QPointF(item->sceneBoundingRect().center().x(), ny) - item->boundingRect().center();
                     item->setPos(ptTemp);
                     //画线
-                    m_itemMagneticHLine = new QGraphicsLineItem(QLineF(item->sceneBoundingRect().center(), i->sceneBoundingRect().center()));
-                    m_itemMagneticHLine->setPen(m_config.penMagneticLine);
+                    m_itemMagneticHLine = new QGraphicsLineItem(QLineF(item->sceneBoundingRect().center(), i->sceneBoundingRect().center()));                  
+                    m_itemMagneticHLine->setPen(magneticLinePen);
                     addItem(m_itemMagneticHLine);
                 }
             }
@@ -781,7 +805,7 @@ void XGraphicsScene::drawMagneticLine(XGraphicsItem *xItem,const QPointF &pt)
                 item->setPos(ptTemp);
                 //画线
                 m_itemMagneticVLine = new QGraphicsLineItem(QLineF(item->sceneBoundingRect().center(), i->sceneBoundingRect().center()));
-                m_itemMagneticVLine->setPen(m_config.penMagneticLine);
+                m_itemMagneticVLine->setPen(magneticLinePen);
                 addItem(m_itemMagneticVLine);
             }
         }

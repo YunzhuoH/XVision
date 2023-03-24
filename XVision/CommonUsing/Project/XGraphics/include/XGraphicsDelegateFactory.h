@@ -12,7 +12,12 @@ class  XGraphicsScene;
 class XGRAPHICS_PUBLIC XGraphicsItemDelegateFactory:public QObject
 {
 public:
-    XGraphicsItemDelegateFactory(QObject* parent=nullptr) :QObject{parent}{}
+    XGraphicsItemDelegateFactory(XGraphicsScene* scene,QObject* parent=nullptr)
+        :QObject{parent},
+        m_parScene(scene)
+    {
+
+    }
 public:
     void setScene(XGraphicsScene* scene) {m_parScene=scene;}
     virtual XGraphicsItem* getXGraphicsItem(const QString &type) {  return nullptr; }
@@ -23,7 +28,12 @@ protected:
 class XGRAPHICS_PUBLIC XGraphicsLinkDelegateFactory:public QObject
 {
 public:
-    XGraphicsLinkDelegateFactory(QObject* parent=nullptr) :QObject{parent}{}
+    XGraphicsLinkDelegateFactory(XGraphicsScene* scene,QObject* parent=nullptr)
+        :QObject{parent},
+         m_parScene(scene)
+    {
+
+    }
 public:
     void setScene(XGraphicsScene* scene) {m_parScene=scene;}
     virtual XGraphicsConnectLink* getXGraphicsLink() {  return nullptr; }

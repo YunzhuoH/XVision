@@ -5,6 +5,7 @@
 #include <QColor>
 #include "XMatComboBox.h"
 
+
 class QStateMachine;
 class QState;
 class QSignalTransition;
@@ -34,7 +35,7 @@ public:
 
     QSignalTransition                  *normalTransition;
     QSignalTransition                  *showPopupTransition;
-
+    XMatCommonDef::RippleStyle        rippleStyle;
     QColor                            normalColor;//常规图标颜色
     QColor                            showPopupColor;//下拉图标颜色
     QColor                            backgroundColor;//背景颜色

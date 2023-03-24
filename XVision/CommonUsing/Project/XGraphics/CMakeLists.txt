@@ -12,32 +12,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets)
 
+file(GLOB INCLUDE      include/*.*)
+file(GLOB SRC          Src/*.*)
+file(GLOB XITEM        XItem/*.*)
+
 add_library(XGraphics SHARED
-  include/XGraphicsGlobal.h
-  # XView/XScene/XItem/XLink
-  include/XGraphicsView.h           src/XGraphicsView.cpp
-  include/XGraphicsScene.h          src/XGraphicsScene.cpp
-  include/XGraphicsItem.h           src/XGraphicsItem.cpp
-  include/XGraphicsConnectLink.h    src/XGraphicsConnectLink.cpp
-  # TextEdiT
-  include/XGraphicsTextEdit.h       src/XGraphicsTextEdit.cpp
-
-  # Static Utils
-  include/XGraphicsUtils.h
-
-  # Minidata/Factory
-  include/XGraphicsDelegateFactory.h
-  include/XGraphicsMimeData.h
-
-  # XItem
-  XItem/CommonUtils.h
-  include/XGraphicsRectItem.h XItem/XGraphicsRectItem.cpp
-  include/XGraphicsEllipseItem.h XItem/XGraphicsEllipseItem.cpp
+  ${INCLUDE}
+  ${SRC}
+  ${XITEM}
 )
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src
     ${CMAKE_CURRENT_SOURCE_DIR}/XItem
 )
 

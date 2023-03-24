@@ -37,8 +37,8 @@ void XMatCheckBoxPrivate::init()
 {
     Q_Q(XMatCheckBox);
 
-    checkedIcon->setIcon(QIcon(":/res/images/CheckBox24px.svg"));
-    uncheckedIcon->setIcon(QIcon(":/res/images/CheckBoxOutlineBlank24px.svg"));
+    checkedIcon->setIcon(QIcon(":/images/CheckBox24px.svg"));
+    uncheckedIcon->setIcon(QIcon(":/images/CheckBoxOutlineBlank24px.svg"));
     checkedState->assignProperty(checkedIcon, "iconSize", 24);
     uncheckedState->assignProperty(checkedIcon, "iconSize", 0);
 

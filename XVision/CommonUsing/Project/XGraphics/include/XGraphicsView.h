@@ -5,39 +5,23 @@
 #include <QGraphicsView>
 #include <QObject>
 
-#pragma region View结构体{
-
-///视图风格
-struct SXGraphicsViewConfig
-{
-    SXGraphicsViewConfig()
-    {
-        bShowGrid=true;
-        colBackground=QColor(70,70,70);
-        colBgGridSmall=QColor(95,95,95);
-        colBgGridBig=QColor(30,30,30);
-        nGridGap=20;
-    }
-    ///背景颜色
-    QColor colBackground;
-
-    ///是否显示网格
-    bool bShowGrid;
-    ///小型网格大小
-    QColor colBgGridSmall;
-    ///大型网格大小
-    QColor colBgGridBig;
-    ///网格间隔
-    uint nGridGap;
-};
-#pragma endregion}
-
 #pragma region View类{
 
-//XView 视图类
+class XGraphicsViewPrivate;
+///XView 视图类
 class XGRAPHICS_PUBLIC XGraphicsView: public QGraphicsView
 {
     Q_OBJECT
+    Q_PROPERTY(bool showGridBig READ showGridBig WRITE setShowGridBig)
+    Q_PROPERTY(bool showGridSmall READ showGridSmall WRITE setShowGridSmall)
+    Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor)
+    Q_PROPERTY(QColor gridSmallColor READ gridSmallColor WRITE setGridSmallColor)
+    Q_PROPERTY(QColor gridBigColor READ gridBigColor WRITE setGridBigColor)
+    Q_PROPERTY(uint gridGap READ gridGap WRITE setGridGap)
+
+    Q_PROPERTY(QColor magneticLineColor READ magneticLineColor WRITE setMagneticLineColor)
+    Q_PROPERTY(Qt::PenStyle magneticLinePenStyle READ magneticLinePenStyle WRITE setMagneticLinePenStyle)
+    Q_PROPERTY(int magneticLineWidth READ magneticLineWidth WRITE setMagneticLineWidth)
 public:
     XGraphicsView(QGraphicsScene *parent = nullptr);
     ~XGraphicsView();
@@ -57,6 +41,53 @@ public:
     {
         return m_bDraging;
     }
+public:
+ //*[属性接口]*
+    ///是否显示大网格
+    bool showGridBig() const;
+    ///设置显示大网格
+    void setShowGridBig(const bool &show);
+
+    ///是否显示小网格
+    bool showGridSmall() const;
+    ///设置显示小网格
+    void setShowGridSmall(const bool &show);
+
+    ///背景颜色
+    QColor backgroundColor() const;
+    ///设置背景颜色
+    void setBackgroundColor(const QColor &color);
+
+    ///小网格线颜色
+    QColor gridSmallColor() const;
+    ///设置小网格线颜色
+    void setGridSmallColor(const QColor &color);
+
+    ///大网格线颜色
+    QColor gridBigColor() const;
+    ///设置大网格线颜色
+    void setGridBigColor(const QColor &color);
+
+    ///网格间隔
+    uint gridGap() const;
+    ///设置网格间隔
+    void setGridGap(const uint &gap);
+
+    //*[属性接口]*
+    ///磁吸线画笔
+    QColor magneticLineColor() const;
+    ///设置磁吸线画笔
+    void setMagneticLineColor(const QColor &color);
+
+    ///磁吸线画笔类型
+    Qt::PenStyle magneticLinePenStyle() const;
+    ///设置磁吸线画笔类型
+    void setMagneticLinePenStyle(const Qt::PenStyle &style);
+
+    ///磁吸线宽度
+    int magneticLineWidth() const;
+    ///设置磁吸线宽度
+    void setMagneticLineWidth(const int &width);
 
     // QWidget interface
 protected:
@@ -93,15 +124,10 @@ protected:
     ///移动位置
     QPoint	m_ptMovePos;
 
-public:
-    ///视图配置
-    SXGraphicsViewConfig* config()
-    {
-        return &m_config;
-    }
 protected:
-    ///视图配置
-    SXGraphicsViewConfig m_config;
+    const QScopedPointer<XGraphicsViewPrivate> d_ptr;
+private:
+     Q_DECLARE_PRIVATE(XGraphicsView)
 
 };
 
