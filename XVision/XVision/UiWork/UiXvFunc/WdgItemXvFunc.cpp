@@ -7,7 +7,7 @@
 #define Item_Btn_Property "Role"
 const static int WdgItemXvFunc_XvFunc_IconSize=40;
 
-WdgItemXvFunc::WdgItemXvFunc(const XvCore::XvFuncBaseInfo &info,QWidget *parent) :
+WdgItemXvFunc::WdgItemXvFunc(const XvCore::XvFuncInfo &info,QWidget *parent) :
     BaseWidget(parent),m_xvFuncInfo(info),
     ui(new Ui::WdgItemXvFunc)
 {

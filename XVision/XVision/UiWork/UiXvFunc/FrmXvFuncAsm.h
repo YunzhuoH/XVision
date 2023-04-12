@@ -6,7 +6,7 @@
 
 #include <QVBoxLayout>
 #include "XMatDrawer.h"
-#include "XvFuncDef.h"
+#include "XvCoreDef.h"
 #include "FrmXvFuncType.h"
 
 namespace Ui {
@@ -27,6 +27,9 @@ protected slots:
 
 public:
     bool eventFilter(QObject *watched, QEvent *event) override;
+    // QWidget interface
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 protected:
     void initFrm() override;
 
@@ -40,6 +43,8 @@ private:
     QMap<XvCore::EXvFuncType,XMatDrawer*> m_mapXMatDrawerType;
     ///所有算子抽屉
     XMatDrawer* m_drawerAllTypeXvFuncs=nullptr;
+
+
 
 };
 

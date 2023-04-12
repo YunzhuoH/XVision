@@ -10,18 +10,14 @@
 ///XItem图像显示数据
 struct SXItemPixData
 {
+public:
     SXItemPixData()
     {
         strKey="";
-        bShowRect=false;
-        brushShowRect=QBrush(Qt::NoBrush);
     }
-    SXItemPixData(const QString &_strKey,const QPixmap &_pixmap,
-                  bool _bShowRect=false,
-                  QPen _penShowRect=QPen(),
-                  QBrush _brushShowRect=QBrush(Qt::NoBrush))
+    SXItemPixData(const QString &_strKey,const QPixmap &_pixmap, QMap<QString,QPen> _mapPenShowRect= QMap<QString,QPen>())
         :strKey(_strKey),pixmap(_pixmap),
-          bShowRect(_bShowRect),penShowRect(_penShowRect),brushShowRect(_brushShowRect)
+          mapPenShowRect(_mapPenShowRect)
     {
 
     }
@@ -29,18 +25,38 @@ struct SXItemPixData
     {
 
     }
+    void switchPenKey(const QString &key)
+    {
+        if(mapPenShowRect.contains(key)||key.isEmpty())
+        {
+            curPenKey=key;
+        }
+    }
+    QString penKey() const
+    {
+        return curPenKey;
+    }
+    QPen getPen() const
+    {
+        if(mapPenShowRect.contains(curPenKey))
+        {
+            return mapPenShowRect[curPenKey];
+        }
+        else
+        {
+            return QPen();
+        }
+    }
+public:
     ///图像Key
     QString strKey;
     ///显示的图像
     QPixmap pixmap;
+    ///矩形框画笔字典<QString:Key QPen:画笔>
+    QMap<QString,QPen> mapPenShowRect;
 
-    ///显示图像框
-    bool bShowRect;
-    ///矩形框画笔
-    QPen penShowRect;
-    ///笔刷
-    QBrush brushShowRect;
-
+protected:
+    QString curPenKey="";
 };
 
 
@@ -290,21 +306,23 @@ public:
         return m_parScene;
     }
 //[item附带数据]
-    ///设置数据
-    virtual void addTagData(QString key,const QVariant &data);
-    ///获取数据
-    virtual QVariant tagData(const QString &key) const
+    ///获取附带数据
+    virtual QVariant itemTag() const
     {
-        if(m_mapTagData.contains(key))
-        {
-            return m_mapTagData[key];
-        }
-        return QVariant();
+        return m_ItemTag;
     }
-    virtual void clearTagData()
+    ///设置附带数据
+    virtual void setItemTag(const QVariant& tag);
+
+
+    ///获取QObject指针Tag
+    QObject* itemQPtrTag() const
     {
-        m_mapTagData.clear();
+        return m_ItemQPtrTag;
     }
+    ///设置QObject指针Tag
+    void setItemQPtrTag(QObject* qptrTag);
+
 
 
 //[item文本]
@@ -362,7 +380,7 @@ public:
         return m_strShowPixKey;
     }
     ///切换图像显示
-    virtual bool switchShowPixKey(const QString &key,bool bUpdate=true);
+    virtual bool switchShowPixKey(const QString &pixKey,const QString &penKey,bool bUpdate=true);
 
 protected:
     ///节点父Scene
@@ -384,7 +402,9 @@ protected:
     QMap<QString,SXItemPixData*> m_mapPixData;
 
     ///Item跟随数据
-    QMap<QString,QVariant> m_mapTagData;
+    QVariant m_ItemTag;
+    ///Item跟随QObject指针
+    QObject* m_ItemQPtrTag;
 protected:
     const QScopedPointer<XGraphicsItemPrivate> d_ptr;
 private:

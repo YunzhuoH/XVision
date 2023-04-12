@@ -33,7 +33,7 @@ list(APPEND LINK_LIBS
 )
 
 file(GLOB INCLUDE     include/*.*)
-file(GLOB SRC     Src/*.*)
+file(GLOB SRC     src/*.*)
 
 add_library(XvData SHARED
     ${INCLUDE}

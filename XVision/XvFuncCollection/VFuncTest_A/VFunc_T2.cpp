@@ -6,42 +6,41 @@
 
 using namespace XvCore;
 VFunc_T2::VFunc_T2(QObject *parent)
-    :XvFuncBase(parent)
+    :XvFunc(parent)
 {
-    _VFuncRole="V-T2";
-    setVFuncName("算子-T2");
-    _VFuncType=EXvFuncType::Other;
+    _funcRole="V-T2";
+
+    _funcType=EXvFuncType::Other;
 }
 
-XvFuncBase::EVFucRunStatus VFunc_T2::run()
+EXvFuncRunStatus VFunc_T2::run()
 {
 
     m_tokenTest="Test1";
     QList<QVariant> lst;
     lst={1,"AAA",QVariant::fromValue((QString*)&m_tokenTest)};
-    sendTokenMsg(TOKEN_ID_BROADCAST,"AAA",lst);
+    sendTokenMsg(Token_RId_Broadcast,"AAA",lst);
     qDebug()<<m_tokenTest;
     std::this_thread::sleep_for(std::chrono::milliseconds(77));
-    return EVFucRunStatus::OK;
+    return EXvFuncRunStatus::Ok;
 }
 
 
 VFunc_T4::VFunc_T4(QObject *parent)
-    :XvFuncBase(parent)
+    :XvFunc(parent)
 {
-    _VFuncRole="V-T4";
-    setVFuncName("算子-T4");
-    _VFuncType=EXvFuncType::Other;
+    _funcRole="V-T4";
+    _funcType=EXvFuncType::Other;
 }
 
-XvFuncBase::EVFucRunStatus VFunc_T4::run()
+EXvFuncRunStatus VFunc_T4::run()
 {
 
     m_tokenTest="Test1";
     QList<QVariant> lst;
     lst={1,"AAA",QVariant::fromValue((QString*)&m_tokenTest)};
-    sendTokenMsg(TOKEN_ID_BROADCAST,"AAA",lst);
+    sendTokenMsg(Token_RId_Broadcast,"AAA",lst);
     qDebug()<<m_tokenTest;
     std::this_thread::sleep_for(std::chrono::milliseconds(77));
-    return EVFucRunStatus::OK;
+    return EXvFuncRunStatus::Ok;
 }

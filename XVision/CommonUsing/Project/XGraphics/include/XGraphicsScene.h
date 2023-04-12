@@ -30,6 +30,11 @@ public:
     ~XGraphicsScene();
 public:
 //*[常规公共接口]*
+    ///场景Id
+    QString sceneId() const
+    {
+        return m_SceneId;
+    }
     ///场景Tag
     QVariant sceneTag() const
     {
@@ -40,12 +45,32 @@ public:
     {
         m_SceneTag=tag;
     }
+
+    ///场景QObject指针Tag
+    QObject* sceneQPtrTag() const
+    {
+        return m_SceneQPtrTag;
+    }
+    ///设置场景QObject指针Tag
+    void setSceneQPtrTag(QObject* qptrTag)
+    {
+        m_SceneQPtrTag=qptrTag;
+    }
+
     ///获取View视图
     XGraphicsView* getView();
+    ///获取Item委托生产工厂
+    XGraphicsItemDelegateFactory* xItemDelegateFactory() const { return m_pXItemFactory;}
     ///设置Item委托生产工厂
     void setXItemDelegateFactory(XGraphicsItemDelegateFactory* factory);
+
+    ///获取Link委托生产工厂
+    XGraphicsLinkDelegateFactory* xLinkDelegateFactory() const { return m_pXLinkFactory;}
+
     ///设置Link委托生产工厂
     void setXLinkDelegateFactory(XGraphicsLinkDelegateFactory* factory);
+
+
     ///设置显示矩形
     void setDisplayRect(const QRectF &rect);
      ///设置显示矩形
@@ -54,13 +79,16 @@ public:
 
     ///缩放到Item范围
     void zoomToItemRect();
+public slots:
+    ///设置场景使能
+    void setEnabled(bool enable);
 public:
 
 //*[XItem字典]*
     ///添加Item
     void addXItem(XGraphicsItem* xItem);
     ///删除Item(不做指针删除处理)
-    void removeXItem(XGraphicsItem* xItem);
+    bool removeXItem(XGraphicsItem* xItem);
     ///通过Id获取XItem
     XGraphicsItem* getXItemById(const QString &id);
     ///通过Type获取XItems
@@ -96,8 +124,10 @@ signals:
     void mouseDoubleClickXItem(XGraphicsItem* xItem);
     ///xItem添加信号
     void xItemAdd(XGraphicsItem* xItem);
-    ///xItem删除信号
-    void xItemRemove(XGraphicsItem* xItem);
+    ///xItem删除完成信号 返回值:False可以进行删除 True不可删除
+    bool xItemRemoveStart(XGraphicsItem* xItem);
+    ///xItem删除完成信号
+    void xItemRemoveFinish(XGraphicsItem* xItem);
     ///xItem位置变化
     void xItemPosChanged(XGraphicsItem* xItem);
     ///xItem形状变化
@@ -175,8 +205,12 @@ protected:
 
 protected: //数据区域
 //*[场景属性]*
+    ///场景Id
+    QString m_SceneId;
     ///场景Tag
     QVariant m_SceneTag;
+    ///场景QObject指针Tag
+    QObject *m_SceneQPtrTag;
 //*[场景数据]*
     ///view视图类
     XGraphicsView *m_pView=nullptr;

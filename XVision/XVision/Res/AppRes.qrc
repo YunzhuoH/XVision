@@ -18,13 +18,26 @@
         <file>images/Ui/FrmXvFuncAsmDown.svg</file>
         <file>images/Ui/FrmXvFuncAsmUp.svg</file>
         <file>images/Ui/FrmXvFuncTypeClose.svg</file>
-        <file>images/Ui/UiCommonFlowAdd.svg</file>
-        <file>images/Ui/UiCommonFlowDel.svg</file>
-        <file>images/Ui/UiCommonFlowLoopRun.svg</file>
-        <file>images/Ui/UiCommonFlowOnceRun.svg</file>
-        <file>images/Ui/UiCommonFlowProp.svg</file>
-        <file>images/Ui/UiCommonFlowStop.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowAdd.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowDel.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowLoopRun.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowOnceRun.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowProp.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowStop.svg</file>
         <file>style/DockFlow_Default.css</file>
         <file>style/DockMain_Default.css</file>
+        <file>images/App/Loading.gif</file>
+        <file>images/Ui/AppMainWindowNewProject.svg</file>
+        <file>images/Ui/AppMainWindowOpenProject.svg</file>
+        <file>images/Ui/AppMainWindowProjectSetting.svg</file>
+        <file>images/Ui/AppMainWindowSaveProject.svg</file>
+        <file>images/Ui/AppMainWindowSystemSetting.svg</file>
+        <file>images/Ui/AppMainWindowAbout.svg</file>
+        <file>images/Ui/AppMainWindowHelpDoc.svg</file>
+        <file>images/Ui/AppMainWindowLanguage.svg</file>
+        <file>images/Ui/AppMainWindowProjectLoopRun.svg</file>
+        <file>images/Ui/AppMainWindowProjectOnceRun.svg</file>
+        <file>images/Ui/AppMainWindowProjectStop.svg</file>
+        <file>images/Ui/FrmThreadMonitor.svg</file>
     </qresource>
 </RCC>

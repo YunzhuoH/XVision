@@ -32,7 +32,8 @@ list(APPEND CORE_INCLUDE_DIR
 #添加工程包含目录
 list(APPEND CORE_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Src
+    ${CMAKE_CURRENT_SOURCE_DIR}/Plugin
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core
     ${CMAKE_CURRENT_SOURCE_DIR}/Def
 
 )
@@ -65,14 +66,16 @@ link_directories(${CORE_LINK_DIR})
 #[[**************添加工程文件**************]]
 
 file(GLOB INCLUDE include/*.*)
-file(GLOB SRC Src/*.*)
+file(GLOB PLUGIN Plugin/*.*)
+file(GLOB CORE Core/*.*)
 file(GLOB DEF Def/*.*)
 
 #设置工程文件
 set(PROJECT_SOURCES
     ${INCLUDE}
-    ${SRC}
     ${DEF}
+    ${PLUGIN}
+    ${CORE}
 )
 set(PROJECT_RES
     res/Res.qrc

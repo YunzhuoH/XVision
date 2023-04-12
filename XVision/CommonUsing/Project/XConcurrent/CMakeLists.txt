@@ -1,0 +1,59 @@
+﻿cmake_minimum_required(VERSION 3.14)
+
+project(XConcurrent LANGUAGES CXX)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Concurrent)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Concurrent)
+
+file(GLOB INCLUDE include/*.*)
+file(GLOB SRC src/*.*)
+
+add_library(XConcurrent SHARED
+  ${INCLUDE}
+  ${SRC}
+)
+
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+
+target_link_libraries(XConcurrent PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Concurrent
+)
+
+target_compile_definitions(XConcurrent PRIVATE XCONCURRENT_LIBRARY)
+
+if (NOT MSVC)
+    set(OUTPUT_DIR mingw)
+else()
+    set(OUTPUT_DIR msvc)
+endif()
+
+set(LIB_OUT_DIR_D ${CMAKE_CURRENT_SOURCE_DIR}/../../LibD/${OUTPUT_DIR})
+set(LIB_OUT_DIR_R ${CMAKE_CURRENT_SOURCE_DIR}/../../Lib/${OUTPUT_DIR})
+
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    AUTOMOC ON
+    AUTORCC ON
+    CXX_EXTENSIONS OFF
+    EXPORT_NAME ${PROJECT_NAME}
+
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${LIB_OUT_DIR_D}"
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${LIB_OUT_DIR_R}"
+
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG "${LIB_OUT_DIR_D}"
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE "${LIB_OUT_DIR_R}"
+
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${LIB_OUT_DIR_D}"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${LIB_OUT_DIR_R}"
+)

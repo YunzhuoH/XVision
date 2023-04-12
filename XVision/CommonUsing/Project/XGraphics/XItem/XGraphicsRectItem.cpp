@@ -279,8 +279,7 @@ QRectF XGraphicsRectItem::boundingRect() const
     double rSize=connectRectSize();
     double r=rSize/2;
     QRectF rect = QGraphicsRectItem::boundingRect();
-    rect.setRect(rect.x()+r,rect.y()+r,rect.width()-rSize,rect.height()-rSize);
-    return rect;
+    return rect.adjusted(r,r,-r,-r);
 }
 
 void XGraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -399,20 +398,20 @@ void XGraphicsRectItem::drawItemPix(QPainter *painter,  SXItemPixData* data,doub
     if(!data) return;
     if(!data->pixmap) return;
     if(data->pixmap.isNull()) return;
-     painter->save();
-     QRectF rect = this->boundingRect();
-     double width=rect.height()-widthOffset;
-     QRectF rectResize=QRectF(rect.x()+widthOffset/2,rect.y()+widthOffset/2,width,width);
+    painter->save();
+    painter->setPen(data->getPen());
+    painter->setBrush(data->getPen().brush());
 
-     if(data->bShowRect)
-     {
-         QRectF rectShow=QRectF(rect.x(),rect.y(),rect.height(),rect.height());
-         painter->setPen(data->penShowRect);
-         painter->setBrush(data->brushShowRect);
-         painter->drawRoundedRect(rectShow,d->rectRounded,d->rectRounded);
-     }
-     painter->drawPixmap(rectResize.toRect(),data->pixmap);
-     painter->restore();
+    QRectF rect = this->boundingRect();
+    auto boundWidth=d->itemRectPen.width()/2.0;
+    QRectF rectShow=QRectF(rect.left()+boundWidth,rect.top()+boundWidth,rect.height()-boundWidth*2,rect.height()-boundWidth*2);
+    painter->drawRoundedRect(rectShow,d->rectRounded-boundWidth,d->rectRounded-boundWidth);
+
+    double width=rectShow.height()-widthOffset;
+    QRectF rectResize=QRectF(rectShow.x()+widthOffset/2,rectShow.y()+widthOffset/2,width,width);
+    painter->drawPixmap(rectResize.toRect(),data->pixmap);
+
+    painter->restore();
 }
 
 /***************************限制位置***************************/

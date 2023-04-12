@@ -58,7 +58,7 @@ XGraphicsView::XGraphicsView(QGraphicsScene *parent)
 {
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     setResizeAnchor(QGraphicsView::AnchorUnderMouse);
-    setRenderHint(QPainter::Antialiasing);
+    setRenderHints(QPainter::Antialiasing| QPainter::SmoothPixmapTransform);
     setRubberBandSelectionMode(Qt::ContainsItemBoundingRect);
     setDragMode(QGraphicsView::RubberBandDrag); 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -200,11 +200,16 @@ void XGraphicsView::setMagneticLineWidth(const int &width)
 
 void XGraphicsView::zoomUp()
 {
+
     QTransform t = transform();
     double const step   = 1.2;
     double  factor = 0;
     factor=std::pow(step, 1.0);
-    if (t.m11() > 2.5)
+
+    auto temp=t.scale(factor,factor);
+    auto rectUp= temp.mapRect(this->sceneRect());
+    auto rectScene=this->sceneRect();
+    if(rectUp.width()>rectScene.width()*4)
     {
         return;
     }
@@ -221,7 +226,11 @@ void XGraphicsView::zoomDown()
     double const step   = 1.2;
     double  factor = 0;
     factor = std::pow(step, -1.0);
-    if (t.m11() < 0.5)
+
+    auto temp=t.scale(factor,factor);
+    auto rectDown= temp.mapRect(this->sceneRect());
+    auto rectScene=this->sceneRect();
+    if(rectDown.width()<rectScene.width()/4)
     {
         return;
     }

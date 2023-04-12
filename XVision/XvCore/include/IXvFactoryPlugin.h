@@ -23,7 +23,7 @@ public:
     ///反初始化
     virtual bool uninit(){return true;}
     ///获取插件算子
-    virtual QList<QMetaObject> getPlgXVFunc()=0;
+    virtual QList<QMetaObject> getPlgXvFunc()=0;
     #define ADD_XVFUNC(lst,cls) lst.append(cls::staticMetaObject)
 
 };

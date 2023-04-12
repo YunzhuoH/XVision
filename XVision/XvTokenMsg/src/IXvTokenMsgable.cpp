@@ -1,24 +1,24 @@
-﻿#include "IXvTokenMsgable.h"
-#include "XvTokenMsgMgr.h"
+﻿#include "IXvTokenMsgAble.h"
+#include "XvTokenMsgManager.h"
 
 
 
-bool IXvTokenMsgable::registerTokenMsgAble()
+bool IXvTokenMsgAble::registerTokenMsgAble()
 {
-  return XvToken->registerTokenMsgAble(this);
+  return XvTokenMsgMgr->registerTokenMsgAble(this);
 }
 
-void IXvTokenMsgable::unRegisterTokenMsgAble()
+void IXvTokenMsgAble::unRegisterTokenMsgAble()
 {
-    return XvToken->unRegisterTokenMsgAble(this);
+    return XvTokenMsgMgr->unRegisterTokenMsgAble(this);
 }
 
-QVariant IXvTokenMsgable::sendTokenMsg(const QString &reviceId, const QString &tokenCmd, QList<QVariant> &params)
+QVariant IXvTokenMsgAble::sendTokenMsg(const QString &reviceId, const QString &tokenCmd, QList<QVariant> &params)
 {
-    return  XvToken->sendTokenMsg(TokenMsg(this->tokenMsgId(),reviceId,tokenCmd),params);
+    return  XvTokenMsgMgr->sendTokenMsg(TokenMsg(this->tokenMsgId(),reviceId,tokenCmd),params);
 }
 
-QVariant IXvTokenMsgable::onReciveTokenMsg(const TokenMsg &tokenMsg, QList<QVariant> &params)
+QVariant IXvTokenMsgAble::onReciveTokenMsg(const TokenMsg &tokenMsg, QList<QVariant> &params)
 {
     return QVariant();
 }

@@ -71,6 +71,25 @@ bool FrmXvFuncAsm::eventFilter(QObject *watched, QEvent *event)
     return BaseWidget::eventFilter(watched,event);
 }
 
+void FrmXvFuncAsm::resizeEvent(QResizeEvent *event)
+{
+    auto scArea=ui->scAreaXvFuncAsm;
+    auto scAreaWc=ui->scAreaWcXvFuncAsm;
+    if(scArea->height()<scAreaWc->height())
+    {
+       ui->hLine1->setVisible(true);
+       ui->btnXvFuncUp->setVisible(true);
+       ui->btnXvFuncDown->setVisible(true);
+    }
+    else
+    {
+       ui->hLine1->setVisible(false);
+       ui->btnXvFuncUp->setVisible(false);
+       ui->btnXvFuncDown->setVisible(false);
+    }
+    return BaseWidget::resizeEvent(event);
+}
+
 
 void FrmXvFuncAsm::initFrm()
 {    
@@ -79,7 +98,7 @@ void FrmXvFuncAsm::initFrm()
         if(map.contains(type)) return;
         auto info=XvFuncAsm->getXvFuncTypeInfo(type);
         auto lst=XvFuncAsm->getXvFuncInfos(type);
-        FrmXvFuncType *frmType=new FrmXvFuncType(info,lst);     
+        FrmXvFuncType *frmType=new FrmXvFuncType(info,lst);
         auto drawer=  new XMatDrawer(m_drawerParWidget);
         drawer->setClickOutsideToClose(true);
         drawer->setOverlayMode(false);
@@ -148,6 +167,8 @@ void FrmXvFuncAsm::initFrm()
     vLayout->setSpacing(5);
     scAreaWcXvFuncAsm->setLayout(vLayout);
 
+
+
     auto lst=XvFuncAsm->getXvFuncTypeInfos();
     foreach (auto info, lst)
     {
@@ -158,13 +179,14 @@ void FrmXvFuncAsm::initFrm()
         auto lstTemp=XvFuncAsm->getXvFuncInfos(info.type);
         if(lstTemp.count()==0)
         {
-           // continue;//xie.y
+            continue;//xie.y test
         }
-        funcAddBtn(vLayout,scAreaWcXvFuncAsm,info.icon,info.type,info.name,info.name);
+
+        funcAddBtn(vLayout,scAreaWcXvFuncAsm,info.icon,info.type,info.name,info.name);     
         funcCreateFrmType(m_mapXMatDrawerType,info.type);
     }
-    vLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum ,QSizePolicy::Expanding ));
 
+    vLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum ,QSizePolicy::Expanding ));
 
 
 
@@ -175,6 +197,7 @@ void FrmXvFuncAsm::initFrm()
                     QIcon(":/images/Ui/FrmXvFuncAsmExpand.svg"),0,QSize(CS_XvFuncType_Btn_Size,20),QSize(CS_XvFuncType_Btn_Size,20));
 
     btnShowXvFuncAsm->setVisible(false);
+    ui->hLine2->setVisible(false);
     m_drawerAllTypeXvFuncs=  new XMatDrawer(m_drawerParWidget);
     m_drawerAllTypeXvFuncs->setClickOutsideToClose(true);
     m_drawerAllTypeXvFuncs->setOverlayMode(false);
@@ -184,7 +207,7 @@ void FrmXvFuncAsm::initFrm()
     m_drawerAllTypeXvFuncs->setDrawerLayout(layout);
 
     //废弃该功能↑
-    //xie.y 20230322 todo:需要设置抽屉m_drawerAllTypeXvFuncs
+    //xie.y 20230322 todo:需要设置抽屉m_drawerAllTypeXvFuncs(废弃该功能)
 
 
 
@@ -213,6 +236,7 @@ void FrmXvFuncAsm::initFrm()
         auto newVal=curVal+bar->singleStep();
         bar->setValue(newVal);
     });
+
 }
 
 void FrmXvFuncAsm::onShowXvFuncTypeDrawer(const QRect &rect,const XvCore::EXvFuncType &type)

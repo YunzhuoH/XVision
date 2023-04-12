@@ -3,7 +3,7 @@
 #include <QMutexLocker>
 #include <QHBoxLayout>
 
-#include "UiXvFlowManager.h"
+#include "UiXvWorkManager.h"
 #include "XvViewManager.h"
 #include "FrmXvFuncAsm.h"
 
@@ -39,12 +39,13 @@ void FrmVisionWork::initFrm()
 {
 
     this->setWindowIcon(QIcon(":/images/Ui/FrmVisionWork.svg"));
-    this->setWindowTitle(getLang(App_Ui_FrmVisionWorkTitle,"视觉流程"));
+    this->setWindowTitle(getLang(App_Ui_FrmVisionWork,"视觉流程"));
 
     ///初始化左侧算子工具栏模块
     auto frmXvFuncAsm=ui->frmXvFuncAsm;
     m_frmXvFuncAsm=new FrmXvFuncAsm(this);
     m_frmXvFuncAsm->setDrawerParWidget(ui->frmFlow);
+
 
     QVBoxLayout *vLayoutXvFuncAsm = new QVBoxLayout(frmXvFuncAsm);
     vLayoutXvFuncAsm->setObjectName("vLayoutXvFuncAsm");
@@ -55,13 +56,14 @@ void FrmVisionWork::initFrm()
     frmXvFuncAsm->setMaximumWidth(m_frmXvFuncAsm->maximumWidth());
     vLayoutXvFuncAsm->addWidget(m_frmXvFuncAsm);
 
+
     ///初始化流程窗口
     auto frmFlow=ui->frmFlow;
     QVBoxLayout *vLayoutFlow = new QVBoxLayout(frmFlow);
     vLayoutFlow->setObjectName("vLayoutFlow");
     vLayoutFlow->setContentsMargins(0, 0, 0, 0);
     vLayoutFlow->setSpacing(0);
-    auto dockMgr=XvViewMgr->getUiXvFlowManager();
+    auto dockMgr=XvViewMgr->uiXvWorkManager();
     if(dockMgr)
     {
         auto dockMain=dockMgr->dockFlowManager();
@@ -86,5 +88,4 @@ void FrmVisionWork::initFrm()
            Log_Critical(getLang(App_XvFlowStatusBarIsNull,"XvFlow状态栏为空"));
         }
     }
-
 }

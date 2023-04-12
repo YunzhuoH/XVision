@@ -35,7 +35,7 @@ FrmLogShow::~FrmLogShow()
 void FrmLogShow::initFrm()
 {
     this->setWindowIcon(QIcon(":/images/Ui/FrmLogShow.svg"));
-    this->setWindowTitle(getLang(App_Ui_FrmLogShowTitle,"日志显示"));
+    this->setWindowTitle(getLang(App_Ui_FrmLogShow,"日志显示"));
     ui->ptxtLog->setRippleStyle(XMatCommonDef::NoRipple);
     connect(XLog,&XLogger::signalLog,this,&FrmLogShow::onSignalLog);
     m_mapType[XLogger::Trace]=getLang(App_LogType_Trace,"追踪");

@@ -13,9 +13,17 @@ public:
     void init();
     //app反初始化
     void uninit();
+    //是否初始化完成
+    bool isInit();
+
     //app运行
     int run();
 
+protected:
+    ///是否初始化完成
+    bool m_bInitFinish;
 };
+
+
 
 #endif // XVSINGLEAPPLICATION_H

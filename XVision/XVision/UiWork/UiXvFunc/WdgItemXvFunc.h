@@ -2,7 +2,7 @@
 #define WDGITEMXVFUNC_H
 
 #include "BaseWidget.h"
-#include "XvFuncDef.h"
+#include "XvCoreDef.h"
 
 
 namespace Ui {
@@ -14,7 +14,7 @@ class WdgItemXvFunc : public BaseWidget
     Q_OBJECT
 
 public:
-    explicit WdgItemXvFunc(const XvCore::XvFuncBaseInfo &info,QWidget *parent = nullptr);
+    explicit WdgItemXvFunc(const XvCore::XvFuncInfo &info,QWidget *parent = nullptr);
     ~WdgItemXvFunc();
     // BaseWidget interface
 protected:
@@ -25,7 +25,7 @@ protected slots:
     void onXvFunc();
 private:
     Ui::WdgItemXvFunc *ui;
-    XvCore::XvFuncBaseInfo m_xvFuncInfo;
+    XvCore::XvFuncInfo m_xvFuncInfo;
 
 
 };

@@ -20,7 +20,7 @@ public:
     // IXvFactoryPlugin interface
 public:
     QString name() const override;
-    QList<QMetaObject> getPlgXVFunc() override;
+    QList<QMetaObject> getPlgXvFunc() override;
 
 
 };

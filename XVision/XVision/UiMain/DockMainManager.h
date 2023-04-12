@@ -24,6 +24,11 @@ public:
     ///添加DockWidget窗口
     CDockWidget* addDockWidget(const EDockArea &area,QWidget* widget);
 
+    ///设置区域当前索引
+    void setAreaCurrentIndex(const EDockArea &area,int idx);
+    ///设置区域当前dock
+    void setAreaCurrentDockWidget(const EDockArea &area,CDockWidget *dock);
+
     ///更新布局
     void restoreState();
 protected:

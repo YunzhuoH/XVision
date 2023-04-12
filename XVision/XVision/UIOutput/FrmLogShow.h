@@ -2,11 +2,13 @@
 #define FRMLOGSHOW_H
 
 #include "BaseWidget.h"
+
 #define LOG_MAX_COUNT 200
+#define UiLogShow FrmLogShow::getInstance()
+
 namespace Ui {
 class FrmLogShow;
 }
-#define UiLogShow FrmLogShow::getInstance()
 
 class FrmLogShow : public BaseWidget
 {

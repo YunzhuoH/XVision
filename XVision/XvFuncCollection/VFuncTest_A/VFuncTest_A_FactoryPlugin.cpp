@@ -16,7 +16,7 @@ QString VFuncTest_A_FactoryPlugin::name() const
     return "VFuncTest";
 }
 
-QList<QMetaObject> VFuncTest_A_FactoryPlugin::getPlgXVFunc()
+QList<QMetaObject> VFuncTest_A_FactoryPlugin::getPlgXvFunc()
 {
     QList<QMetaObject> lst;
     ADD_XVFUNC(lst,VFunc_T1);
@@ -47,6 +47,11 @@ QList<QMetaObject> VFuncTest_A_FactoryPlugin::getPlgXVFunc()
     ADD_XVFUNC(lst,VFuncQ9);
     ADD_XVFUNC(lst,VFuncQA);
     ADD_XVFUNC(lst,VFuncQB);
+
+    ADD_XVFUNC(lst,VFuncW1);
+    ADD_XVFUNC(lst,VFuncW2);
+    ADD_XVFUNC(lst,VFuncW3);
+    ADD_XVFUNC(lst,VFuncW4);
 
 
 

@@ -188,13 +188,12 @@ void XGraphicsEllipseItem::drawItemPix(QPainter *painter, SXItemPixData *data, c
     if(data->pixmap.isNull()) return;
     if(!rect.isValid()) return;
     painter->save();
-    if(data->bShowRect)
-    {
-         QRectF rectShow=QRectF(rect.x(),rect.y(),rect.height(),rect.height());
-         painter->setPen(data->penShowRect);
-         painter->setBrush(data->brushShowRect);
-         painter->drawRect(rectShow);
-    }
+
+    QRectF rectShow=QRectF(rect.x(),rect.y(),rect.height(),rect.height());
+    painter->setPen(data->getPen());
+    painter->setBrush(data->getPen().brush());
+    painter->drawRect(rectShow);
+
     painter->drawPixmap(rect.toRect(),data->pixmap);
     painter->restore();
 }

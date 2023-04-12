@@ -73,6 +73,19 @@ ads--CDockAreaTitleBar QMenu::item:pressed{
     background-color: #BBBBBB;
 }
 
-
+/*Tab菜单*/
+ads--CDockWidgetTab QMenu {
+    font-weight: 400;
+    font:15px/30px Microsoft-YaHei, serif;
+    border:1px solid;
+    border-color:#DDDDDD;
+    background-color: white;
+}
+ads--CDockWidgetTab QMenu::item:selected{
+    background-color: #DDDDDD;
+}
+ads--CDockWidgetTab QMenu::item:pressed{
+    background-color: #BBBBBB;
+}
 
 /********************************************************************/

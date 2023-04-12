@@ -2,11 +2,11 @@
 #define VFUNC_T2_H
 
 #include "VFuncTest_A_global.h"
-#include "XVFuncBase.h"
+#include "XVFunc.h"
 namespace XvCore
 {
 
-class VFUNCTEST_A_EXPORT VFunc_T2:public XvFuncBase
+class VFUNCTEST_A_EXPORT VFunc_T2:public XvFunc
 {
     Q_OBJECT
 public:
@@ -14,13 +14,13 @@ public:
 
     // IVFuncBase interface
 protected:
-    EVFucRunStatus run() override;
+    EXvFuncRunStatus run() override;
 
 public:
     QString m_tokenTest;
 };
 
-class VFUNCTEST_A_EXPORT VFunc_T4:public XvFuncBase
+class VFUNCTEST_A_EXPORT VFunc_T4:public XvFunc
 {
     Q_OBJECT
 public:
@@ -28,7 +28,7 @@ public:
 
     // IVFuncBase interface
 protected:
-    EVFucRunStatus run() override;
+    EXvFuncRunStatus run() override;
 
 public:
     QString m_tokenTest;

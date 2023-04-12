@@ -31,5 +31,5 @@ FrmVisionImage::~FrmVisionImage()
 void FrmVisionImage::initFrm()
 {
     this->setWindowIcon(QIcon(":/images/Ui/FrmVisionImage.svg"));
-    this->setWindowTitle(getLang(App_Ui_FrmVisionImageTitle,"图像"));
+    this->setWindowTitle(getLang(App_Ui_FrmVisionImage,"图像"));
 }

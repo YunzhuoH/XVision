@@ -19,8 +19,30 @@ public:
 protected:
     const QScopedPointer<AppMainWindowPrivate> d_ptr;
 private:
-     Q_DISABLE_COPY(AppMainWindow)
-     Q_DECLARE_PRIVATE(AppMainWindow)
+    Q_DISABLE_COPY(AppMainWindow)
+    Q_DECLARE_PRIVATE(AppMainWindow)
+public slots:
+//*[文件/项目]*
+    ///新建项目
+    void newProject();
+    ///打开项目
+    void openProject();
+    ///保存项目
+    void saveProject();
+    ///项目单次运行
+    void projectOnceRun();
+    ///项目重复运行
+    void projectLoopRun();
+    ///项目停止
+    void projectStop();
+//*[设置]*
+    ///项目设置
+    void projectSetting();
+    ///系统设置
+    void systemSetting();
+//*[帮助]*
+    ///关于
+    void about();
 
     // QWidget interface
 protected:

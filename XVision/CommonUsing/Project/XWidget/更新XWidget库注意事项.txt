@@ -1,4 +1,4 @@
-当前Gitlab版本:Ver_2023_03_22_2
+当前Gitlab版本:Ver_2023_04_11_1
 
 如果需要更新XWidget需要对比XWidget/CMakeLists.txt XWidgetDesignerPlugin/CMakeLists.txt 内容，
 当前XWidget工程根据项目进行了输出优化，和原有版本不同，需要手动设置输出路径到上级Lib目录中，并运行UpdateInclude.bat更新头文件。

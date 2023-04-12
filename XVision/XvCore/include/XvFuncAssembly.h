@@ -4,13 +4,12 @@
 #include "XvCoreGlobal.h"
 #include <QObject>
 #include <QPixmap>
-
-#include "XvFuncDef.h"
+#include "XvCoreDef.h"
 
 #define XvFuncAsm XvCore::XvFuncAssembly::getInstance()
 namespace XvCore
 {
-class XvFuncBase;
+class XvFunc;
 ///算子集合
 class XVCORE_EXPORT XvFuncAssembly : public QObject
 {
@@ -24,7 +23,7 @@ private:
     static XvFuncAssembly* s_Instance;
 
 signals:
-    void sgRegisterNewXvFunc(const XvFuncBaseInfo &info);
+    void sgRegisterNewXvFunc(const XvFuncInfo &info);
     /***************算子模块***************/
 public:
 //*[算子类型]*
@@ -36,34 +35,37 @@ public:
 
 //*[算子]*
     ///通过标识符创建一个算子
-    XvFuncBase* createNewXvFunc(QString role);
+    XvFunc* createNewXvFunc(QString role);
     ///通过标识符获取算子信息
-    XvFuncBaseInfo getXvFuncInfo(QString role);
+    XvFuncInfo getXvFuncInfo(QString role);
     ///通过信息创建一个算子
-    inline XvFuncBase* createNewXvFunc(const XvFuncBaseInfo &info);
+    inline XvFunc* createNewXvFunc(const XvFuncInfo &info);
 
     ///获取算子信息列表
-    QList<XvFuncBaseInfo> getXvFuncInfos();
+    QList<XvFuncInfo> getXvFuncInfos();
     ///通过类型获取算子信息列表
-    QList<XvFuncBaseInfo> getXvFuncInfos(const EXvFuncType &type);
+    QList<XvFuncInfo> getXvFuncInfos(const EXvFuncType &type);
     ///通过类型获取算子信息列表
-    QList<XvFuncBaseInfo> getXvFuncInfos(const XvFuncTypeInfo &info);
+    QList<XvFuncInfo> getXvFuncInfos(const XvFuncTypeInfo &info);
+//*[所有算子信息]*
+    ///获取类型-算子列表映射
+    QMap<EXvFuncType,QList<XvFuncInfo>> getMapXvFuncTypeInfo();
 protected:
     ///算子注册
-    bool registerXvFunc(XvFuncBase* func);
+    bool registerXvFunc(XvFunc* func);
 protected:
     ///算子字典
     /// 1-QString:算子功能Role
-    /// 2-QMetaObject:算子信息
-    QMap<QString,XvFuncBaseInfo> m_mapXvFuncInfo;
+    /// 2-XvFuncInfo:算子信息
+    QMap<QString,XvFuncInfo> m_mapXvFuncInfo;
 };
 
-inline XvFuncBase *XvFuncAssembly::createNewXvFunc(const XvFuncBaseInfo &info)
+inline XvFunc *XvFuncAssembly::createNewXvFunc(const XvFuncInfo &info)
 {
-    return createNewXvFunc(info.name);
+    return createNewXvFunc(info.role);
 }
 
-inline QList<XvFuncBaseInfo> XvFuncAssembly::getXvFuncInfos(const XvFuncTypeInfo &info)
+inline QList<XvFuncInfo> XvFuncAssembly::getXvFuncInfos(const XvFuncTypeInfo &info)
 {
     return getXvFuncInfos(info.type);
 }

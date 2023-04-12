@@ -11,7 +11,18 @@ public:
 public:
 
     XGraphicsItem *getXGraphicsItem(const QString &type) override;
+protected:
+    QMap<QString,QPen> m_mapPen;
+};
 
+class XvGraphicsLinkFactory:public XGraphicsLinkDelegateFactory
+{
+    Q_OBJECT
+public:
+    XvGraphicsLinkFactory(XGraphicsScene* scene,QObject* parent=nullptr);
+
+public:
+    XGraphicsConnectLink *getXGraphicsLink() override;
 };
 
 #endif // XVGRAPHICSITEMFACTORY_H

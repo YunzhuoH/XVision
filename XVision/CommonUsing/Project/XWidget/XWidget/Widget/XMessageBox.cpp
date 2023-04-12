@@ -147,6 +147,7 @@ XMessageBox::XMessageBox(QWidget* parent) : XFramelessDialog(parent), m_impl(std
 XMessageBox::XMessageBox(Icon icon,
                                const QString& title,
                                const QString& text,
+                               QMap<StandardButton,QString> mapbtnText,
                                StandardButtons buttons /*= NoButton */
                                ,
                                QWidget* parent /*= Q_NULLPTR */
@@ -156,6 +157,14 @@ XMessageBox::XMessageBox(Icon icon,
 {
     m_impl->buttonBox->setStandardButtons(QDialogButtonBox::StandardButtons((int)buttons));
     m_impl->label->setText(text);
+    foreach (auto key, mapbtnText.keys())
+    {
+       auto btn= m_impl->buttonBox->button(QDialogButtonBox::StandardButton((int)key));
+       if(btn)
+       {
+           btn->setText(mapbtnText[key]);
+       }
+    }
     setWindowTitle(title);
     setWindowFlags(f | Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
     setIcon(icon);
@@ -369,11 +378,12 @@ Qt::TextInteractionFlags XMessageBox::textInteractionFlags() const { return m_im
 XMessageBox::StandardButton XMessageBox::critical( const QString& title,
                                                    const QString& text,
                                                    QWidget* parent,
+                                                   QMap<StandardButton,QString> mapbtnText,
                                                    StandardButtons buttons /*= Ok */
                                                    ,
                                                    StandardButton defaultButton /*= NoButton*/)
 {
-    XMessageBox box(Icon::Critical, title, text, buttons, parent);
+    XMessageBox box(Icon::Critical, title, text, mapbtnText,buttons, parent);
     box.setDefaultButton(defaultButton);
     box.exec();
     return box.standardButton(box.clickedButton());
@@ -386,11 +396,12 @@ XMessageBox::StandardButton XMessageBox::critical( const QString& title,
 XMessageBox::StandardButton XMessageBox::information(const QString& title,
                                                      const QString& text,
                                                      QWidget* parent,
+                                                     QMap<StandardButton,QString> mapbtnText,
                                                      StandardButtons buttons /*= Ok */
                                                      ,
                                                      StandardButton defaultButton /*= NoButton*/)
 {
-    XMessageBox box(Icon::Information, title, text, buttons, parent);
+    XMessageBox box(Icon::Information, title, text,mapbtnText, buttons, parent);
     box.setDefaultButton(defaultButton);
     box.exec();
     return box.standardButton(box.clickedButton());
@@ -403,11 +414,12 @@ XMessageBox::StandardButton XMessageBox::information(const QString& title,
 XMessageBox::StandardButton XMessageBox::question(const QString& title,
                                                   const QString& text,
                                                    QWidget* parent,
+                                                   QMap<StandardButton,QString> mapbtnText,
                                                    StandardButtons buttons /*= StandardButtons(Yes | No) */
                                                    ,
                                                    StandardButton defaultButton /*= NoButton*/)
 {
-    XMessageBox box(Icon::Question, title, text, buttons, parent);
+    XMessageBox box(Icon::Question, title, text,mapbtnText,buttons, parent);
     box.setDefaultButton(defaultButton);
     box.exec();
     return box.standardButton(box.clickedButton());
@@ -420,11 +432,12 @@ XMessageBox::StandardButton XMessageBox::question(const QString& title,
 XMessageBox::StandardButton XMessageBox::warning(const QString& title,
                                                  const QString& text,
                                                  QWidget* parent,
+                                                 QMap<StandardButton,QString> mapbtnText,
                                                  StandardButtons buttons /*= Ok */
                                                  ,
                                                  StandardButton defaultButton /*= NoButton*/)
 {
-    XMessageBox box(Icon::Warning, title, text, buttons, parent);
+    XMessageBox box(Icon::Warning, title, text,mapbtnText,buttons, parent);
     box.setDefaultButton(defaultButton);
     box.exec();
     return box.standardButton(box.clickedButton());
@@ -434,10 +447,11 @@ XMessageBox::StandardButton XMessageBox::custom(const QString &title,
                                                 const QString &text,
                                                 const QPixmap &icon,
                                                 QWidget *parent,
+                                                QMap<StandardButton,QString> mapbtnText,
                                                 StandardButtons buttons,
                                                 StandardButton defaultButton)
 {
-    XMessageBox box(Icon::Custom, title, text, buttons, parent);
+    XMessageBox box(Icon::Custom, title, text,mapbtnText, buttons, parent);
     box.setIconPixmap(icon);
     box.setDefaultButton(defaultButton);
     box.exec();

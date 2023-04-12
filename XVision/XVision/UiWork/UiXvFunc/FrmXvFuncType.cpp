@@ -14,7 +14,7 @@ const static int FrmXvFuncType_XvFunc_IconSize=30;
 const static int FrmXvFuncType_XvFunc_BtnSize=38;
 
 FrmXvFuncType::FrmXvFuncType(const XvCore::XvFuncTypeInfo &info,
-                             const QList<XvCore::XvFuncBaseInfo> &lst,
+                             const QList<XvCore::XvFuncInfo> &lst,
                              QWidget *parent) :
     BaseWidget(parent),m_typeInfo(info),m_lstXvFuncInfos(lst),
     ui(new Ui::FrmXvFuncType)
@@ -37,15 +37,17 @@ void FrmXvFuncType::initFrm()
     lbType->setText(m_typeInfo.name);
 
     auto btnClose=ui->btnCloseDrawer;
-    U_initSetButton(btnClose,getLang(App_Close,"关闭"),getLang(App_Close,"关闭"),QIcon(":/images/Ui/FrmXvFuncTypeClose.svg"),FrmXvFuncType_XvFunc_IconSize);
+    U_initSetButton(btnClose,getLang(App_Common_Close,"关闭"),getLang(App_Common_Close,"关闭"),QIcon(":/images/Ui/FrmXvFuncTypeClose.svg"),FrmXvFuncType_XvFunc_IconSize);
     connect(btnClose,&QToolButton::clicked,this,&FrmXvFuncType::onCloseDrawer);
 
     auto scArea=ui->scAreaXvFunc;
     auto scAreaWc=ui->scAreaWcXvFunc;
     scArea->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
     scArea->setLineWidth(1);
-    scArea->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-    scArea->setVerticalScrollBar(new XMatScrollBar(scArea));
+    scArea->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
+    auto bar=new XMatScrollBar(scArea);
+    bar->setHideOnMouseOut(false);
+    scArea->setVerticalScrollBar(bar);
     QVBoxLayout *vLayout = new QVBoxLayout(scAreaWc);
     vLayout->setObjectName("verticalLayout");
     vLayout->setContentsMargins(0, 5, 0, 5);

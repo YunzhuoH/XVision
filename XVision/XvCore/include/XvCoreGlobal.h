@@ -1,7 +1,9 @@
-﻿#ifndef XVCORE_GLOBAL_H
-#define XVCORE_GLOBAL_H
+﻿#ifndef XVCOREGLOBAL_H
+#define XVCOREGLOBAL_H
 
-#include <QtCore/qglobal.h>
+#include <qglobal.h>
+#include <QMetaobject>
+#include <QPixmap>
 
 #if defined(XVCORE_LIBRARY)
 #  define XVCORE_EXPORT Q_DECL_EXPORT
@@ -9,4 +11,5 @@
 #  define XVCORE_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // XVCORE_GLOBAL_H
+
+#endif // XVCOREGLOBAL_H

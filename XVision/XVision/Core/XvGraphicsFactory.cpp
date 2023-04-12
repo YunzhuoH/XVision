@@ -3,51 +3,64 @@
 #include "XGraphicsEllipseItem.h"
 #include "XGraphicsConnectLink.h"
 #include "XGraphicsScene.h"
-#include "XvCoreManager.h"
 #include "XvFuncAssembly.h"
-#include "XvFuncBase.h"
+#include "XvFunc.h"
 
+#include "XvWorkManager.h"
 
 
 
 XvGraphicsItemFactory::XvGraphicsItemFactory(XGraphicsScene* scene,QObject *parent)
     :XGraphicsItemDelegateFactory{scene,parent}
 {
+    m_mapPen.clear();
+    //图标设置
+    QPen pen;
+    pen.setWidth(1);
+    pen.setBrush(Qt::NoBrush);
+    m_mapPen[XvFuncRunStatus_Init_Str]=pen;//初始状态
+
+    pen.setBrush(QColor(50,130,250,230));
+    m_mapPen[XvFuncRunStatus_Running_Str]=pen;//正在运行状态
+
+    pen.setBrush(QColor(0,255,0,230));
+    m_mapPen[XvFuncRunStatus_Ok_Str]=pen;//成功状态
+
+    pen.setBrush(QColor(255,128,0,230));
+    m_mapPen[XvFuncRunStatus_Fail_Str]=pen;//失败状态
+
+    pen.setBrush(QColor(255,30,0,230));
+    m_mapPen[XvFuncRunStatus_Error_Str]=pen;//错误状态
 
 }
 
 XGraphicsItem *XvGraphicsItemFactory::getXGraphicsItem(const QString &type)
 {
-    auto info=XvCoreMgr->getXvFuncAsm()->getXvFuncInfo(type);
+    auto info=XvWorkMgr->getXvCoreMgr()->getXvFuncAsm()->getXvFuncInfo(type);
     auto lst=m_parScene->getXItemsByType(type);
     int nIdx=lst.count()+1;
     XGraphicsRectItem *item=new XGraphicsRectItem(type,"",m_parScene);
-    //item->setWidth(180);
-    //item->setHeight(60);
-    item->setTextFont(QFont("Microsoft YaHei UI", 9, QFont::Normal));
+    item->setTextFont(QFont("Microsoft YaHei UI", 10, QFont::Bold));
     item->setText(info.name+QString("-%1").arg(nIdx));
-    item->setTip(QString("Item-Id:%1\r\nRole:%2").arg(item->itemId()).arg(type));
-    //图标设置
-    QPen pen;
-    pen.setBrush(Qt::NoBrush);
-    QBrush brush=(Qt::NoBrush);
-    //初始状态
-    item->addPixData(new SXItemPixData(XvFuncStatus_Init_Str,info.icon,true,pen,brush));
-
-    //成功状态
-    brush=QBrush(QColor(0,255,0,230));
-    item->addPixData(new SXItemPixData(XvFuncStatus_Ok_Str,info.icon,true,pen,brush));
-
-    //失败状态
-    brush=QBrush(QColor(255,128,0,230));
-    item->addPixData(new SXItemPixData(XvFuncStatus_Fail_Str,info.icon,true,pen,brush));
-
-    //错误状态
-    brush=QBrush(QColor(255,30,0,230));
-    item->addPixData(new SXItemPixData(XvFuncStatus_Error_Str,info.icon,true,pen,brush));
-
-    item->switchShowPixKey(XvFuncStatus_Init_Str);
+    item->setSize(190,65);
+    item->addPixData(new SXItemPixData(XvFuncName,info.icon,m_mapPen));
+    item->switchShowPixKey(XvFuncName,XvFuncRunStatus_Init_Str);
+    item->setConnectRectSize(30);
+    item->updateShape();
+    item->setSelectBoundingRectPen(QPen(QColor(25, 150, 255),1,Qt::DashLine));
     return item;
+}
+
+
+XvGraphicsLinkFactory::XvGraphicsLinkFactory(XGraphicsScene *scene, QObject *parent)
+    :XGraphicsLinkDelegateFactory{scene,parent}
+{
 
 }
 
+XGraphicsConnectLink *XvGraphicsLinkFactory::getXGraphicsLink()
+{
+    XGraphicsConnectLink *link=new XGraphicsConnectLink(m_parScene);
+    link->setSelectBoundingRectPen(QPen(QColor(25, 150, 255),1,Qt::DashLine));
+    return link;
+}

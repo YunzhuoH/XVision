@@ -10,23 +10,30 @@ class XTitleBar;
 class XWIDGET_EXPORT XInputDialog : public QInputDialog
 {
 public:
-    XInputDialog(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags());
+    XInputDialog(QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::WindowFlags(),const QString &okText="Ok",const QString &cancelText="Cancel");
     ~XInputDialog();
 
     void setTitleBar(XTitleBar* titleBar);
     XTitleBar* titleBar() const;
     void removeTitleBar();
 
+
+
     static QString getText(const QString& title,
                            const QString& label,
+                           const QString &okText="Ok",
+                           const QString &cancelText="Cancel",
                            QWidget* parent=nullptr,
                            QLineEdit::EchoMode echo              = QLineEdit::Normal,
                            const QString& text                   = QString(),
                            bool* ok                              = nullptr,
                            Qt::WindowFlags flags                 = Qt::WindowFlags(),
                            Qt::InputMethodHints inputMethodHints = Qt::ImhNone);
+
     static QString getMultiLineText(const QString& title,
                                     const QString& label,
+                                    const QString &okText="Ok",
+                                    const QString &cancelText="Cancel",
                                     QWidget* parent=nullptr,
                                     const QString& text                   = QString(),
                                     bool* ok                              = nullptr,
@@ -35,6 +42,8 @@ public:
     static QString getItem(const QString& title,
                            const QString& label,
                            const QStringList& items,
+                           const QString &okText="Ok",
+                           const QString &cancelText="Cancel",
                            QWidget* parent=nullptr,
                            int current                           = 0,
                            bool editable                         = true,
@@ -43,6 +52,8 @@ public:
                            Qt::InputMethodHints inputMethodHints = Qt::ImhNone);
     static int getInt(const QString& title,
                       const QString& label,
+                      const QString &okText="Ok",
+                      const QString &cancelText="Cancel",
                       QWidget* parent=nullptr,
                       int value             = 0,
                       int minValue          = -2147483647,
@@ -52,6 +63,8 @@ public:
                       Qt::WindowFlags flags = Qt::WindowFlags());
     static double getDouble(const QString& title,
                             const QString& label,
+                            const QString &okText="Ok",
+                            const QString &cancelText="Cancel",
                             QWidget* parent=nullptr,
                             double value          = 0,
                             double minValue       = -2147483647,

@@ -17,6 +17,6 @@ typedef struct S_TOKEN_MSG
     QString tokenCmd;//命令消息
 }TokenMsg,*PTokenMsg;
 
-#define TOKEN_ID_BROADCAST "Token_Broadcast" ///广播ID
-
+#define Token_RId_Broadcast "Broadcast"        ///广播ID(接收者)
+#define Token_SId_Anonymity "Anonymity"       ///匿名ID(发送者)
 #endif // XVTOKENMSG_H

@@ -15,11 +15,14 @@ include (../CommonCMake/CommonProjectOutputSet.cmake)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
+
+file(GLOB INCLUDE include/*.*)
+file(GLOB SRC src/*.*)
+
+
 add_library(XvTokenMsg SHARED
-  include/XvTokenMsgGlobal.h
-  include/XvTokenMsg.h
-  include/XvTokenMsgMgr.h src/XvTokenMsgMgr.cpp
-  include/IXvTokenMsgable.h src/IXvTokenMsgable.cpp
+    ${INCLUDE}
+    ${SRC}
 )
 
 #[[**************添加包含目录**************]]

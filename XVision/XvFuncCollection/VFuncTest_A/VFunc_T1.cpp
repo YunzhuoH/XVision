@@ -4,17 +4,17 @@
 #include <chrono>
 using namespace XvCore;
 VFunc_T1::VFunc_T1(QObject *parent)
-    :XvFuncBase(parent)
+    :XvFunc(parent)
 {
-    _VFuncRole="V-T1";
-    _VFuncName="算子-T1";
-    _VFuncType=EXvFuncType::Other;
+    _funcRole="V-T1";
+    _funcName="算子-T1";
+    _funcType=EXvFuncType::Other;
 }
 
-XvFuncBase::EVFucRunStatus VFunc_T1::run()
+EXvFuncRunStatus VFunc_T1::run()
 {
      std::this_thread::sleep_for(std::chrono::milliseconds(66));
-     return EVFucRunStatus::Fail;
+     return EXvFuncRunStatus::Fail;
 }
 
 QVariant VFunc_T1::onReciveTokenMsg(const TokenMsg &tokenMsg, QList<QVariant> &params)
@@ -31,19 +31,19 @@ QVariant VFunc_T1::onReciveTokenMsg(const TokenMsg &tokenMsg, QList<QVariant> &p
             qDebug()<<var<<var.canConvert(QMetaType::Int)<<var.canConvert(QMetaType::QString);
         }
     }
+    qDebug()<<tokenMsg.tokenCmd<<tokenMsg.reviceId<<tokenMsg.sendId;
     return QVariant();
 }
 
 VFunc_T3::VFunc_T3(QObject *parent)
-    :XvFuncBase(parent)
+    :XvFunc(parent)
 {
-    _VFuncRole="V-T3";
-    _VFuncName="算子-T3";
-    _VFuncType=EXvFuncType::Other;
+    _funcRole="V-T3";
+    _funcName="算子-T3";
+    _funcType=EXvFuncType::Other;
 }
-
-XvFuncBase::EVFucRunStatus VFunc_T3::run()
+EXvFuncRunStatus VFunc_T3::run()
 {
      std::this_thread::sleep_for(std::chrono::milliseconds(66));
-     return EVFucRunStatus::Fail;
+     return EXvFuncRunStatus::Fail;
 }

@@ -3,11 +3,11 @@
 
 
 #include "VFuncTest_A_global.h"
-#include "XVFuncBase.h"
+#include "XVFunc.h"
 namespace XvCore
 {
 
-class VFUNCTEST_A_EXPORT VFunc_T1:public XvFuncBase
+class VFUNCTEST_A_EXPORT VFunc_T1:public XvFunc
 {
     Q_OBJECT
 public:
@@ -15,14 +15,18 @@ public:
 
     // IVFuncBase interface
 protected:
-    EVFucRunStatus run() override;
+    EXvFuncRunStatus run() override;
 
     // IXVTokenMsgable interface
 protected:
     QVariant onReciveTokenMsg(const TokenMsg &tokenMsg, QList<QVariant> &params) override;
+
+    // XvFunc interface
+public:
+    bool release() override { return false;}
 };
 
-class VFUNCTEST_A_EXPORT VFunc_T3:public XvFuncBase
+class VFUNCTEST_A_EXPORT VFunc_T3:public XvFunc
 {
     Q_OBJECT
 public:
@@ -30,7 +34,7 @@ public:
 
     // IVFuncBase interface
 protected:
-    EVFucRunStatus run() override;
+    EXvFuncRunStatus run() override;
 
     // IXVTokenMsgable interface
 

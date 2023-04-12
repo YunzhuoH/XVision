@@ -5,7 +5,7 @@
 
 class XGraphicsRectItemPrivate;
 ///pixmap偏移
-#define PIX_OFFSET 10
+#define PIX_OFFSET 5
 class XGRAPHICS_PUBLIC XGraphicsRectItem:public XGraphicsItem,public QGraphicsRectItem
 {
     Q_OBJECT

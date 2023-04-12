@@ -1,32 +1,44 @@
 ﻿#include "AppMainWindow.h"
+//Qt
+#include <QDesktopServices>
 #include <QVBoxLayout>
 #include <QFrame>
 #include <QWidgetAction>
 #include <QStatusBar>
 #include <QToolBar>
 #include <QSettings>
+#include <QDir>
 
+//XWidget
 #include "XTitleBar.h"
 #include "XMatToolButton.h"
 #include "XMatMenuBar.h"
 #include "XMatMenu.h"
+#include "XMatVLine.h"
 #include "XMatHLine.h"
 #include "XMatToolBar.h"
+#include "XMessageBox.h"
 
+//XvCore
 #include "XvCoreManager.h"
 #include "XvPluginManager.h"
 #include "XvFuncAssembly.h"
 
-
+//XVsion
 #include "XvSingleApplication.h"
 #include "XvViewManager.h"
-#include "XvAppCoreManager.h"
+#include "XvWorkManager.h"
 #include "DockMainManager.h"
-
 #include "DockDef.h"
 #include "LangDef.h"
+#include "UiUtils.h"
 
+#include "FrmAbout.h"
+//XvUtils
 #include "XvUtils.h"
+
+//XLanguage
+#include <XLanguage>
 
 #define APPMAINWINDOW_CONFIG_PATH "Config/AppMainWindow.ini"
 
@@ -86,6 +98,7 @@ protected:
     void showEvent();
     ///主界面关闭事件
     void closeEvent();
+
 private://主界面窗口控件
     XMatMenuBar* menuBarTitle=nullptr;///标题栏菜单
     XMatHLine* hlineTitle=nullptr;///标题栏隔离线
@@ -126,8 +139,8 @@ void AppMainWindowPrivate::initFrm()
 
     fmToolBar=new QFrame(mw);
     fmToolBar->setObjectName("fmToolBar");
-    fmToolBar->setMinimumSize(QSize(0, 50));
-    fmToolBar->setMaximumSize(QSize(16777215, 50));
+    fmToolBar->setMinimumSize(QSize(0, 40));
+    fmToolBar->setMaximumSize(QSize(16777215, 40));
     fmToolBar->setFrameShape(QFrame::StyledPanel);
     fmToolBar->setFrameShadow(QFrame::Raised);
     verticalLayout->addWidget(fmToolBar);
@@ -172,10 +185,27 @@ bool AppMainWindowPrivate::addToolBarAction(QAction *act)
         return false;
     }
 }
+
+
 ///xie.y : 后续根据需求修改菜单
 ///建议把菜单栏加到QMap,其他类可以添加QMenu/QAction
 void AppMainWindowPrivate::initMwTitleBar(XTitleBar* tb)
 {
+    auto funcAddMenu=[&](QMenuBar* bar,const QString &text)
+    {
+        auto menu=new XMatMenu(text,bar);
+        bar->addMenu(menu);
+        return menu;
+    };
+    auto funcAddAct=[&](QMenu *menu,const QString &text,const QString &objName,const QIcon &icon)
+    {
+        auto act=menu->addAction(text);
+        act->setObjectName(objName);
+        act->setIcon(icon);
+        return act;
+    };
+
+    Q_Q(AppMainWindow);
     if(!tb) return;
     tb->setMinimumHeight(30);
     tb->setMinBtnSize(30,30);
@@ -185,62 +215,97 @@ void AppMainWindowPrivate::initMwTitleBar(XTitleBar* tb)
     menuBarTitle->setObjectName("menuBarTitle");
     tb->setMenuBar(menuBarTitle);
 
+
+
     //*[文件菜单]*
-    auto menu=new XMatMenu("文件",menuBarTitle);
-    auto act=menu->addAction("新建方案");
-    act->setIcon(QIcon(":/images/App/XVision.png"));
-    menu->addAction("打开方案");
-    auto subMenu= menu->addMenu("最近打开方案");
-    subMenu->addAction("方案1");
-    subMenu->addAction("方案2");
-    subMenu->addSeparator();
-    subMenu->addAction("方案3");
-    subMenu->addAction("方案4");
-    menuBarTitle->addMenu(menu);
+    auto menu=funcAddMenu(menuBarTitle,getLang(App_AppMainWindow_File,"文件"));
+    auto act= funcAddAct(menu,getLang(App_AppMainWindow_NewProject,"新建项目"),"actNewProject",QIcon(":/images/Ui/AppMainWindowNewProject.svg"));
+    QObject::connect(act,&QAction::triggered,q,&AppMainWindow::newProject);
+    act= funcAddAct(menu,getLang(App_AppMainWindow_OpenProject,"打开项目"),"actOpenProject",QIcon(":/images/Ui/AppMainWindowOpenProject.svg"));
+    QObject::connect(act,&QAction::triggered,q,&AppMainWindow::openProject);
+    act= funcAddAct(menu,getLang(App_AppMainWindow_SaveProject,"保存项目"),"actSaveProject",QIcon(":/images/Ui/AppMainWindowSaveProject.svg"));
+    QObject::connect(act,&QAction::triggered,q,&AppMainWindow::saveProject);
+
 
     //*[设置菜单]*
-    menu=new XMatMenu("设置",menuBarTitle);
-    menu->setAttribute(Qt::WA_Hover);
-    menu->addAction("软件设置");
-    menu->addAction("视觉设置");
-    menuBarTitle->addMenu(menu);
-
-    //*[工具菜单]*
-    menu=new XMatMenu("工具",menuBarTitle);
-    menu->addAction("软件工具");
-    menu->addAction("视觉工具");
-    menuBarTitle->addMenu(menu);
+    menu=funcAddMenu(menuBarTitle,getLang(App_AppMainWindow_Setting,"设置"));
+    act= funcAddAct(menu,getLang(App_AppMainWindow_ProjectSetting,"项目设置"),"actProjectSetting",QIcon(":/images/Ui/AppMainWindowProjectSetting.svg"));
+    QObject::connect(act,&QAction::triggered,q,&AppMainWindow::projectSetting);
+    act= funcAddAct(menu,getLang(App_AppMainWindow_SystemSetting,"系统设置"),"actSystemSetting",QIcon(":/images/Ui/AppMainWindowSystemSetting.svg"));
+    QObject::connect(act,&QAction::triggered,q,&AppMainWindow::systemSetting);
 
     //*[系统菜单]*
-    menu=new XMatMenu("系统",menuBarTitle);
-    menu->addAction("视觉管理器");
-    menu->addAction("通讯管理器");
-    menuBarTitle->addMenu(menu);
+    menu=funcAddMenu(menuBarTitle,getLang(App_AppMainWindow_System,"系统"));
+//TODO
+    //*[系统菜单]*
+    menu=funcAddMenu(menuBarTitle,getLang(App_AppMainWindow_Tool,"工具"));
+//TODO
     //*[帮助菜单]*
-    menu=new XMatMenu("帮助",menuBarTitle);
-    menu->addAction("语言");
-    menu->addAction("关于");
-    menuBarTitle->addMenu(menu);
+    menu=funcAddMenu(menuBarTitle,getLang(App_AppMainWindow_Help,"帮助"));
+    auto subMenu=menu->addMenu(getLang(App_AppMainWindow_Language,"语言"));
+    subMenu->setIcon(QIcon(":/images/Ui/AppMainWindowLanguage.svg"));
+    auto langs=XLang->getLangTypes();
+    auto curLang=XLang->getCurLangType();
+    foreach (auto key, langs.keys())
+    {
+       auto act= subMenu->addAction(langs[key]);
+       act->setCheckable(true);
+       act->setData(key);
+       QObject::connect(act,&QAction::triggered,q,[=]()
+       {
+           auto key=act->data().toString();
+           auto bRet=  XLang->switchLang(key);
+           if(!bRet)
+           {
+               XMessageBox::warning(getLang(App_UiCommon_Warning,"警告"),getLang(App_AppMainWindow_MsgSwitchLangError,"切换语言失败"),nullptr,
+                                    U_getXMessageBoxButtonTexts({XMessageBox::StandardButton::Close}),XMessageBox::StandardButton::Close);
+                return;
+           }
+           auto acts=subMenu->actions();
+           foreach (auto a, acts)
+           {
+               a->setChecked(false);
+           }
+           act->setChecked(true);
+           XMessageBox::information(getLang(App_UiCommon_Info,"信息"),getLang(App_AppMainWindow_MsgSwitchLangSuccess,"切换语言成功，请重启软件"),nullptr,
+                                    U_getXMessageBoxButtonTexts({XMessageBox::StandardButton::Close}),XMessageBox::StandardButton::Close);
+       });
+    }
+    foreach (auto a, subMenu->actions())
+    {
+        auto key=a->data().toString();
+        if(key==curLang)
+        {
+            a->setChecked(true);
+            break;
+        }
+    }
 
+    act= funcAddAct(menu,getLang(App_AppMainWindow_HelpDoc,"帮助文档"),"actHelpDoc",QIcon(":/images/Ui/AppMainWindowHelpDoc.svg"));
+    QObject::connect(act,&QAction::triggered,q,[](){
+        QDesktopServices deskSer;
+        QString dir=qApp->applicationDirPath()+"/Help";
+        QDir qDir(dir);
+        if(!qDir.exists())
+        {
+            qDir.mkdir(dir);
+        }
+        deskSer.openUrl(QUrl("file:///"+dir));
+    });
+    act= funcAddAct(menu,getLang(App_AppMainWindow_About,"关于"),"actAbout",QIcon(":/images/Ui/AppMainWindowAbout.svg"));
+    QObject::connect(act,&QAction::triggered,q,&AppMainWindow::about);
 
-    ///标题栏右侧控件
-    XMatToolButton* btn = new XMatToolButton(tb);
-    btn->setMinimumSize(28,28);
-    btn->setText("");
-    QIcon icon(":/images/App/XVision.png");
-    btn->setIcon(icon);
-    btn->setIconSize(QSize(20,20));
-    tb->rightLayout()->addWidget(btn);
 }
 
 void AppMainWindowPrivate::initMwToolBar(QFrame* fm)
 {
     Q_Q(AppMainWindow);
-    auto funcAddBtn=[&](QHBoxLayout *layout,QIcon icon,QString tip="",QString text="")
+    auto funcAddBtn=[&](QHBoxLayout *layout,const QString &text,const QString &objName,QIcon icon,const QString &tip="")
     {
 
         auto fmH=fm->minimumHeight()-2;
         XMatToolButton* btn = new XMatToolButton(fm);
+        btn->setObjectName(objName);
         btn->setMinimumSize(QSize(fmH, fmH));
         btn->setText(text);
         btn->setIcon(icon);
@@ -249,16 +314,38 @@ void AppMainWindowPrivate::initMwToolBar(QFrame* fm)
         layout->addWidget(btn);
         return btn;
     };
+    auto funcAddVLine=[&](QHBoxLayout *layout,const QString &objName)
+    {
+       auto vline= new XMatVLine(fm);
+       vline->setObjectName(objName);
+       vline->setLineWidth(1);
+       vline->setLineCurLen(5);
+       layout->addWidget(vline);
+       return vline;
+    };
     if(!fm) return;
     QHBoxLayout *hLayout = new QHBoxLayout(fm);
     hLayout->setSpacing(0);
     hLayout->setObjectName("verticalLayout");
     hLayout->setContentsMargins(0, 0, 0, 0);
     fm->setLayout(hLayout);
-
-    auto btn= funcAddBtn(hLayout,QIcon(":/images/App/XVision.png"),"按钮1","按钮1");
-    btn= funcAddBtn(hLayout,QIcon(":/images/App/XVision.png"),"按钮2","按钮2");
-    btn= funcAddBtn(hLayout,QIcon(":/images/App/XVision.png"),"按钮3","按钮3");
+//项目保存加载
+    auto btn= funcAddBtn(hLayout,getLang(App_AppMainWindow_SaveProject,"保存项目"),"btnSaveProject", QIcon(":/images/Ui/AppMainWindowSaveProject.svg"),getLang(App_AppMainWindow_SaveProject,"保存项目"));
+    QObject::connect(btn,&QToolButton::clicked,q,&AppMainWindow::saveProject);
+    btn= funcAddBtn(hLayout,getLang(App_AppMainWindow_OpenProject,"打开项目"),"btnOpenProject", QIcon(":/images/Ui/AppMainWindowOpenProject.svg"),getLang(App_AppMainWindow_OpenProject,"打开项目"));
+    QObject::connect(btn,&QToolButton::clicked,q,&AppMainWindow::openProject);
+    funcAddVLine(hLayout,"vLine1");
+//项目运行
+    btn= funcAddBtn(hLayout,getLang(App_AppMainWindow_ProjectOnceRun,"项目单次运行"),"btnProjectOnceRun",
+                    QIcon(":/images/Ui/AppMainWindowProjectOnceRun.svg"),getLang(App_AppMainWindow_ProjectOnceRun,"项目单次运行"));
+    QObject::connect(btn,&QToolButton::clicked,q,&AppMainWindow::projectOnceRun);
+    btn= funcAddBtn(hLayout,getLang(App_AppMainWindow_ProjectLoopRun,"项目重复运行"),"btnProjectLoopRun",
+                    QIcon(":/images/Ui/AppMainWindowProjectLoopRun.svg"),getLang(App_AppMainWindow_ProjectLoopRun,"项目重复运行"));
+    QObject::connect(btn,&QToolButton::clicked,q,&AppMainWindow::projectLoopRun);
+    btn= funcAddBtn(hLayout,getLang(App_AppMainWindow_ProjectStop,"项目停止运行"),"btnProjectStop",
+                    QIcon(":/images/Ui/AppMainWindowProjectStop.svg"),getLang(App_AppMainWindow_ProjectStop,"项目停止运行"));
+    btn->setRippleColor(Qt::red);
+    QObject::connect(btn,&QToolButton::clicked,q,&AppMainWindow::projectStop);
 
     hLayout->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding ,QSizePolicy::Minimum));
     rightToolBar=new XMatToolBar(fm);
@@ -275,7 +362,7 @@ void AppMainWindowPrivate::initMwMainWdg(QFrame* fm)
    verticalLayout->setContentsMargins(0, 0, 0, 0);
 
 
-   auto dockMgr=XvViewMgr->getDockMainManager();
+   auto dockMgr=XvViewMgr->dockMainManager();
    if(dockMgr)
    {
        auto dockMain=dockMgr->dockMainManager();
@@ -342,6 +429,7 @@ bool AppMainWindow::addToolBarAction(QAction *act)
     return d_ptr->addToolBarAction(act);
 }
 
+
 void AppMainWindow::showEvent(QShowEvent *event)
 {
     d_ptr->showEvent();
@@ -354,3 +442,51 @@ void AppMainWindow::closeEvent(QCloseEvent *event)
     return XFramelessWidget::closeEvent(event);
 }
 
+
+//xie.y todo
+//新建项目
+void AppMainWindow::newProject()
+{
+
+}
+
+void AppMainWindow::openProject()
+{
+
+}
+
+void AppMainWindow::saveProject()
+{
+
+}
+
+void AppMainWindow::projectOnceRun()
+{
+
+}
+
+void AppMainWindow::projectLoopRun()
+{
+
+}
+
+void AppMainWindow::projectStop()
+{
+
+}
+
+void AppMainWindow::projectSetting()
+{
+
+}
+
+void AppMainWindow::systemSetting()
+{
+
+}
+
+void AppMainWindow::about()
+{
+    FrmAbout ab;
+    ab.exec();
+}

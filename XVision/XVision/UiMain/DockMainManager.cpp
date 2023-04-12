@@ -48,16 +48,32 @@ CDockWidget* DockMainManager::addDockWidget(const EDockArea &area, QWidget *widg
         dock->setWindowTitle(widget->windowTitle());
         dock->setWindowIcon(widget->windowIcon());
         dock->setIcon(widget->windowIcon());
+        dock->tabWidget()->setContextMenuPolicy(Qt::NoContextMenu);
         return dock;
     }
     else
     {
         auto dockNew=funcCreateDock(widget);
-        m_DockMainManager->addDockWidget(ads::DockWidgetArea::CenterDockWidgetArea, dockNew,dockArea);
+        auto dockAreaNew= m_DockMainManager->addDockWidget(ads::DockWidgetArea::CenterDockWidgetArea, dockNew,dockArea);
+        dockAreaNew->titleBar()->setContextMenuPolicy(Qt::NoContextMenu);
         return dockNew;
     }
 
     return nullptr;
+}
+
+void DockMainManager::setAreaCurrentIndex(const EDockArea &area, int idx)
+{
+    if(!m_mapDockAreaWidget.contains(area)) return;
+    auto dockArea=m_mapDockAreaWidget[area];
+    dockArea->setCurrentIndex(idx);
+}
+
+void DockMainManager::setAreaCurrentDockWidget(const EDockArea &area, CDockWidget *dock)
+{
+    if(!m_mapDockAreaWidget.contains(area)) return;
+    auto dockArea=m_mapDockAreaWidget[area];
+    dockArea->setCurrentDockWidget(dock);
 }
 
 void DockMainManager::restoreState()
@@ -83,6 +99,7 @@ void DockMainManager::init()
         dock->setFeature(ads::CDockWidget::DockWidgetClosable, false);
         dock->setFeature(ads::CDockWidget::DockWidgetFloatable,false);
         dock->tabWidget()->setContextMenuPolicy(Qt::NoContextMenu);
+        dock->setContextMenuPolicy(Qt::NoContextMenu);
         return dock;
     };
     ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaHasCloseButton, false);
@@ -97,23 +114,27 @@ void DockMainManager::init()
     ads::CDockManager::setConfigFlag(ads::CDockManager::DragPreviewShowsContentPixmap, true);
     ads::CDockManager::setConfigFlag(ads::CDockManager::DockAreaDynamicTabsMenuButtonVisibility, true);
     m_DockMainManager=new CDockManager();
-
+    m_DockMainManager->setContextMenuPolicy(Qt::NoContextMenu);
     m_mapDockAreaWidget.clear();
 
 
     auto dock=funcCreateDock("DockCore");
     auto dockArea= m_DockMainManager->addDockWidget(ads::CenterDockWidgetArea, dock);
-
-
+    dockArea->titleBar()->setContextMenuPolicy(Qt::NoContextMenu);
+    dockArea->setContextMenuPolicy(Qt::NoContextMenu);
     m_mapDockAreaWidget[EDockArea::Core]=dockArea;
 
     dock=funcCreateDock("DockOutput");
     dockArea= m_DockMainManager->addDockWidget(ads::BottomDockWidgetArea, dock,dockArea);
+    dockArea->titleBar()->setContextMenuPolicy(Qt::NoContextMenu);
+    dockArea->setContextMenuPolicy(Qt::NoContextMenu);
     m_mapDockAreaWidget[EDockArea::Output]=dockArea;
 
 
     dock=funcCreateDock("DockWork");
     dockArea= m_DockMainManager->addDockWidget(ads::LeftDockWidgetArea, dock);
+    dockArea->titleBar()->setContextMenuPolicy(Qt::NoContextMenu);
+    dockArea->setContextMenuPolicy(Qt::NoContextMenu);
     m_mapDockAreaWidget[EDockArea::Work]=dockArea;
 
     m_DockMainManager->setStyleSheet(XvUtils::getStyleByPath(":/style/DockMain_Default.css"));

@@ -2,7 +2,7 @@
 #define FRMXVFUNCTYPE_H
 
 #include "BaseWidget.h"
-#include "XvFuncDef.h"
+#include "XvCoreDef.h"
 
 namespace Ui {
 class FrmXvFuncType;
@@ -13,7 +13,7 @@ class FrmXvFuncType : public BaseWidget
     Q_OBJECT
 
 public:
-    explicit FrmXvFuncType(const XvCore::XvFuncTypeInfo &info, const QList<XvCore::XvFuncBaseInfo> &lst,QWidget *parent = nullptr);
+    explicit FrmXvFuncType(const XvCore::XvFuncTypeInfo &info, const QList<XvCore::XvFuncInfo> &lst,QWidget *parent = nullptr);
     ~FrmXvFuncType();
 
 protected:
@@ -26,7 +26,7 @@ protected slots:
 private:
     Ui::FrmXvFuncType *ui;
     XvCore::XvFuncTypeInfo m_typeInfo;
-    QList<XvCore::XvFuncBaseInfo> m_lstXvFuncInfos;
+    QList<XvCore::XvFuncInfo> m_lstXvFuncInfos;
 
 };
 

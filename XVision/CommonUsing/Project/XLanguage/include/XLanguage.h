@@ -23,8 +23,10 @@ public:
     ///语言反初始化
     void uninit();
 public:
-    ///获取语言类型:1-QString:类型 2-QString:名称
-    QMap<QString,QString> getCurLangType();
+    ///获取所有语言类型:1-QString:类型 2-QString:名称
+    QMap<QString,QString> getLangTypes();
+    ///获取当前语言类型
+    QString getCurLangType() const;
     ///获取语言
     QString getLang(const QString &key,QString defLang="");
     ///设置语言
@@ -35,9 +37,10 @@ protected:
     const QScopedPointer<XLanguagePrivate> d_ptr;
     ///是否已经初始化
     bool m_bIsInit=false;
-
     ///是否需要保存XML
     bool m_bNeedSave=false;
+    ///当前语言类型
+    QString m_strCurType="";
 private:
     Q_DECLARE_PRIVATE(XLanguage)
 };

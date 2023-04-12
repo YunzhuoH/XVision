@@ -14,7 +14,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 file(GLOB INCLUDE include/*.*)
-file(GLOB SRC Src/*.*)
+file(GLOB SRC src/*.*)
 
 add_library(XvUtils SHARED
   ${INCLUDE}
@@ -24,7 +24,7 @@ add_library(XvUtils SHARED
 #添加工程包含目录
 list(APPEND INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 
 )
 

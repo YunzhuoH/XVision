@@ -7,10 +7,10 @@
 #include <QObject>
 #include <QVariant>
 ///消息体
-class XvTokenMsgMgr;
-class  XVTOKENMSG_EXPORT IXvTokenMsgable
+class XvTokenMsgManager;
+class  XVTOKENMSG_EXPORT IXvTokenMsgAble
 {
-    friend class XvTokenMsgMgr;
+    friend class XvTokenMsgManager;
 public:
     ///消息体Id
     virtual QString tokenMsgId(){ return QString(); }

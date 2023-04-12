@@ -2,12 +2,17 @@
 #include <QMutexLocker>
 
 #include "BaseWidget.h"
+#include "XvSingleApplication.h"
 #include "AppMainWindow.h"
 #include "DockMainManager.h"
-#include "UiXvFlowManager.h"
+/*[Work]*/
+#include "UiXvWorkManager.h"
 #include "FrmVisionWork.h"
+/*[Core]*/
 #include "FrmVisionImage.h"
+/*[Output]*/
 #include "FrmLogShow.h"
+#include "FrmThreadMonitor.h"
 
 XvViewManager::XvViewManager(QObject *parent)
     : QObject{parent}
@@ -18,6 +23,11 @@ XvViewManager::XvViewManager(QObject *parent)
 XvViewManager::~XvViewManager()
 {
 
+}
+
+XvSingleApplication *XvViewManager::app() const
+{
+    return m_app;
 }
 
 XvViewManager *XvViewManager::s_Instance = NULL;
@@ -32,19 +42,26 @@ XvViewManager *XvViewManager::getInstance() {
   return s_Instance;
 }
 
-AppMainWindow *XvViewManager::getMainWindow() const
+AppMainWindow *XvViewManager::appMainWindow() const
 {
     return m_appMainWindow;
 }
 
-DockMainManager *XvViewManager::getDockMainManager() const
+DockMainManager *XvViewManager::dockMainManager() const
 {
     return m_dockMainManager;
 }
 
-UiXvFlowManager *XvViewManager::getUiXvFlowManager() const
+UiXvWorkManager *XvViewManager::uiXvWorkManager() const
 {
-    return m_uiXvFlowManager;
+    return m_uiXvWorkManager;
+}
+void XvViewManager::setApp(XvSingleApplication *app)
+{
+    if(app)
+    {
+        m_app=app;
+    }
 }
 
 void XvViewManager::setAppMainWindow(AppMainWindow *mw)
@@ -63,11 +80,11 @@ void XvViewManager::setDockMainManager(DockMainManager *dockMainMgr)
     }
 }
 
-void XvViewManager::setUiXvFlowManager(UiXvFlowManager *uiXvFlowManager)
+void XvViewManager::setUiXvWorkManager(UiXvWorkManager *uiXvWorkManager)
 {
-    if(uiXvFlowManager)
+    if(uiXvWorkManager)
     {
-        m_uiXvFlowManager=uiXvFlowManager;
+        m_uiXvWorkManager=uiXvWorkManager;
     }
 }
 
@@ -79,22 +96,24 @@ void XvViewManager::init()
        auto dock= m_dockMainManager->addDockWidget(area,wdg);
        dock->setFeature(ads::CDockWidget::DockWidgetClosable,false);
        dock->setFeature(ads::CDockWidget::DockWidgetFloatable,true);
-
+       return dock;
     };
 
     if(m_dockMainManager)
     {
         funcSetDock(DockMainManager::Core,UiVisionImage);
         funcSetDock(DockMainManager::Work,UiVisionWork);
-        funcSetDock(DockMainManager::Output,UiLogShow);
+        auto dock= funcSetDock(DockMainManager::Output,UiLogShow);
+        funcSetDock(DockMainManager::Output,UiThreadMonitor);
+        m_dockMainManager->setAreaCurrentDockWidget(DockMainManager::Output,dock);
         m_dockMainManager->restoreState();
     }
-    if(m_uiXvFlowManager)
+    if(m_uiXvWorkManager)//xie.y todo
     {
 
     }
-
 }
+
 
 
 

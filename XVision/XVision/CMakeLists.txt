@@ -18,8 +18,8 @@ include (../CommonUsing/CommonUsing.cmake)
 
 
 #寻找QT库
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Xml)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Xml)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Xml Concurrent)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Xml Concurrent)
 
 set(XVAPPLICATION_CLASS QApplication)
 add_subdirectory(SingleApplication)
@@ -37,6 +37,7 @@ list(APPEND APP_LIBS
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Xml
+    Qt${QT_VERSION_MAJOR}::Concurrent
 )
 if(ENABLE_BREAKPAD)
     list(APPEND APP_LIBS QBreakpad)
@@ -56,6 +57,7 @@ list(APPEND APP_LIBS
     XLanguage       #多语言库
     AdsDocking      #悬浮窗口库
     XGraphics       #流程绘图库
+    XConcurrent     #多线程管理库
 )
 
 
@@ -78,6 +80,7 @@ list(APPEND APP_INCLUDE_DIR
     ../${XLanguage_Inc}
     ../${AdsDocking_Inc}
     ../${XGraphics_Inc}
+    ../${XConcurrent_Inc}
 
 )
 
@@ -106,7 +109,6 @@ file(GLOB UTILS      Utils/*.*)
 file(GLOB UIMAIN     UiMain/*.*)
 file(GLOB UICORE     UiCore/*.*)
 file(GLOB UIWORK     UiWork/*.*)
-file(GLOB UIWORK_UIXVFLOW     UiWork/UiXvFlow/*.*)
 file(GLOB UIWORK_UIXVFUNC     UiWork/UiXvFunc/*.*)
 file(GLOB UIOUTPUT   UIOutput/*.*)
 
@@ -148,7 +150,6 @@ list(APPEND APP_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/UiMain
     ${CMAKE_CURRENT_SOURCE_DIR}/UiCore
     ${CMAKE_CURRENT_SOURCE_DIR}/UiWork
-    ${CMAKE_CURRENT_SOURCE_DIR}/UiWork/UiXvFlow
     ${CMAKE_CURRENT_SOURCE_DIR}/UiWork/UiXvFunc
     ${CMAKE_CURRENT_SOURCE_DIR}/UIOutput 
 

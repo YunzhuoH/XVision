@@ -34,7 +34,7 @@ ads--CDockWidgetTab QLabel {
 }
 /*Tab背景颜色 活动=True*/
 ads--CDockWidgetTab[activeTab="true"] {
-    background: #BB3282FA;
+    background: #773282FA;
 }
 /*Tab字体颜色 活动=True*/
 ads--CDockWidgetTab[activeTab="true"] QLabel {
@@ -53,7 +53,7 @@ ads--CDockWidgetTab[activeTab="true"] > #tabCloseButton:pressed {
 /*标题栏样式*/
 ads--CDockAreaTitleBar {
     background: #EEEEEE;
-    border-bottom: 3px solid #BB3282FA;
+    border-bottom: 3px solid #773282FA;
     padding-bottom: 0px;
 }
 

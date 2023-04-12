@@ -37,13 +37,16 @@ struct XInputDialog::Impl
 /*!
     \brief      构造函数 \a parent, \a flags.
 */
-XInputDialog::XInputDialog(QWidget* parent, Qt::WindowFlags flags) : QInputDialog(parent, flags), m_impl(std::make_unique<Impl>())
+XInputDialog::XInputDialog(QWidget* parent, Qt::WindowFlags flags, const QString &okText,const QString &cancelText)
+    : QInputDialog(parent, flags), m_impl(std::make_unique<Impl>())
 {
     sizeHint();
     m_impl->layout = new QVBoxLayout;
     m_impl->layout->setContentsMargins(0, 0, 0, 0);
     m_impl->title = new XTitleBar(this);
     m_impl->title->setObjectName("xDialogTitleBar");
+    this->setOkButtonText(okText),
+    this->setCancelButtonText(cancelText),
     m_impl->layout->addWidget(m_impl->title, 0);
     {
         m_impl->mainLayout = qobject_cast<QVBoxLayout*>(this->layout());
@@ -124,6 +127,8 @@ void XInputDialog::removeTitleBar()
 */
 QString XInputDialog::getText(const QString& title,
                               const QString& label,
+                              const QString &okText,
+                              const QString &cancelText,
                               QWidget* parent,
                               QLineEdit::EchoMode echo,
                               const QString& text,
@@ -131,7 +136,7 @@ QString XInputDialog::getText(const QString& title,
                               Qt::WindowFlags flags,
                               Qt::InputMethodHints inputMethodHints)
 {
-    XInputDialog dlg(parent, flags);
+    XInputDialog dlg(parent, flags,okText,cancelText);
     dlg.setWindowTitle(title);
     dlg.setLabelText(label);
     dlg.setTextValue(text);
@@ -163,13 +168,15 @@ QString XInputDialog::getText(const QString& title,
 */
 QString XInputDialog::getMultiLineText(const QString& title,
                                        const QString& label,
+                                       const QString &okText,
+                                       const QString &cancelText,
                                        QWidget* parent,
                                        const QString& text,
                                        bool* ok,
                                        Qt::WindowFlags flags,
                                        Qt::InputMethodHints inputMethodHints)
 {
-    XInputDialog dialog(parent, flags);
+    XInputDialog dialog(parent, flags,okText,cancelText);
     dialog.setOptions(QInputDialog::UsePlainTextEditForTextInput);
     dialog.setWindowTitle(title);
     dialog.setLabelText(label);
@@ -204,6 +211,8 @@ QString XInputDialog::getMultiLineText(const QString& title,
 QString XInputDialog::getItem(const QString& title,
                               const QString& label,
                               const QStringList& items,
+                              const QString &okText,
+                              const QString &cancelText,
                               QWidget* parent,
                               int current,
                               bool editable,
@@ -213,7 +222,7 @@ QString XInputDialog::getItem(const QString& title,
 {
     QString text(items.value(current));
 
-    XInputDialog dialog(parent, flags);
+    XInputDialog dialog(parent, flags,okText,cancelText);
     dialog.setWindowTitle(title);
     dialog.setLabelText(label);
     dialog.setComboBoxItems(items);
@@ -247,16 +256,18 @@ QString XInputDialog::getItem(const QString& title,
                 窗口标志位为 \a flags.
 */
 int XInputDialog::getInt(const QString& title,
-                        const QString& label,
-                        QWidget* parent,
-                        int value,
-                        int minValue,
-                        int maxValue,
-                        int step,
-                        bool* ok,
-                        Qt::WindowFlags flags)
+                         const QString& label,
+                         const QString &okText,
+                         const QString &cancelText,
+                         QWidget* parent,
+                         int value,
+                         int minValue,
+                         int maxValue,
+                         int step,
+                         bool* ok,
+                         Qt::WindowFlags flags)
 {
-    XInputDialog dialog(parent, flags);
+    XInputDialog dialog(parent, flags,okText,cancelText);
     dialog.setWindowTitle(title);
     dialog.setLabelText(label);
     dialog.setIntRange(minValue, maxValue);
@@ -291,6 +302,8 @@ int XInputDialog::getInt(const QString& title,
 */
 double XInputDialog::getDouble(const QString& title,
                                const QString& label,
+                               const QString &okText,
+                               const QString &cancelText,
                                QWidget* parent,
                                double value,
                                double minValue,
@@ -300,7 +313,7 @@ double XInputDialog::getDouble(const QString& title,
                                Qt::WindowFlags flags,
                                double step)
 {
-    XInputDialog dialog(parent, flags);
+    XInputDialog dialog(parent, flags,okText,cancelText);
     dialog.setWindowTitle(title);
     dialog.setLabelText(label);
     dialog.setDoubleDecimals(decimals);

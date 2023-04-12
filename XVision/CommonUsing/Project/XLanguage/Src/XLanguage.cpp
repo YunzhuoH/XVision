@@ -241,6 +241,7 @@ void XLanguage::init()
    }
    QString curLangFile=langPath+"/"+curLangType+".xml";
    d->loadLangXml(curLangFile,curLangType,curLangName);
+   m_strCurType=curLangType;
    m_bIsInit=true;
 }
 
@@ -255,7 +256,7 @@ void XLanguage::uninit()
     m_bIsInit=false;
 }
 
-QMap<QString, QString> XLanguage::getCurLangType()
+QMap<QString, QString> XLanguage::getLangTypes()
 {
     Q_D(XLanguage);
     QMap<QString,QString> map;
@@ -273,6 +274,11 @@ QMap<QString, QString> XLanguage::getCurLangType()
 
     }
     return map;
+}
+
+QString XLanguage::getCurLangType() const
+{
+    return m_strCurType;
 }
 
 QString XLanguage::getLang(const QString &key, QString defLang)
@@ -313,7 +319,7 @@ QString XLanguage::setLang(const QString &key, QString lang)
 
 bool XLanguage::switchLang(const QString &type)
 {
-    auto map=getCurLangType();
+    auto map=getLangTypes();
     if(!map.contains(type))
     {
         return false;

@@ -9,6 +9,7 @@ set(XGraphics_Inc CommonUsing/Project/XGraphics/include)
 set(XLanguage_Inc CommonUsing/Project/XLanguage/include)
 set(XLog_Inc CommonUsing/Project/XLog/include)
 set(XWidget_Inc CommonUsing/Project/XWidget/XWidget/include)
+set(XConcurrent_Inc CommonUsing/Project/XConcurrent/include)
 
 
 #link_dir:

@@ -78,6 +78,7 @@ public:
     XMessageBox(Icon icon,
                    const QString& title,
                    const QString& text,
+                   QMap<StandardButton,QString> mapbtnText= QMap<StandardButton,QString>(),
                    StandardButtons buttons = NoButton,
                    QWidget* parent         = Q_NULLPTR,
                    Qt::WindowFlags f       = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
@@ -112,24 +113,28 @@ public:
     static StandardButton critical(const QString& title,
                                    const QString& text,
                                    QWidget* parent=nullptr,
+                                   QMap<StandardButton,QString> mapbtnText= QMap<StandardButton,QString>(),
                                    StandardButtons buttons      = Ok,
                                    StandardButton defaultButton = NoButton);
 
     static StandardButton information(const QString& title,
                                       const QString& text,
                                       QWidget* parent=nullptr,
+                                      QMap<StandardButton,QString> mapbtnText= QMap<StandardButton,QString>(),
                                       StandardButtons buttons      = Ok,
                                       StandardButton defaultButton = NoButton);
 
     static StandardButton question(const QString& title,
                                    const QString& text,
                                    QWidget* parent=nullptr,
+                                   QMap<StandardButton,QString> mapbtnText= QMap<StandardButton,QString>(),
                                    StandardButtons buttons      = StandardButtons(Yes | No),
                                    StandardButton defaultButton = NoButton);
 
     static StandardButton warning(const QString& title,
                                   const QString& text,
                                   QWidget* parent=nullptr,
+                                  QMap<StandardButton,QString> mapbtnText= QMap<StandardButton,QString>(),
                                   StandardButtons buttons      = Ok,
                                   StandardButton defaultButton = NoButton);
 
@@ -137,6 +142,7 @@ public:
                                   const QString& text,                              
                                   const QPixmap& icon,
                                   QWidget* parent=nullptr,
+                                  QMap<StandardButton,QString> mapbtnText= QMap<StandardButton,QString>(),
                                   StandardButtons buttons      = Ok,
                                   StandardButton defaultButton = NoButton);
 

@@ -12,7 +12,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 file(GLOB INCLUDE include/*)
-file(GLOB SRC Src/*.*)
+file(GLOB SRC src/*.*)
 
 file(GLOB spdlog 3rdparty/spdlog/*.*)
 file(GLOB spdlog_cfg 3rdparty/spdlog/cfg/*.*)
@@ -38,7 +38,7 @@ add_library(XLog SHARED
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 target_link_libraries(XLog PRIVATE Qt${QT_VERSION_MAJOR}::Core)

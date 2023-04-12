@@ -2,6 +2,7 @@
 
 #include <QGraphicsSceneEvent>
 #include <QKeyEvent>
+#include <QUuid>
 
 #include "XGraphicsView.h"
 #include "XGraphicsDelegateFactory.h"
@@ -32,7 +33,8 @@ public:
 /****************************构建与析构****************************/
 XGraphicsScene::XGraphicsScene(QObject *parent)
    :QGraphicsScene(parent),
-   m_pView(new XGraphicsView(this)),d_ptr(new XGraphicsScenePrivate(this))
+   m_pView(new XGraphicsView(this)),d_ptr(new XGraphicsScenePrivate(this)),
+   m_SceneId(QUuid::createUuid().toString(QUuid::Id128))
 {    
     m_pView->setScene(this);
     m_pView->setAcceptDrops(true);
@@ -86,6 +88,15 @@ void XGraphicsScene::zoomToItemRect()
     getView()->zoomToRect(rect);
 }
 
+void XGraphicsScene::setEnabled(bool enable)
+{
+    getView()->setEnabled(enable);
+    foreach (auto item, this->items())
+    {
+        item->setEnabled(enable);
+    }
+}
+
 
 
 /****************************XItem字典****************************/
@@ -106,18 +117,25 @@ void XGraphicsScene::addXItem(XGraphicsItem *xItem)
     }
 }
 
-void XGraphicsScene::removeXItem(XGraphicsItem *xItem)
+bool XGraphicsScene::removeXItem(XGraphicsItem *xItem)
 {
-    if(!xItem) return;
-    if(!xItem->item()) return;
-    this->removeItem(xItem->item());
-    if(m_mapXItem.contains(xItem->itemId()))
+    if(!xItem) return false;
+    if(!xItem->item()) return false;
+
+    bool bCantRemove=xItemRemoveStart(xItem);//判断能否删除
+    if(!bCantRemove)
     {
-       m_mapXItem.remove(xItem->itemId());
+        this->removeItem(xItem->item());
+        if(m_mapXItem.contains(xItem->itemId()))
+        {
+           m_mapXItem.remove(xItem->itemId());
+        }
+        disconnect(xItem,&XGraphicsItem::posChanged,this,&XGraphicsScene::onXItemPosChanged);
+        disconnect(xItem,&XGraphicsItem::shapeChanged,this,&XGraphicsScene::onXItemShapeChanged);
+        emit xItemRemoveFinish(xItem);
+        return true;
     }
-    disconnect(xItem,&XGraphicsItem::posChanged,this,&XGraphicsScene::onXItemPosChanged);
-    disconnect(xItem,&XGraphicsItem::shapeChanged,this,&XGraphicsScene::onXItemShapeChanged);
-    emit xItemRemove(xItem);
+    return false;
 }
 
 XGraphicsItem *XGraphicsScene::getXItemById(const QString &id)
@@ -193,9 +211,11 @@ void XGraphicsScene::clearXItemAndXLink()
     //再移除XItem
     foreach (auto xItem, m_mapXItem)
     {
-        this->removeXItem(xItem);
-        xItem->deleteLater();
-        xItem=nullptr;
+        if(this->removeXItem(xItem))
+        {
+            xItem->deleteLater();
+            xItem=nullptr;        
+        }
     }
 }
 
@@ -259,7 +279,7 @@ void XGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
            m_pTempDragXItem=mineData->xItem();
            if(m_pTempDragXItem)
            {
-               this->addXItem(m_pTempDragXItem);
+               this->addItem(m_pTempDragXItem->item()); //先添加到图元Items
            }
        }
        else //item工厂不为空
@@ -268,7 +288,7 @@ void XGraphicsScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
           m_pTempDragXItem=m_pXItemFactory->getXGraphicsItem(type);
           if(m_pTempDragXItem)
           {
-              this->addXItem(m_pTempDragXItem);
+              this->addItem(m_pTempDragXItem->item());//先添加到图元Items
           }
        }
     }
@@ -286,7 +306,7 @@ void XGraphicsScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
     if (m_pTempDragXItem)
     {
-        this->removeXItem(m_pTempDragXItem);
+        this->removeItem(m_pTempDragXItem->item());//从图元Items移除
         m_pTempDragXItem->deleteLater();
         m_pTempDragXItem = nullptr;
     }
@@ -300,6 +320,8 @@ void XGraphicsScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     }
     if(m_pTempDragXItem)
     {
+      this->removeItem(m_pTempDragXItem->item());//先从图元Items移除后添加
+      this->addXItem(m_pTempDragXItem);//松开则添加到XItems
       //不在XItem字典中存在则进行删除,防止内存泄露
       if(!existPtrInXItems(m_pTempDragXItem))
       {
@@ -619,9 +641,12 @@ void XGraphicsScene::keyPressEvent(QKeyEvent *event)
             {
                 m_pTempMagneticMoveXItem=nullptr;   //防止移动时删除时报错，m_pTempMagneticMoveXItem出现野指针。
             }
-            this->removeXItem(xItem);
-            xItem->deleteLater();
-            xItem=nullptr;
+            if(this->removeXItem(xItem))
+            {
+                xItem->deleteLater();
+                xItem=nullptr;
+            }
+
         }
 
     }

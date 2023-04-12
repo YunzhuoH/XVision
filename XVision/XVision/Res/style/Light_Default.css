@@ -107,6 +107,20 @@ XGraphicsView XMatScrollBar
 
 }
 
+XGraphicsView QMenu {
+    font-weight: 400;
+    font:15px/30px Microsoft-YaHei, serif;
+    border:1px solid;
+    border-color:#DDDDDD;
+    background-color: white;
+}
+XGraphicsView QMenu::item:selected{
+    background-color: #DDDDDD;
+}
+XGraphicsView QMenu::item:pressed{
+    background-color: #BBBBBB;
+}
+
 /***************************QScrollArea***************************/
 QScrollArea
 {
@@ -314,3 +328,21 @@ XTitleBar QAbstractButton:pressed
 
 
 
+/******************QTableView*************************/
+
+QTableView
+{
+    gridline-color:#BBBBBB;/*设置网格线*/
+    border-width:1px;
+    border-style:solid;
+    border-color:#BBBBBB;
+    border-top:none;
+}
+QHeaderView::section
+{
+    background-color: #BB3282FA;
+    color: white;
+}
+
+
+/**************************************************************/

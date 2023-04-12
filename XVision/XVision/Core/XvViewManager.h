@@ -8,9 +8,10 @@
 
 #define XvViewMgr XvViewManager::getInstance()
 
+class XvSingleApplication;
 class AppMainWindow;
 class DockMainManager;
-class UiXvFlowManager;
+class UiXvWorkManager;
 
 class XvViewManager : public QObject
 {
@@ -26,29 +27,34 @@ private:
 
 
 public:
+    ///获取app
+    XvSingleApplication *app() const;
     ///获取主界面
-    AppMainWindow* getMainWindow() const;
+    AppMainWindow* appMainWindow() const;
     ///获取主Dock管理器
-    DockMainManager* getDockMainManager() const;
+    DockMainManager* dockMainManager() const;
     ///获取流程Ui管理器
-    UiXvFlowManager* getUiXvFlowManager() const;
+    UiXvWorkManager* uiXvWorkManager() const;
     ///初始化
     void init();
 
 protected:
+    ///设置App
+    void setApp(XvSingleApplication* app);
     ///设置主界面
     void setAppMainWindow(AppMainWindow* mw);
     ///设置主界面Dock管理器
     void setDockMainManager(DockMainManager* dockMainMgr);
     ///设置流程Ui管理器
-    void setUiXvFlowManager(UiXvFlowManager* uiXvFlowManager);
+    void setUiXvWorkManager(UiXvWorkManager* uiXvWorkManager);
 
 signals:
 
 private:
+    XvSingleApplication* m_app=nullptr;
     AppMainWindow*  m_appMainWindow=nullptr;
     DockMainManager* m_dockMainManager=nullptr;
-    UiXvFlowManager* m_uiXvFlowManager=nullptr;
+    UiXvWorkManager* m_uiXvWorkManager=nullptr;
 };
 
 #endif // XVIEWMGR_H

@@ -59,7 +59,7 @@ XGraphicsItem::XGraphicsItem(QString type,QString id,QObject *parent)
 {
     if(id.isEmpty())
     {
-         m_ItemId=QUuid::createUuid().toString(QUuid::Id128);
+        m_ItemId=QUuid::createUuid().toString(QUuid::Id128);
     }
     else
     {
@@ -74,7 +74,6 @@ XGraphicsItem::XGraphicsItem(QString type,QString id,QObject *parent)
         }
     }
 
-    m_mapTagData.clear();
     m_mapPixData.clear();
     m_mapThisFatherConnect.clear();
     m_mapThisSonConnect.clear();
@@ -462,10 +461,16 @@ void XGraphicsItem::setParScene(XGraphicsScene *parScene)
     m_parScene=parScene;
 }
 
+
 //[item附带数据]
-void XGraphicsItem::addTagData(QString key, const QVariant &data)
+void XGraphicsItem::setItemTag(const QVariant &tag)
 {
-    m_mapTagData.insert(key,data);
+    m_ItemTag=tag;
+}
+
+void XGraphicsItem::setItemQPtrTag(QObject *qptrTag)
+{
+    m_ItemQPtrTag=qptrTag;
 }
 
 void XGraphicsItem::addPixData(SXItemPixData *data)
@@ -478,11 +483,13 @@ void XGraphicsItem::addPixData(SXItemPixData *data)
     }
 }
 
-bool XGraphicsItem::switchShowPixKey(const QString &key, bool bUpdate)
+bool XGraphicsItem::switchShowPixKey(const QString &pixKey,const QString &penKey, bool bUpdate)
 {
-    if(m_mapPixData.contains(key)||key=="")
+    if(m_mapPixData.contains(pixKey)||pixKey=="")
     {
-        m_strShowPixKey=key;
+        m_strShowPixKey=pixKey;
+        auto pixData=m_mapPixData[pixKey];
+        pixData->switchPenKey(penKey);
         if(bUpdate)
         {
             auto it=item();
