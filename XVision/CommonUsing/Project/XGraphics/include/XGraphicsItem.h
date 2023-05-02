@@ -74,14 +74,14 @@ class XGRAPHICS_PUBLIC XGraphicsItem:public QObject
     Q_PROPERTY(QBrush connectAreaBrush READ connectAreaBrush WRITE setConnectAreaBrush)
     Q_PROPERTY(QPen textPen READ textPen WRITE setTextPen)
     Q_PROPERTY(QFont textFont READ textFont WRITE setTextFont)
-    Q_PROPERTY(QPen highlightPen READ highlightPen WRITE setHighlightPen)
-    Q_PROPERTY(QBrush highlightBrush READ highlightBrush WRITE setHighlightBrush)
+    Q_PROPERTY(QPen highLightPen READ highLightPen WRITE setHighLightPen)
+    Q_PROPERTY(QBrush highLightBrush READ highLightBrush WRITE setHighLightBrush)
 
     friend class XGraphicsScene;//友元XGraphicsScene
     friend class XGraphicsConnectLink; //友元XGraphicsConnectLink
 public:
     XGraphicsItem(QString type="",QString id="",QObject *parent = nullptr);
-    ~XGraphicsItem();
+    virtual ~XGraphicsItem();
 public:
 //*[常规公共接口]*
     ///转换为GItem图元
@@ -109,14 +109,14 @@ public:
     void setTextFont(const QFont &font);
 
     ///高亮时画笔
-    QPen highlightPen() const;
+    QPen highLightPen() const;
     ///设置高亮时画笔
-    void setHighlightPen(const QPen &pen);
+    void setHighLightPen(const QPen &pen);
 
     ///高亮时笔刷
-    QBrush highlightBrush() const;
+    QBrush highLightBrush() const;
     ///设置高亮时笔刷
-    void setHighlightBrush(const QBrush &brush);
+    void setHighLightBrush(const QBrush &brush);
 protected:
     ///初始化Item
     virtual void initItem()=0;
@@ -180,17 +180,17 @@ public:
     }
 
     ///设置Item高亮显示
-    virtual void setHighlight(bool highlight,bool bUpdate=true);
+    virtual void setHighLight(bool highLight,bool bUpdate=true);
     ///Item高亮显示
-    virtual bool highlight() const
+    virtual bool highLight() const
     {
-        return m_bHighlight;
+        return m_bHighLight;
     }
 protected:
     ///Item长宽
     double    m_rWidth,m_rHeight;
     ///Item高亮显示
-    bool m_bHighlight=false;
+    bool m_bHighLight=false;
 
 /***************************xItem连线模块***************************/
 public:

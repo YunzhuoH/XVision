@@ -228,11 +228,11 @@ public:
     }
 
     ///设置Link高亮显示
-    virtual void setHighlight(bool highlight,bool bUpdate=true);
+    virtual void setHighLight(bool highLight,bool bUpdate=true);
     ///Link高亮显示
-    virtual bool highlight() const
+    virtual bool highLight() const
     {
-        return m_bHighlight;
+        return m_bHighLight;
     }
 
 protected:
@@ -271,7 +271,7 @@ protected:
     ///末端箭头
     QPolygonF m_polyArrowHead;
     ///高亮显示
-    bool m_bHighlight=false;
+    bool m_bHighLight=false;
 protected:
     const QScopedPointer<XGraphicsConnectLinkPrivate> d_ptr;
 private:

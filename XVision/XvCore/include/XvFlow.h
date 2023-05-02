@@ -8,6 +8,7 @@
 
 namespace XvCore
 {
+
 class XvFunc;
 class XvProject;
 class XvFlowPrivate;
@@ -40,9 +41,14 @@ public:
     QString tokenMsgId() override { return flowId(); }
     ///父项目
     XvProject* parProject() const { return m_parProject; }
+
+    ///获取最后错误信息
+    QString lastErrorMsg();
 protected:
     ///设置父流程
     void setParProject(XvProject* project);
+    ///设置最后错误信息
+    void setLastErrorMsg(const QString &msg);
 signals:
     ///信号:流程名称更改
     void sgFlowNameChanged(XvFlow* flow);
@@ -53,6 +59,8 @@ protected:
     ///流程名称
     QString _flowName;
 
+    ///最后错误信息
+    QString _lastErrorMsg;
     ///父项目
     XvProject* m_parProject=nullptr;
 
@@ -67,11 +75,15 @@ public:
     ///算子数量
     int xvFuncCount() const;
 public slots:
+//*[增删]*
     ///通过标识符创建算子
     XvFunc* createXvFunc(const QString &role);
     ///通过ID移除算子
     bool removeXvFunc(const QString &id);
 
+protected slots:
+    ///所有算子连接更新事件
+    void onUpdateAllXvFuncLink();
 signals:
     ///算子添加信号
     void sgXvFuncCreated(XvFunc* func);
@@ -79,7 +91,6 @@ signals:
     void sgRemoveXvFuncStart(XvFunc* func);
     ///算子完成删除信号
     void sgRemoveXvFuncEnd(const QString &funcId);
-
 
 /**********************算子运行操作及其状态更新**********************/
 public:
@@ -89,6 +100,11 @@ public:
     RetXv runLoop();
     ///流程停止运行
     RetXv stop();
+    ///等待流程运行
+    /// ms:等待事件 ms=0:无限等待
+    RetXv wait(unsigned long ms=0);
+    ///是否正在运行
+    bool isRunning() const { return _running;}
     ///获取运行信息
     XvFlowRunInfo getXvFuncRunInfo() const
     {
@@ -100,6 +116,11 @@ public:
     {
         return _runInfo.runStatus;
     }
+protected:
+    ///检查流程合法性(运行前调用)
+    bool checkFlowLegal();
+    ///流程运行线程
+    void _threadRun(bool bLoop=false);
 signals:
     ///流程运行开始
     void sgFlowRunStart();
@@ -112,6 +133,8 @@ signals:
 protected:
     ///流程运行信息
     XvFlowRunInfo _runInfo;
+    ///流程是否在运行
+    bool    _running;
 
  /**********************流程操作**********************/
  //流程操作:运行释放
@@ -119,7 +142,7 @@ protected:
 
 public:
     ///流程资源释放(删除前必需调用进行判断)
-    /// RET_XV_SUCCESS:能删除 !RET_XV_SUCCESS:不可删除
+    /// Ret_Xv_Success:能删除 !Ret_Xv_Success:不可删除
     RetXv release();
 
 protected:

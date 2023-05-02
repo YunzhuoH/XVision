@@ -151,10 +151,13 @@ typedef struct S_XVFUNC_RUN_INFO
 {
     S_XVFUNC_RUN_INFO()
     {
+        runIdx=0;
         runStatus=EXvFuncRunStatus::Init;
         runMsg="";
         runElapsed=0.0;
     }
+    ///运行序号
+    uint runIdx;
     ///算子运行结果
     EXvFuncRunStatus runStatus;
     ///运行消息
@@ -167,11 +170,11 @@ typedef struct S_XVFUNC_RUN_INFO
 ///流程状态
 typedef enum class E_XvFlow_Run_Status
 {
-    Init=XvFuncRunStatus_Init,//初始状态 未运行
-    Running=XvFuncRunStatus_Running,//正在运行
-    Ok=XvFuncRunStatus_Ok, //运行成功    运行成功返回
-    Fail=XvFuncRunStatus_Fail, //运行失败  运行存在错误
-    Error=XvFuncRunStatus_Error,//运行错误  中断强制退出运行
+    Init=XvFlowRunStatus_Init,//初始状态 未运行
+    Running=XvFlowRunStatus_Running,//正在运行
+    Ok=XvFlowRunStatus_Ok, //运行成功    运行成功返回
+    Fail=XvFlowRunStatus_Fail, //运行失败  运行存在错误
+    Error=XvFlowRunStatus_Error,//运行错误  中断强制退出运行
 }EXvFlowRunStatus,*PEXvFlowRunStatus;
 Q_ENUM_NS(E_XvFlow_Run_Status)
 
@@ -180,12 +183,15 @@ typedef struct S_XVFLOW_RUN_INFO
 {
     S_XVFLOW_RUN_INFO()
     {
+        runIdx=0;
         runStatus=EXvFlowRunStatus::Init;
-        runCode=RET_XV_SUCCESS;
+        runCode=Ret_Xv_Success;
         runMsg="";
         runElapsed=0.0;
     }
-    ///最后算子运行结果
+    ///运行序号
+    uint runIdx;
+    ///最后流程运行结果
     EXvFlowRunStatus runStatus;
     ///最后运行代码 成功为0 失败非0
     RetXv runCode;

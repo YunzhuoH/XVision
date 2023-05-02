@@ -158,6 +158,7 @@ void FrmThreadMonitor::onTimerUpdate()
             tb->setItem(nRow,nCol,item);
         }
         item->setText(text);
+        item->setToolTip(text);
         return item;
     };
 

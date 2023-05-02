@@ -109,7 +109,7 @@ QList<XThread *> XConcurrentManager::threads() const
     return d->xThreads;
 }
 
-QList<XThread *> XConcurrentManager::threadsByGroup(const XTHREAD_GROUP &group)
+QList<XThread *> XConcurrentManager::getThreadsByGroup(const XTHREAD_GROUP &group)
 {
     Q_D(XConcurrentManager);
     QMutexLocker locker(&d->mutex);
@@ -125,7 +125,7 @@ QList<XThread *> XConcurrentManager::threadsByGroup(const XTHREAD_GROUP &group)
     return lst;
 }
 
-QList<XThread *> XConcurrentManager::threadsByName(const QString &name)
+QList<XThread *> XConcurrentManager::getThreadsByName(const QString &name)
 {
     Q_D(XConcurrentManager);
     QMutexLocker locker(&d->mutex);
@@ -141,12 +141,25 @@ QList<XThread *> XConcurrentManager::threadsByName(const QString &name)
     return lst;
 }
 
-XThread *XConcurrentManager::threadsById(const XTHREAD_ID &id)
+XThread *XConcurrentManager::getThreadsById(const XTHREAD_ID &id)
 {
     Q_D(XConcurrentManager);
     foreach (auto th, d->xThreads)
     {
         if(th->id()==id)
+        {
+            return th;
+        }
+    }
+    return nullptr;
+}
+
+XThread *XConcurrentManager::getThreadsByGropuName(const XTHREAD_GROUP &group, const QString &name)
+{
+    Q_D(XConcurrentManager);
+    foreach (auto th, d->xThreads)
+    {
+        if(th->group()==group&&th->name()==name)
         {
             return th;
         }

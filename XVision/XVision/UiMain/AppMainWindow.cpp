@@ -294,7 +294,6 @@ void AppMainWindowPrivate::initMwTitleBar(XTitleBar* tb)
     });
     act= funcAddAct(menu,getLang(App_AppMainWindow_About,"关于"),"actAbout",QIcon(":/images/Ui/AppMainWindowAbout.svg"));
     QObject::connect(act,&QAction::triggered,q,&AppMainWindow::about);
-
 }
 
 void AppMainWindowPrivate::initMwToolBar(QFrame* fm)
@@ -403,6 +402,7 @@ void AppMainWindowPrivate::closeEvent()
     Q_Q(AppMainWindow);
     QSettings Settings(APPMAINWINDOW_CONFIG_PATH,QSettings::IniFormat);
     Settings.setValue("AppMainWindow/Geometry", q->saveGeometry());
+    q->getApp()->quit();
 }
 
 
@@ -440,6 +440,7 @@ void AppMainWindow::closeEvent(QCloseEvent *event)
 {
     d_ptr->closeEvent();
     return XFramelessWidget::closeEvent(event);
+
 }
 
 

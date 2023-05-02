@@ -49,11 +49,13 @@ public:
     ///获取线程列表
     QList<XThread*> threads() const;
     ///获取组线程
-    QList<XThread*> threadsByGroup(const XTHREAD_GROUP &group);
+    QList<XThread*> getThreadsByGroup(const XTHREAD_GROUP &group);
     ///通过名称获取线程
-    QList<XThread*> threadsByName(const QString &name);
+    QList<XThread*> getThreadsByName(const QString &name);
     ///通过ID获取线程
-    XThread* threadsById(const XTHREAD_ID &id);
+    XThread* getThreadsById(const XTHREAD_ID &id);
+    ///通过组和名称获取线程
+    XThread* getThreadsByGropuName(const XTHREAD_GROUP &group,const QString &name);
 
 /*---------------------临时线程池---------------------*/
 public:

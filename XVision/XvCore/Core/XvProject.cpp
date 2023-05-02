@@ -46,11 +46,25 @@ XvProject::XvProject(const QString &name,QObject *parent)
 XvProject::~XvProject()
 {
     unRegisterTokenMsgAble();
+    release();
 }
-
+//xie.y todo 释放项目(流程逐个释放) 待完成
 RetXv XvProject::release()
 {
-    return false;
+    Q_D(XvProject);
+    foreach (auto flow, d->mapFlow)
+    {
+        if(flow->release())
+        {
+            flow->deleteLater();
+        }
+        else
+        {
+            delete flow;
+            flow=nullptr;
+        }
+    }
+    return true;
 }
 
 
@@ -126,12 +140,12 @@ bool XvProject::removeXvFlow(const QString &id)
        }
        else
        {
-           Log_Warn(QString(getLang(Core_XvProject_RemoveXvFuncError1,"移除流程[%1]错误，流程无法释放")).arg(flow->flowName()));
+           setLastErrorMsg(QString(getLang(Core_XvProject_RemoveXvFuncError1,"移除流程[%1]错误，流程无法释放")).arg(flow->flowName()));
        }
     }
     else
     {
-        Log_Warn(QString(getLang(Core_XvProject_RemoveXvFuncError2,"移除流程错误，流程Id[%1]不存在")).arg(id));
+        setLastErrorMsg(QString(getLang(Core_XvProject_RemoveXvFuncError2,"移除流程错误，流程Id[%1]不存在")).arg(id));
     }
     return false;
 }
@@ -168,4 +182,17 @@ void XvProject::setProjectName(const QString &name)
         _projectName=name;
         emit projectNameChanged(name);
     }
+}
+
+QString XvProject::lastErrorMsg()
+{
+    QString str=_lastErrorMsg;
+    _lastErrorMsg="";
+    return str;
+}
+
+void XvProject::setLastErrorMsg(const QString &msg)
+{
+    _lastErrorMsg=msg;
+    Log_Trace(QString("<%1>[%2]:%3").arg(this->projectId()).arg(this->projectName()).arg(msg));
 }

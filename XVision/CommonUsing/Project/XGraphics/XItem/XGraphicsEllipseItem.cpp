@@ -339,10 +339,10 @@ void XGraphicsEllipseItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
         painter->setPen(d->itemEllipsePen);
         painter->setBrush(d->itemEllipseBrush);
     }
-    if(m_bHighlight)
+    if(m_bHighLight)
     {
-        painter->setPen(highlightPen());
-        painter->setBrush(highlightBrush());
+        painter->setPen(highLightPen());
+        painter->setBrush(highLightBrush());
     }
     painter->drawEllipse(m_ptCenter,m_rRadiusX,m_rRadiusY);
 

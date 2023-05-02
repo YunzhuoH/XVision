@@ -298,10 +298,10 @@ void XGraphicsRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
         painter->setPen(d->itemRectPen);
         painter->setBrush(d->itemRectBrush);
     }
-    if(m_bHighlight)
+    if(m_bHighLight)
     {
-        painter->setPen(highlightPen());
-        painter->setBrush(highlightBrush());
+        painter->setPen(highLightPen());
+        painter->setBrush(highLightBrush());
     }
     painter->drawRoundedRect(this->boundingRect(),d->rectRounded,d->rectRounded);
     painter->restore();

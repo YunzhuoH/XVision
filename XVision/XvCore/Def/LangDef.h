@@ -28,12 +28,21 @@
 #define Core_XvFuncType_User                                "Core_XvFuncType_User"                      //用户
 
 //XvProject
-#define Core_XvProject_RemoveXvFuncError1                        "Core_XvProject_RemoveXvFuncError1"                      ///移除流程[%1]错误，流程无法释放
-#define Core_XvProject_RemoveXvFuncError2                        "Core_XvProject_RemoveXvFuncError2"                      ///移除流程错误，流程Id[%1]不存在
+#define Core_XvProject_RemoveXvFuncError1                        "Core_XvProject_RemoveXvFuncError1"                      //移除流程[%1]错误，流程无法释放
+#define Core_XvProject_RemoveXvFuncError2                        "Core_XvProject_RemoveXvFuncError2"                      //移除流程错误，流程Id[%1]不存在
 //XvFlow
-#define Core_XvFlow_CreateXvFuncError1                        "Core_XvFlow_CreateXvFuncError1"                      ///创建算子错误，标识符[%1]无效
-#define Core_XvFlow_RemoveXvFuncError1                        "Core_XvFlow_RemoveXvFuncError1"                      ///移除算子[%1]错误，算子无法释放
-#define Core_XvFlow_RemoveXvFuncError2                        "Core_XvFlow_RemoveXvFuncError2"                      ///移除算子错误，算子Id[%1]不存在
+#define Core_XvFlow_CreateXvFuncError1                        "Core_XvFlow_CreateXvFuncError1"                      //创建算子错误，标识符[%1]无效
+#define Core_XvFlow_RemoveXvFuncError1                        "Core_XvFlow_RemoveXvFuncError1"                      //移除算子[%1]错误，算子无法释放
+#define Core_XvFlow_RemoveXvFuncError2                        "Core_XvFlow_RemoveXvFuncError2"                      //移除算子错误，算子Id[%1]不存在
+
+#define Core_XvFlow_RunStatusInit                           "Core_XvFlow_RunStatusInit"    //初始状态
+#define Core_XvFlow_RunStatusRunning                        "Core_XvFlow_RunStatusRunning"    //正在运行
+#define Core_XvFlow_RunStatusOk                             "Core_XvFlow_RunStatusOk"    //运行成功
+#define Core_XvFlow_RunStatusFail                           "Core_XvFlow_RunStatusFail"    //运行失败
+#define Core_XvFlow_RunStatusError                          "Core_XvFlow_RunStatusError"    //运行错误
+
+
+#define Core_XvFlow_FlowLegalError1                        "Core_XvFlow_FlowLegalError1"                      ///流程合法性错误，起始节点(无父节点)数量不等于1
 //XvFunc
 #define Core_XvFunc_RunStatusInit                           "Core_XvFunc_RunStatusInit"    //初始状态
 #define Core_XvFunc_RunStatusRunning                        "Core_XvFunc_RunStatusRunning"    //正在运行

@@ -80,6 +80,19 @@ bool XvCoreManager::init()
 bool XvCoreManager::uninit()
 {
     XvPlgMgr->uninit();
+    Q_D(XvCoreManager);
+    if(d->project)
+    {
+       if(d->project->release())
+       {
+           d->project->deleteLater();
+       }
+       else
+       {
+           delete d->project;
+           d->project=nullptr;
+       }
+    }
     return true;
 }
 

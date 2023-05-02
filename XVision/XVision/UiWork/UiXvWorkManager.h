@@ -9,7 +9,7 @@
 /// 关联XvWorkManager
 ///连接底层XvCore视觉工作流
 /// 借鉴MVC/MVVM框架,该类实现对底层视觉类的(单向)绑定
-
+class XMatSlider;
 namespace XvCore
 {
 class XvFunc;
@@ -43,12 +43,16 @@ protected: //初始化接口
     void initDock();
     ///初始化工具按钮
     void initToolBtn();
+    ///初始化状态栏
+    void initStatusBar();
 
 protected://内部工具接口
     ///获取当前Dock的流程ID
     bool getCurDockFlowId(QString &id);
     ///获取当前Dock的流程
     XvCore::XvFlow* getCurDockFlow();
+    ///获取当前流程场景
+    XGraphicsScene* getCurDockFlowScene();
     ///初始化流程场景:【界面】相关连接(绑定)
     void initFlowScene(XvCore::XvFlow *flow,XGraphicsScene* scene);
     ///反初始化流程场景:【界面】相关断连(解绑)
@@ -68,7 +72,6 @@ public slots://公共调用槽
     /// role:算子标识符
     /// flowId：流程号
     bool addXItemByFuncRole(const QString &role,const QString &flowId,const QPointF &pos=QPoint(0,0));
-
     ///通过算子ID和流程ID删除图元
     /// funcId:算子ID
     /// flowId：流程ID
@@ -122,17 +125,28 @@ protected slots://Ui界面内部调用槽
     void onFlowSceneXItemAdd(XGraphicsItem* xItem);
     ///Flow-场景流程XItem开始删除[判断是否可以删除XvFunc](界面主动删除)
     bool onFlowSceneXItemRemoveStart(XGraphicsItem* xItem);
+    ///Flow-场景流程XItem连接判断
+    bool onFlowSceneXItemConnectJudge(XGraphicsItem* fatherXItem,const QString &startKey,XGraphicsItem* sonXItem,const QString &sonKey);
+    ////Flow-场景流程XItem连接删除事件(XItem删除则会联动XvFunc自动删除连接)
+    void onFlowSceneConnectRemove(XGraphicsConnectLink* xLink);
 //*[算子操作]*
     ///算子显示
     void funcShow(XGraphicsItem* item);
+    ///算子运行
+    void funcRun(XGraphicsItem* item);
     ///算子重命名
     void funcRename();
 
+    /*-----Scene/View/Flow信号:流程/流程UI状态更新(m_flowStatusBar区域相关)-----*/
+protected slots:
+    ///流程图缩放条更新
+    void onFlowViewZoomSliderUpdate();
  //*[算子XItem]*
 private:
     CDockManager* m_dockFlowManager = nullptr;//dock管理器
     CDockAreaWidget* m_dockFlowArea=nullptr;//流程区域
     QStatusBar* m_flowStatusBar=nullptr;//流程状态栏显示流程信息
+    XMatSlider* m_flowViewZoomSlider=nullptr;//流程图缩放条
     ///流程号:流程图
     QMap<QString,XGraphicsScene*> m_mapFlowScene;
 

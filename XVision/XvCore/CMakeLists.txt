@@ -13,8 +13,8 @@ include (../CommonCMake/CommonProjectOutputSet.cmake)
 include (../CommonUsing/CommonUsing.cmake)
 
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets XML)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets XML)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets XML Concurrent)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets XML Concurrent)
 
 
 
@@ -27,6 +27,7 @@ list(APPEND CORE_INCLUDE_DIR
   ../XvTokenMsg/include
   ../${XLog_Inc}
   ../${XLanguage_Inc}
+  ../${XConcurrent_Inc}
 )
 
 #添加工程包含目录
@@ -45,6 +46,7 @@ list(APPEND CORE_LIBS
     XvData
     XLog        #日志库
     XLanguage   #多语言库
+    XConcurrent     #多线程管理库
 )
 
 #添加QT库
@@ -52,6 +54,7 @@ list(APPEND CORE_LIBS
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Xml
+    Qt${QT_VERSION_MAJOR}::Concurrent
 )
 
 #[[**************添加连接库文件路径**************]]

@@ -1,0 +1,12 @@
+﻿#ifndef XVFUNCSYSTEMGLOBAL_H
+#define XVFUNCSYSTEMGLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(XVFUNCSYSTEM_LIBRARY)
+#  define XVFUNCSYSTEM_EXPORT Q_DECL_EXPORT
+#else
+#  define XVFUNCSYSTEM_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // XVFUNCSYSTEMGLOBAL_H

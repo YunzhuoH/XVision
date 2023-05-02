@@ -170,9 +170,9 @@ bool XvWorkManager::onceRunXvFlow(const QString &id)
     }
 
     RetXv ret=flow->runOnce();
-    if(ret!=RET_XV_SUCCESS)
+    if(ret!=Ret_Xv_Success)
     {
-        Log_Warn(getLang(App_XvWorkMgr_OnceRunXvFlowError1,"单次运行流程失败,错误码")+QString(":%1").arg(ret));
+        Log_Warn(getLang(App_XvWorkMgr_OnceRunXvFlowError1,"单次运行流程<%1>失败,错误码<%2>,运行信息:%3").arg(flow->flowName()).arg(ret).arg(flow->lastErrorMsg()));
         return false;
     }
     else
@@ -190,9 +190,9 @@ bool XvWorkManager::loopRunXvFlow(const QString &id)
         return false;
     }
     RetXv ret=flow->runLoop();
-    if(ret!=RET_XV_SUCCESS)
+    if(ret!=Ret_Xv_Success)
     {
-        Log_Warn(getLang(App_XvWorkMgr_LoopRunXvFlowError1,"重复运行流程失败,错误码")+QString(":%1").arg(ret));
+        Log_Warn(getLang(App_XvWorkMgr_LoopRunXvFlowError1,"重复运行流程<%1>失败,错误码<%2>,运行信息:%3").arg(flow->flowName()).arg(ret).arg(flow->lastErrorMsg()));
         return false;
     }
     else
@@ -210,7 +210,7 @@ bool XvWorkManager::stopRunXvFlow(const QString &id)
         return false;
     }
     RetXv ret=flow->stop();
-    if(ret!=RET_XV_SUCCESS)
+    if(ret!=Ret_Xv_Success)
     {
         Log_Warn(getLang(App_XvWorkMgr_StopRunXvFlowError1,"停止运行流程失败,错误码")+QString(":%1").arg(ret));
         return false;
@@ -333,16 +333,16 @@ void XvWorkManager::onRemoveXvFlowEnd(const QString &flowId)
 //xie.y todo
 void XvWorkManager::onXvFuncCreated(XvCore::XvFunc *func)
 {
-    qDebug()<<"onXvFuncCreated:"<<func->funcName();
+
 }
 
 void XvWorkManager::onRemoveXvFuncStart(XvCore::XvFunc *func)
 {
-  qDebug()<<"onRemoveXvFuncStart:"<<func->funcName()<<func->funcId();
+
 }
 
 void XvWorkManager::onRemoveXvFuncEnd(const QString &funcId)
 {
- qDebug()<<"onRemoveXvFuncEnd:"<<funcId;
+
 }
 

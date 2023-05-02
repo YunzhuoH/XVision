@@ -473,9 +473,9 @@ void XGraphicsConnectLink::setLinkState(bool isLinked)
     m_bLinked=isLinked;
 }
 
-void XGraphicsConnectLink::setHighlight(bool highlight, bool bUpdate)
+void XGraphicsConnectLink::setHighLight(bool highLight, bool bUpdate)
 {
-    m_bHighlight=highlight;
+    m_bHighLight=highLight;
     if(bUpdate)
     {
         this->update();
@@ -524,7 +524,7 @@ void XGraphicsConnectLink::paint(QPainter *painter, const QStyleOptionGraphicsIt
             painter->setPen(d->linkedPen);
             painter->setBrush(d->linkedPen.color());
         }
-        if(m_bHighlight)
+        if(m_bHighLight)
         {
             painter->setPen(d->highLightPen);
             painter->setBrush(d->highLightPen.color());

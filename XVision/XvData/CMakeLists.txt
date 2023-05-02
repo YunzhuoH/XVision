@@ -21,6 +21,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core XML)
 list(APPEND INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/Data
 
 )
 
@@ -32,12 +33,16 @@ list(APPEND LINK_LIBS
     Qt${QT_VERSION_MAJOR}::Xml
 )
 
-file(GLOB INCLUDE     include/*.*)
+file(GLOB INCLUDE     include/*)
 file(GLOB SRC     src/*.*)
+file(GLOB DATA     Data/*.*)
+file(GLOB XOBJECT     XObject/*.*)
 
 add_library(XvData SHARED
     ${INCLUDE}
     ${SRC}
+    ${DATA}
+    ${XOBJECT}
 )
 
 #设置包含目录

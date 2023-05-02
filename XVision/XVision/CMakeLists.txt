@@ -47,6 +47,7 @@ endif()
 list(APPEND APP_LIBS
     SingleApplication
     XvCore #核心库
+    XvData #数据库
     XvTokenMsg #Token消息库
     XvUtils #工具库
 )
@@ -70,6 +71,7 @@ endif()
 list(APPEND APP_INCLUDE_DIR
     ../SingleApplication
     ../XvCore/include
+    ../XvData/include
     ../XvTokenMsg/include
     ../XvUtils/include
 )
@@ -86,12 +88,6 @@ list(APPEND APP_INCLUDE_DIR
 
 
 #[[**************添加连接库文件路径**************]]
-
-if (NOT MSVC)
-    set(LINK_3RDLIB_DIR mingw)
-else()
-    set(LINK_3RDLIB_DIR msvc)
-endif()
 
 #添加依赖库目录
 list(APPEND APP_LINK_DIR

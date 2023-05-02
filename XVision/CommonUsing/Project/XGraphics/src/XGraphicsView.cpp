@@ -196,20 +196,41 @@ void XGraphicsView::setMagneticLineWidth(const int &width)
     d->magneticLineWidth=width;
 }
 
-/****************************内部工具接口****************************/
+/****************************缩放工具接口****************************/
+
+qreal XGraphicsView::zoomScale() const
+{
+    QTransform t = transform();
+    auto rect= t.mapRect(this->sceneRect());
+    return rect.width()/sceneRect().width();
+}
+
+qreal XGraphicsView::zoomOriginalScaleSize() const
+{
+    return sceneRect().width();
+}
+
+qreal XGraphicsView::zoomMaxScaleSize() const
+{
+  return sceneRect().width()*4;
+}
+
+qreal XGraphicsView::zoomMinScaleSize() const
+{
+   return sceneRect().width()/4;
+}
+
 
 void XGraphicsView::zoomUp()
 {
-
     QTransform t = transform();
-    double const step   = 1.2;
+    double const step   = 1.1;
     double  factor = 0;
     factor=std::pow(step, 1.0);
 
     auto temp=t.scale(factor,factor);
     auto rectUp= temp.mapRect(this->sceneRect());
-    auto rectScene=this->sceneRect();
-    if(rectUp.width()>rectScene.width()*4)
+    if(rectUp.width()>zoomMaxScaleSize())
     {
         return;
     }
@@ -217,20 +238,17 @@ void XGraphicsView::zoomUp()
     {
         scale(factor, factor);
     }
-
 }
 
 void XGraphicsView::zoomDown()
 {
     QTransform t = transform();
-    double const step   = 1.2;
+    double const step   = 1.1;
     double  factor = 0;
     factor = std::pow(step, -1.0);
-
     auto temp=t.scale(factor,factor);
     auto rectDown= temp.mapRect(this->sceneRect());
-    auto rectScene=this->sceneRect();
-    if(rectDown.width()<rectScene.width()/4)
+    if(rectDown.width()<zoomMinScaleSize())
     {
         return;
     }
@@ -311,7 +329,7 @@ void XGraphicsView::wheelEvent(QWheelEvent *event)
     {
        zoomDown();
     }
-
+    emit sgWheelEvent();
 }
 
 

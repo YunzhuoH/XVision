@@ -10,8 +10,6 @@ add_subdirectory(XvData)  #项目数据库工程
 add_subdirectory(XvUtils) #项目工具库工程
 add_subdirectory(XvTokenMsg)  #项目Token消息工程
 
-
-add_subdirectory(XvFuncCollection/VFuncTest_A)
 add_subdirectory(XvFuncCollection/XvFuncSystem) #系统工具库
 
 

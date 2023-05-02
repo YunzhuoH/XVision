@@ -23,7 +23,7 @@ public:
 public:
 //*[项目操作]*
     ///进行释放(删除前必需调用进行判断)
-    /// RET_XV_SUCCESS:能删除 !RET_XV_SUCCESS:不可删除
+    /// Ret_Xv_Success:能删除 !Ret_Xv_Success:不可删除
     RetXv release();
 
 
@@ -67,6 +67,12 @@ public:
     void setProjectName(const QString &name);
     ///TokenMsgAble
     QString tokenMsgId() override { return projectId();}
+
+    ///获取最后错误信息
+    QString lastErrorMsg();
+protected:
+    ///设置错误信息
+    void setLastErrorMsg(const QString &msg);
 signals:
     void projectNameChanged(const QString &name);
 protected:
@@ -75,6 +81,9 @@ protected:
 
     ///项目名称
     QString _projectName;
+
+    ///最后错误信息
+    QString _lastErrorMsg;
 protected:
     const QScopedPointer<XvProjectPrivate> d_ptr;
 

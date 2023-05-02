@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   t="1682070038734"
+   class="icon"
+   viewBox="0 0 1024 1024"
+   version="1.1"
+   p-id="14084"
+   width="32"
+   height="32"
+   id="svg6"
+   sodipodi:docname="BaseDataIntCalc.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     id="namedview8"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="26.15625"
+     inkscape:cx="16.095579"
+     inkscape:cy="16.095579"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6" />
+  <path
+     d="M847 959.2H177.6c-62.6 0-113.5-50.9-113.5-113.5V177.1c0-62.6 50.9-113.5 113.5-113.5H847c62.6 0 113.5 50.9 113.5 113.5v668.7c-0.1 62.5-51 113.4-113.5 113.4zM177.6 109.6c-37.2 0-67.5 30.3-67.5 67.5v668.7c0 37.2 30.3 67.5 67.5 67.5H847c37.2 0 67.5-30.3 67.5-67.5V177.1c0-37.2-30.3-67.5-67.5-67.5H177.6z"
+     fill="#3282FA"
+     p-id="14085"
+     id="path2" />
+  <text
+     xml:space="preserve"
+     style="font-size:533.943px;fill:#3282fa;stroke-width:44.4955"
+     x="151.37473"
+     y="720.27643"
+     id="text347"
+     transform="scale(1.0251639,0.97545377)"><tspan
+       sodipodi:role="line"
+       id="tspan345"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Microsoft YaHei UI';-inkscape-font-specification:'Microsoft YaHei UI';stroke-width:44.4955"
+       x="151.37473"
+       y="720.27643">Int</tspan></text>
+</svg>

@@ -42,7 +42,7 @@
 #define App_XvWorkMgr_RemoveXvFlowError2 "App_XvWorkMgr_RemoveXvFlowError2" //删除流程失败,无法删除唯一一个流程
 #define App_XvWorkMgr_RemoveXvFlowError3 "App_XvWorkMgr_RemoveXvFlowError3" //创删除流程失败,当前流程界面管理器为空
 
-#define App_XvWorkMgr_OnceRunXvFlowError1 "App_XvWorkMgr_OnceRunXvFlowError1" //单次运行流程失败,错误码
+#define App_XvWorkMgr_OnceRunXvFlowError1 "App_XvWorkMgr_OnceRunXvFlowError1" //单次运行流程<%1>失败,错误码<%2>,运行信息:%3
 #define App_XvWorkMgr_LoopRunXvFlowError1 "App_XvWorkMgr_LoopRunXvFlowError1" //重复运行流程失败,错误码
 #define App_XvWorkMgr_StopRunXvFlowError1 "App_XvWorkMgr_StopRunXvFlowError1" //停止运行流程失败,错误码
 
@@ -135,6 +135,7 @@
 //流程
 #define App_UiXvWorkMgr_FlowId          "App_UiXvWorkMgr_FlowId"   //流程ID
 #define App_UiXvWorkMgr_FlowName          "App_UiXvWorkMgr_FlowName"   //流程名
+#define App_UiXvWorkMgr_FlowRunIdx          "App_UiXvWorkMgr_FlowRunIdx"   //当前运行序号
 #define App_UiXvWorkMgr_FlowRunStatus       "App_UiXvWorkMgr_FlowRunStatus"   //运行结果
 #define App_UiXvWorkMgr_FlowRunMsg          "App_UiXvWorkMgr_FlowRunMsg"   //运行信息
 #define App_UiXvWorkMgr_FlowRunElapsed      "App_UiXvWorkMgr_FlowRunElapsed"   //运行耗时
@@ -149,14 +150,19 @@
 #define App_UiXvWorkMgr_FlowStop         "App_UiXvWorkMgr_FlowStop"      //流程停止运行
 #define App_UiXvWorkMgr_FlowProp         "App_UiXvWorkMgr_FlowProp"      //流程属性
 
+#define App_UiXvWorkMgr_FlowViewZoomScale         "App_UiXvWorkMgr_FlowViewZoomScale"      //缩放比例
+
 //算子
 #define App_UiXvWorkMgr_FuncRename          "App_UiXvWorkMgr_FuncRename"   //算子重命名
 #define App_UiXvWorkMgr_FuncShow            "App_UiXvWorkMgr_FuncShow"   //显示界面
+#define App_UiXvWorkMgr_FuncRun            "App_UiXvWorkMgr_FuncRun"   //运行算子
 #define App_UiXvWorkMgr_FuncId              "App_UiXvWorkMgr_FuncId"       //算子ID
 #define App_UiXvWorkMgr_FuncRole            "App_UiXvWorkMgr_FuncRole"   //算子标识符
 #define App_UiXvWorkMgr_FuncRunStatus       "App_UiXvWorkMgr_FuncRunStatus"   //运行结果
 #define App_UiXvWorkMgr_FuncRunMsg          "App_UiXvWorkMgr_FuncRunMsg"   //运行信息
 #define App_UiXvWorkMgr_FuncRunElapsed      "App_UiXvWorkMgr_FuncRunElapsed"   //运行耗时
+
+#define App_UiXvWorkMgr_FuncLinkDel     "App_UiXvWorkMgr_FuncLinkDel"   //删除连线
 
 #define App_UiXvWorkMgr_SceneAddXvFunc   "App_UiXvWorkMgr_SceneAddXvFunc"   //添加算子
 #define App_UiXvWorkMgr_SceneZoomToFit   "App_UiXvWorkMgr_SceneZoomToFit"   //缩放到合适范围

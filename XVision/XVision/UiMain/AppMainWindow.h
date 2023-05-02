@@ -15,7 +15,10 @@ public:
     ~AppMainWindow();
 
 public:
+    ///添加工具栏Action
     bool addToolBarAction(QAction *act);
+    ///获取App
+    XvSingleApplication *getApp() const { return m_app; }
 protected:
     const QScopedPointer<AppMainWindowPrivate> d_ptr;
 private:

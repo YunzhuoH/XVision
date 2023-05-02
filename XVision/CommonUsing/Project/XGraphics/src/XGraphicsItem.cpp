@@ -24,9 +24,9 @@ public:
         textFont = QFont("YouYuan", 12, 2);
         textFont.setBold(true);
 
-        highlightPen.setColor(QColor(255,242,0));
-        highlightPen.setWidth(5);
-        highlightBrush=QBrush(QColor(Qt::white));
+        highLightPen.setColor(QColor(255,242,0));
+        highLightPen.setWidth(5);
+        highLightBrush=QBrush(QColor(Qt::white));
 
     };
     virtual ~XGraphicsItemPrivate(){};
@@ -44,9 +44,9 @@ public:
     QFont                       textFont;
 
     ///高亮时画笔
-    QPen                        highlightPen;
+    QPen                        highLightPen;
     ///高亮时笔刷
-    QBrush                      highlightBrush;
+    QBrush                      highLightBrush;
 
 };
 
@@ -143,29 +143,29 @@ void XGraphicsItem::setTextFont(const QFont &font)
 }
 
 
-QPen XGraphicsItem::highlightPen() const
+QPen XGraphicsItem::highLightPen() const
 {
     Q_D(const XGraphicsItem);
-    return d->highlightPen;
+    return d->highLightPen;
 }
 
-void XGraphicsItem::setHighlightPen(const QPen &pen)
+void XGraphicsItem::setHighLightPen(const QPen &pen)
 {
     Q_D(XGraphicsItem);
-    d->highlightPen=pen;
+    d->highLightPen=pen;
 }
 
 
-QBrush XGraphicsItem::highlightBrush() const
+QBrush XGraphicsItem::highLightBrush() const
 {
     Q_D(const XGraphicsItem);
-    return d->highlightBrush;
+    return d->highLightBrush;
 }
 
-void XGraphicsItem::setHighlightBrush(const QBrush &pen)
+void XGraphicsItem::setHighLightBrush(const QBrush &pen)
 {
     Q_D(XGraphicsItem);
-    d->highlightBrush=pen;
+    d->highLightBrush=pen;
 }
 
 
@@ -239,9 +239,9 @@ void XGraphicsItem::setHeight(double height, bool bUpdate)
     }
 }
 
-void XGraphicsItem::setHighlight(bool highlight,bool bUpdate)
+void XGraphicsItem::setHighLight(bool highLight,bool bUpdate)
 {
-    m_bHighlight=highlight;
+    m_bHighLight=highLight;
     if(bUpdate)
     {
         auto it=item();

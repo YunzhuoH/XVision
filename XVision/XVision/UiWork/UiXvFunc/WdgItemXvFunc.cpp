@@ -27,6 +27,7 @@ void WdgItemXvFunc::initFrm()
     btn->setProperty(Item_Btn_Property,m_xvFuncInfo.role);
     auto lb=ui->lbXvFunc;
     lb->setText(m_xvFuncInfo.name);
+    lb->setAlignment(Qt::AlignCenter);
     connect(btn,&QToolButton::released,this,&WdgItemXvFunc::onXvFunc);
 }
 

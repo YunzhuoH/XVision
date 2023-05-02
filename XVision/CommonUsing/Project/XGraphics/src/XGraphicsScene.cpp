@@ -357,7 +357,7 @@ void XGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         //[0.xItem事件]
         xItem->sceneMousePressEvent(event);
         //[1.画线]
-        if(xItem->isInConnectArea(pt))
+        if(xItem->isInConnectArea(pt)&&m_bMouseLeftPressed)
         {
             SConnectData data;
             if(xItem->getConnectData(pt,data))

@@ -89,6 +89,8 @@ public:
     ///设置磁吸线宽度
     void setMagneticLineWidth(const int &width);
 
+signals:
+    void sgWheelEvent();
     // QWidget interface
 protected:
 //*[视图事件]*
@@ -103,8 +105,16 @@ protected:
 //*[背景绘制]*
     void drawBackground(QPainter *painter, const QRectF &r) override;
 
-protected:
-//*[内部工具接口]*
+public:
+//*[缩放工具接口]*
+    ///当前缩放比例
+    qreal zoomScale() const;
+    ///原始缩放尺寸
+    qreal zoomOriginalScaleSize() const;
+    ///最大缩放比例
+    qreal zoomMaxScaleSize() const;
+    ///最小缩放比例
+    qreal zoomMinScaleSize() const;
     ///放大
     void zoomUp();
     ///缩小
