@@ -10,7 +10,7 @@
         <file>config/DockMainManagerDefault.ini</file>
         <file>images/Ui/FrmLogShow.svg</file>
         <file>images/Ui/FrmVisionWork.svg</file>
-        <file>images/Ui/FrmVisionImage.svg</file>
+        <file>images/Ui/FrmVisionDisplay.svg</file>
         <file>images/Ui/FrmLogShowActionClearLog.svg</file>
         <file>images/Ui/FrmLogShowActionOpenLogDir.svg</file>
         <file>images/Ui/FrmXvFuncAsmCollapse.svg</file>
@@ -22,7 +22,7 @@
         <file>images/Ui/UiXvWorkManagerFlowDel.svg</file>
         <file>images/Ui/UiXvWorkManagerFlowLoopRun.svg</file>
         <file>images/Ui/UiXvWorkManagerFlowOnceRun.svg</file>
-        <file>images/Ui/UiXvWorkManagerFlowProp.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowConfig.svg</file>
         <file>images/Ui/UiXvWorkManagerFlowStop.svg</file>
         <file>style/DockFlow_Default.css</file>
         <file>style/DockMain_Default.css</file>
@@ -39,5 +39,13 @@
         <file>images/Ui/AppMainWindowProjectOnceRun.svg</file>
         <file>images/Ui/AppMainWindowProjectStop.svg</file>
         <file>images/Ui/FrmThreadMonitor.svg</file>
+        <file>images/Ui/FrmXvFuncResult.svg</file>
+        <file>images/Ui/UiXvDisplayManagerCross.svg</file>
+        <file>images/Ui/UiXvDisplayManagerZoomDown.svg</file>
+        <file>images/Ui/UiXvDisplayManagerZoomUp.svg</file>
+        <file>images/Ui/UiXvDisplayManagerZoomFit.svg</file>
+        <file>images/Ui/AppMainWindowGlobalManager.svg</file>
+        <file>images/Ui/AppMainWindowGlobalScript.svg</file>
+        <file>images/Ui/AppMainWindowVariantManager.svg</file>
     </qresource>
 </RCC>

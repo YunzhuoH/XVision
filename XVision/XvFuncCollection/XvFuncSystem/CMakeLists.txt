@@ -27,6 +27,7 @@ list(APPEND _LIBS
 list(APPEND _LIBS
     XvCore #核心库
     XvData #数据库
+    XvDisplay #图像交互库
     XvTokenMsg #Token消息库
     XvUtils #工具库
 )
@@ -46,6 +47,7 @@ list(APPEND _INCLUDE_DIR
     ../../XvTokenMsg/include
     ../../XvUtils/include
     ../../XvData/include
+    ../../XvDisplay/include
 )
 #添加第三方库
 list(APPEND _INCLUDE_DIR

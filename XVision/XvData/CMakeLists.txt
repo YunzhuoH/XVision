@@ -12,8 +12,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include (../CommonCMake/CommonProjectOutputSet.cmake)
 
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core XML)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core XML)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets XML)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets XML)
 
 #[[**************添加包含目录**************]]
 
@@ -30,6 +30,7 @@ list(APPEND INCLUDE_DIR
 #添加QT库
 list(APPEND LINK_LIBS
     Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Xml
 )
 

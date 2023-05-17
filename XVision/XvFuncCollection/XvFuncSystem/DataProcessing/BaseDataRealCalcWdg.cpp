@@ -16,7 +16,7 @@ BaseDataRealCalcWdg::~BaseDataRealCalcWdg()
 
 void BaseDataRealCalcWdg::initFrm()
 {
-    this->setFixedSize(390,180);
+    initFixedSize();
     auto func=getFunc<BaseDataRealCalc>();
     if(!func) return;
     auto p1=func->param->realParam1;
@@ -35,30 +35,6 @@ void BaseDataRealCalcWdg::initFrm()
     cmbType->addItem(getLang("XvFuncSystem_BaseDataRealCalc_ERealCalaTypeMul","乘法"),BaseDataRealCalc::ERealCalaType::Mul);
     cmbType->addItem(getLang("XvFuncSystem_BaseDataRealCalc_ERealCalaTypeDiv","除法"),BaseDataRealCalc::ERealCalaType::Div);
 
-    auto funcSetCmb=[=](QComboBox* cmb,QLineEdit* let, const QString &paramName)
-    {
-        auto idx=cmb->currentIndex();
-        if(idx<0) return;
-        if(idx==0)
-        {
-            if(m_bShowing)
-            {
-                 func->paramUnSubscribe(paramName);
-            }
-            let->setEnabled(true);
-        }
-        else
-        {
-            let->setEnabled(false);
-            SBindResultTag tag;
-            if(getCmbBindResultTag(cmb,tag))
-            {
-                func->paramSubscribe(paramName,tag.func,tag.resultName);
-            }
-
-        }
-    };
-
     connect(ui->cmbType,&QComboBox::currentIndexChanged,this,[=]()
     {
        auto idx=ui->cmbType->currentIndex();
@@ -67,12 +43,12 @@ void BaseDataRealCalcWdg::initFrm()
 
     connect(ui->cmbV1,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmb(ui->cmbV1,ui->letV1,p1->objectName());
+        setCmbWithLetEnable(ui->cmbV1,ui->letV1,p1->objectName());
     });
 
     connect(ui->cmbV2,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmb(ui->cmbV2,ui->letV2,p2->objectName());
+        setCmbWithLetEnable(ui->cmbV2,ui->letV2,p2->objectName());
     });
 
     connect(ui->letV1,&QLineEdit::textChanged,this,[=](){

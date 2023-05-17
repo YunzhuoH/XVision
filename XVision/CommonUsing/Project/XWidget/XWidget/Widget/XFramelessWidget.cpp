@@ -36,7 +36,7 @@ public:
     {
         if (XFramelessWidget->objectName().isEmpty())
             XFramelessWidget->setObjectName("XFramelessWidget");
-        XFramelessWidget->resize(681, 373);
+        XFramelessWidget->resize(600, 360);
         gridLayout = new QGridLayout(XFramelessWidget);
         gridLayout->setSpacing(0);
         gridLayout->setObjectName("gridLayout");
@@ -58,7 +58,6 @@ public:
 
         contentLayout = new QVBoxLayout();
         contentLayout->setObjectName("contentLayout");
-
         verticalLayout->addLayout(contentLayout);
 
         statusBarLayout = new QVBoxLayout();
@@ -69,7 +68,7 @@ public:
 
         verticalLayout->setStretch(2, 1);
 
-        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
+        gridLayout->addLayout(verticalLayout,0,0,1,1);
 
 
         retranslateUi(XFramelessWidget);

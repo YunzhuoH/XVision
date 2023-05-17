@@ -17,7 +17,7 @@ BaseDataWriterWdg::~BaseDataWriterWdg()
 
 void BaseDataWriterWdg::initFrm()
 {
-    this->setFixedSize(300,160);
+    initFixedSize();
     auto func=getFunc<BaseDataWriter>();
     if(!func) return;
     auto rBool=func->result->boolResult;

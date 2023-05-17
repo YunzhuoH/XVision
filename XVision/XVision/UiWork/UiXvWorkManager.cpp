@@ -2,13 +2,14 @@
 //Qt
 #include <QLayout>
 #include <QGraphicsSceneMouseEvent>
-//XGraphics
-#include "XGraphicsScene.h"
-#include "XGraphicsView.h"
+//XFlowGraphics
+#include "XFlowGraphicsScene.h"
+#include "XFlowGraphicsView.h"
 #include "XvGraphicsFactory.h"
-#include "XGraphicsItem.h"
-#include "XGraphicsConnectLink.h"
-#include "XGraphicsTextEdit.h"
+#include "XFlowGraphicsItem.h"
+#include "XFlowGraphicsConnectLink.h"
+#include "XFlowGraphicsTextEdit.h"
+
 //XWidget
 #include "XMatLabel.h"
 #include "XMatScrollBar.h"
@@ -25,7 +26,7 @@
 #include "UiUtils.h"
 #include "XvUtils.h"
 #include "XvWorkManager.h"
-
+#include "FrmXvFlowConfig.h"
 
 //XvCore
 #include "XvFuncAssembly.h"
@@ -68,13 +69,13 @@ inline static void updateFlowToolTip(CDockWidgetTab* tab, XvFlow* flow)
 
 }
 ///静态工具内联函数:算子更新XItem的ToolTip
-inline static void updateFuncToolTip(XGraphicsItem* xItem, XvFunc* func)
+inline static void updateFuncToolTip(XFlowGraphicsItem* xItem, XvFunc* func)
 {
     if(!xItem||!func)
     {
         return;
     }
-    static QMap<EXvFuncRunStatus,QString> map=XvCoreHelper::getRunStatusLang();
+    static QMap<EXvFuncRunStatus,QString> map=XvCoreHelper::getXvFuncRunStatusLang();
     static QString strFuncId=getLang(App_UiXvWorkMgr_FuncId,"算子ID");
     static QString strRole=getLang(App_UiXvWorkMgr_FuncRole,"算子标识符");
     static QString strRunStatus=getLang(App_UiXvWorkMgr_FuncRunStatus,"运行结果");
@@ -186,13 +187,13 @@ void UiXvWorkManager::initToolBtn()
     auto iconSize=btnSize-2;
 
     auto btn=new XMatToolButton(bar);
-    btn->setObjectName("btnFlowProp");
-    U_initSetButton(btn,getLang(App_UiXvWorkMgr_FlowProp,"流程属性"),getLang(App_UiXvWorkMgr_FlowProp,"流程属性"),
-                    QIcon(":/images/Ui/UiXvWorkManagerFlowProp.svg"),iconSize,
+    btn->setObjectName("btnFlowConfig");
+    U_initSetButton(btn,getLang(App_UiXvWorkMgr_FlowConfig,"流程配置"),getLang(App_UiXvWorkMgr_FlowConfig,"流程配置"),
+                    QIcon(":/images/Ui/UiXvWorkManagerFlowConfig.svg"),iconSize,
                     QSize(btnSize,btnSize), QSize(btnSize,btnSize)
                     );
     bar->insertWidget(-1, btn);
-    connect(btn,&XMatToolButton::clicked,this,&UiXvWorkManager::flowShowProp);
+    connect(btn,&XMatToolButton::clicked,this,&UiXvWorkManager::flowShowConfig);
 
     btn=new XMatToolButton(bar);
     btn->setObjectName("btnFlowOnceRun");
@@ -296,7 +297,7 @@ void UiXvWorkManager::initStatusBar()
 
 /*********[公共接口]*********/
 
-XGraphicsScene *UiXvWorkManager::getFlowScene(const QString &flowId)
+XFlowGraphicsScene *UiXvWorkManager::getFlowScene(const QString &flowId)
 {
     if(m_mapFlowScene.contains(flowId))
     {
@@ -306,7 +307,7 @@ XGraphicsScene *UiXvWorkManager::getFlowScene(const QString &flowId)
 }
 
 
-XGraphicsScene *UiXvWorkManager::createFlowScene(XvFlow *flow)
+XFlowGraphicsScene *UiXvWorkManager::createFlowScene(XvFlow *flow)
 {
     if(flow==nullptr) return nullptr;
 
@@ -315,7 +316,7 @@ XGraphicsScene *UiXvWorkManager::createFlowScene(XvFlow *flow)
         return m_mapFlowScene[flow->flowId()];
     }
 
-    auto funcCreateDock=[&](XGraphicsView* view,XvFlow *flow)
+    auto funcCreateDock=[&](XFlowGraphicsView* view,XvFlow *flow)
     {
         ads::CDockWidget* dock = new ads::CDockWidget("dock_"+flow->flowId());
         dock->layout()->setContentsMargins(0,0,0,0);
@@ -335,7 +336,7 @@ XGraphicsScene *UiXvWorkManager::createFlowScene(XvFlow *flow)
     };
 
     if(flow->flowId().isEmpty()) return nullptr;
-    auto scene = new XGraphicsScene();
+    auto scene = new XFlowGraphicsScene();
     scene->setObjectName("scene_"+flow->flowId());
     scene->setDisplayRect(0,0,4000,4000);
     scene->getView()->centerOn(0,0);
@@ -431,7 +432,7 @@ bool UiXvWorkManager::addXItemByFuncRole(const QString &role, const QString &flo
     if(!scene) return false;
     auto factory=scene->xItemDelegateFactory();
     if(!factory) return false;
-    auto xItem=factory->getXGraphicsItem(role);
+    auto xItem=factory->getXFlowGraphicsItem(role);
     if(!xItem) return false;
     xItem->item()->setPos(pos);
     scene->addXItem(xItem);
@@ -457,22 +458,22 @@ bool UiXvWorkManager::removeXItemByFuncId(const QString &funcId, const QString &
 
 /*********[内部工具接口]*********/
 
-void UiXvWorkManager::initFlowScene(XvFlow *flow,XGraphicsScene *scene)
+void UiXvWorkManager::initFlowScene(XvFlow *flow,XFlowGraphicsScene *scene)
 {
     if(!flow||!scene) return;
     /*场景*/
     //常规
-    connect(scene,&XGraphicsScene::sceneContextMenuRequested,this,&UiXvWorkManager::onFlowSceneMenuRequested);
-    connect(scene,&XGraphicsScene::mouseClicked,this,&UiXvWorkManager::onFlowSceneMouseClicked);
-    connect(scene,&XGraphicsScene::xItemSingleSelect,this,&UiXvWorkManager::onFlowSceneXItemSingleSelect);
-    connect(scene,&XGraphicsScene::xLinkSingleSelect,this,&UiXvWorkManager::onFlowSceneXLinkSingleSelect);
-    connect(scene,&XGraphicsScene::mouseDoubleClickXItem,this,&UiXvWorkManager::onFlowSceneMouseDoubleClickXItem);
-    connect(scene->getView(),&XGraphicsView::sgWheelEvent,this,&UiXvWorkManager::onFlowViewZoomSliderUpdate);
+    connect(scene,&XFlowGraphicsScene::sceneContextMenuRequested,this,&UiXvWorkManager::onFlowSceneMenuRequested);
+    connect(scene,&XFlowGraphicsScene::mouseClicked,this,&UiXvWorkManager::onFlowSceneMouseClicked);
+    connect(scene,&XFlowGraphicsScene::xItemSingleSelect,this,&UiXvWorkManager::onFlowSceneXItemSingleSelect);
+    connect(scene,&XFlowGraphicsScene::xLinkSingleSelect,this,&UiXvWorkManager::onFlowSceneXLinkSingleSelect);
+    connect(scene,&XFlowGraphicsScene::mouseDoubleClickXItem,this,&UiXvWorkManager::onFlowSceneMouseDoubleClickXItem);
+    connect(scene->getView(),&XFlowGraphicsView::sgWheelEvent,this,&UiXvWorkManager::onFlowViewZoomSliderUpdate);
     //算子
-    connect(scene,&XGraphicsScene::xItemAdd,this,&UiXvWorkManager::onFlowSceneXItemAdd);
-    connect(scene,&XGraphicsScene::xItemRemoveStart,this,&UiXvWorkManager::onFlowSceneXItemRemoveStart);
-    connect(scene,&XGraphicsScene::judgeCantConnectXItem,this,&UiXvWorkManager::onFlowSceneXItemConnectJudge);
-    connect(scene,&XGraphicsScene::xLinkRemove,this,&UiXvWorkManager::onFlowSceneConnectRemove);
+    connect(scene,&XFlowGraphicsScene::xItemAdd,this,&UiXvWorkManager::onFlowSceneXItemAdd);
+    connect(scene,&XFlowGraphicsScene::xItemRemoveStart,this,&UiXvWorkManager::onFlowSceneXItemRemoveStart);
+    connect(scene,&XFlowGraphicsScene::judgeCantConnectXItem,this,&UiXvWorkManager::onFlowSceneXItemConnectJudge);
+    connect(scene,&XFlowGraphicsScene::xLinkRemove,this,&UiXvWorkManager::onFlowSceneConnectRemove);
     /*流程*/
     connect(flow,&XvFlow::sgFlowNameChanged,this,&UiXvWorkManager::onFlowNameChanged);
     connect(flow,&XvFlow::sgFlowRunStart,this,&UiXvWorkManager::onFlowRunStart);
@@ -480,20 +481,20 @@ void UiXvWorkManager::initFlowScene(XvFlow *flow,XGraphicsScene *scene)
     connect(flow,&XvFlow::sgFlowRunStop,this,&UiXvWorkManager::onFlowRunStop);
 }
 
-void UiXvWorkManager::uninitFlowScene(XvFlow *flow,XGraphicsScene *scene)
+void UiXvWorkManager::uninitFlowScene(XvFlow *flow,XFlowGraphicsScene *scene)
 {
     if(!flow||!scene) return;
     /*场景*/
     //常规
-    disconnect(scene,&XGraphicsScene::sceneContextMenuRequested,this,&UiXvWorkManager::onFlowSceneMenuRequested);
-    disconnect(scene,&XGraphicsScene::mouseClicked,this,&UiXvWorkManager::onFlowSceneMouseClicked);
-    disconnect(scene,&XGraphicsScene::xItemSingleSelect,this,&UiXvWorkManager::onFlowSceneXItemSingleSelect);
-    disconnect(scene,&XGraphicsScene::xLinkSingleSelect,this,&UiXvWorkManager::onFlowSceneXLinkSingleSelect);
-    disconnect(scene,&XGraphicsScene::mouseDoubleClickXItem,this,&UiXvWorkManager::onFlowSceneMouseDoubleClickXItem);
-    disconnect(scene->getView(),&XGraphicsView::sgWheelEvent,this,&UiXvWorkManager::onFlowViewZoomSliderUpdate);
+    disconnect(scene,&XFlowGraphicsScene::sceneContextMenuRequested,this,&UiXvWorkManager::onFlowSceneMenuRequested);
+    disconnect(scene,&XFlowGraphicsScene::mouseClicked,this,&UiXvWorkManager::onFlowSceneMouseClicked);
+    disconnect(scene,&XFlowGraphicsScene::xItemSingleSelect,this,&UiXvWorkManager::onFlowSceneXItemSingleSelect);
+    disconnect(scene,&XFlowGraphicsScene::xLinkSingleSelect,this,&UiXvWorkManager::onFlowSceneXLinkSingleSelect);
+    disconnect(scene,&XFlowGraphicsScene::mouseDoubleClickXItem,this,&UiXvWorkManager::onFlowSceneMouseDoubleClickXItem);
+    disconnect(scene->getView(),&XFlowGraphicsView::sgWheelEvent,this,&UiXvWorkManager::onFlowViewZoomSliderUpdate);
      //算子
-    disconnect(scene,&XGraphicsScene::xItemAdd,this,&UiXvWorkManager::onFlowSceneXItemAdd);
-    connect(scene,&XGraphicsScene::xItemRemoveStart,this,&UiXvWorkManager::onFlowSceneXItemRemoveStart);
+    disconnect(scene,&XFlowGraphicsScene::xItemAdd,this,&UiXvWorkManager::onFlowSceneXItemAdd);
+    connect(scene,&XFlowGraphicsScene::xItemRemoveStart,this,&UiXvWorkManager::onFlowSceneXItemRemoveStart);
 
     /*流程*/
     disconnect(flow,&XvFlow::sgFlowNameChanged,this,&UiXvWorkManager::onFlowNameChanged);
@@ -502,7 +503,7 @@ void UiXvWorkManager::uninitFlowScene(XvFlow *flow,XGraphicsScene *scene)
     disconnect(flow,&XvFlow::sgFlowRunStop,this,&UiXvWorkManager::onFlowRunStop);
 }
 
-void UiXvWorkManager::initFuncXItem(XvFunc *func, XGraphicsItem *xItem)
+void UiXvWorkManager::initFuncXItem(XvFunc *func, XFlowGraphicsItem *xItem)
 {
     if(!func||!xItem) return;
 
@@ -531,10 +532,18 @@ void UiXvWorkManager::initFuncXItem(XvFunc *func, XGraphicsItem *xItem)
             xItem->switchShowPixKey(XvFuncName,XvFuncRunStatus_Ok_Str);
             break;
         case EXvFuncRunStatus::Fail:
+        {
             xItem->switchShowPixKey(XvFuncName,XvFuncRunStatus_Fail_Str);
+            QString str=QString("%1.%2:%3").arg(func->parFlow()->flowName()).arg(func->funcName()).arg(func->getXvFuncRunMsg());
+            Log_Warn(str);
+        }
             break;
         case EXvFuncRunStatus::Error:
+        {
             xItem->switchShowPixKey(XvFuncName,XvFuncRunStatus_Error_Str);
+            QString str=QString("%1.%2:%3").arg(func->parFlow()->flowName()).arg(func->funcName()).arg(func->getXvFuncRunMsg());
+            Log_Error(str);
+        }
             break;
         }
 
@@ -542,7 +551,7 @@ void UiXvWorkManager::initFuncXItem(XvFunc *func, XGraphicsItem *xItem)
     });
 }
 
-void UiXvWorkManager::uninitFuncXItem(XvFunc *func, XGraphicsItem *xItem)
+void UiXvWorkManager::uninitFuncXItem(XvFunc *func, XFlowGraphicsItem *xItem)
 {
    if(!func||!xItem) return;
 }
@@ -572,7 +581,7 @@ XvFlow *UiXvWorkManager::getCurDockFlow()
     return flow;
 }
 
-XGraphicsScene *UiXvWorkManager::getCurDockFlowScene()
+XFlowGraphicsScene *UiXvWorkManager::getCurDockFlowScene()
 {
     QString flowId;
     bool bRet= getCurDockFlowId(flowId);
@@ -596,7 +605,7 @@ void UiXvWorkManager::onFlowDockTabMenuRequested(const QPoint &pos)
     QMenu menu(dockTab);
     auto action=menu.addAction(getLang(App_UiXvWorkMgr_FlowRename,"流程重命名"),this,SLOT(flowRename()));
     action=menu.addAction(getLang(App_UiXvWorkMgr_FlowDel,"流程删除"),this,SLOT(flowRemove()));
-    action=menu.addAction(getLang(App_UiXvWorkMgr_FlowProp,"流程属性"),this,SLOT(flowShowProp()));
+    action=menu.addAction(getLang(App_UiXvWorkMgr_FlowConfig,"流程配置"),this,SLOT(flowShowConfig()));
     menu.exec(QCursor::pos());
 }
 
@@ -721,12 +730,27 @@ void UiXvWorkManager::onFlowRunEnd()
     auto flow=qobject_cast<XvFlow*>(obj);
     if(!flow) return;
     auto info=flow->getXvFuncRunInfo();
-    Log_Event(
-                QString(getLang(App_UiXvWorkMgr_XvFlowRunEnd,"流程<%1>运行结束")).arg(flow->flowName())+":"+
-                QString(getLang(App_UiXvWorkMgr_FlowRunIdx,"当前运行序号")+"<%1>").arg(info.runIdx)+" "+
-                QString(getLang(App_UiXvWorkMgr_FlowRunElapsed,"运行耗时")+"%1ms").arg(info.runElapsed)+" "+
-                QString(getLang(App_UiXvWorkMgr_FlowRunMsg,"运行信息")+"<%1>").arg(info.runMsg)
-                );
+    QString str=
+            QString(getLang(App_UiXvWorkMgr_XvFlowRunEnd,"流程<%1>运行结束")).arg(flow->flowName())+":"+
+            QString(getLang(App_UiXvWorkMgr_FlowRunIdx,"当前运行序号")+"<%1>").arg(info.runIdx)+" "+
+            QString(getLang(App_UiXvWorkMgr_FlowRunElapsed,"运行耗时")+"%1ms").arg(info.runElapsed)+" "+
+            QString(getLang(App_UiXvWorkMgr_FlowRunMsg,"运行信息")+"<%1>").arg(info.runMsg);
+    switch (info.runStatus)
+    {
+    case XvCore::EXvFlowRunStatus::Ok:
+        Log_Info(str);
+        break;
+    case XvCore::EXvFlowRunStatus::Fail:
+        Log_Warn(str);
+        break;
+    case XvCore::EXvFlowRunStatus::Error:
+        Log_Error(str);
+        break;
+   default:
+         Log_Event(str);
+        break;
+    }
+
     auto scene=getFlowScene(flow->flowId());
     if(!scene) return;
     scene->setEnabled(true);
@@ -744,7 +768,6 @@ void UiXvWorkManager::onFlowRunEnd()
 
 void UiXvWorkManager::onFlowRunStop()
 {
-
     auto obj=sender();
     if(!obj) return;
     auto flow=qobject_cast<XvFlow*>(obj);
@@ -754,11 +777,13 @@ void UiXvWorkManager::onFlowRunStop()
     if(!scene) return;
     scene->setEnabled(true);
 }
-///xie.y todo:flowShowProp    -20230329
-void UiXvWorkManager::flowShowProp()
-{
-    Log_Critical("flowShowProp:未实现");
 
+void UiXvWorkManager::flowShowConfig()
+{
+    auto flow=getCurDockFlow();
+    if(!flow) return;
+    FrmXvFlowConfig *frm=new FrmXvFlowConfig(flow);
+    frm->show();
 }
 
 
@@ -772,7 +797,7 @@ void UiXvWorkManager::onFlowSceneMenuRequested(const QPoint &pos)
     auto pt=QCursor::pos();
     auto objScene=sender();
     if(objScene==nullptr) return;
-    auto scene=qobject_cast<XGraphicsScene*>(objScene);
+    auto scene=qobject_cast<XFlowGraphicsScene*>(objScene);
     if(scene==nullptr) return;
     auto item=scene->getXItemByPos(pos);
     auto link=scene->getXLinkByPos(pos);
@@ -782,7 +807,7 @@ void UiXvWorkManager::onFlowSceneMenuRequested(const QPoint &pos)
         QMenu menu(scene->getView());
         /*[重命名]*/
         auto action=menu.addAction(getLang(App_UiXvWorkMgr_FuncRename,"算子重命名"),this,SLOT(funcRename()));
-        QVariant varPtr=QVariant::fromValue<XGraphicsItem*>(item);
+        QVariant varPtr=QVariant::fromValue<XFlowGraphicsItem*>(item);
         action->setData(varPtr);
         /*[显示界面]*/
         action=menu.addAction(getLang(App_UiXvWorkMgr_FuncShow,"显示界面"),this,[=]()
@@ -875,7 +900,7 @@ void UiXvWorkManager::onFlowSceneMenuRequested(const QPoint &pos)
                    auto factory= scene->xItemDelegateFactory();
                    if(factory)
                    {
-                     auto xItem= factory->getXGraphicsItem(role);
+                     auto xItem= factory->getXFlowGraphicsItem(role);
                      if(xItem)
                      {
                          xItem->item()->setPos(pos);
@@ -890,11 +915,12 @@ void UiXvWorkManager::onFlowSceneMenuRequested(const QPoint &pos)
     }
 }
 ///功能:单击重置高亮
+/// 发送单击XvFunc信号
 void UiXvWorkManager::onFlowSceneMouseClicked(QGraphicsSceneMouseEvent *event)
 {
     auto objScene=sender();
     if(objScene==nullptr) return;
-    auto scene=qobject_cast<XGraphicsScene*>(objScene);
+    auto scene=qobject_cast<XFlowGraphicsScene*>(objScene);
     if(scene==nullptr) return;
     if(event->button()==Qt::LeftButton)
     {
@@ -909,13 +935,29 @@ void UiXvWorkManager::onFlowSceneMouseClicked(QGraphicsSceneMouseEvent *event)
          item->setHighLight(false,false);
      }
     }
+    if(event->button()==Qt::LeftButton)
+    {
+        auto item=scene->getXItemByPos(event->scenePos());
+        if(!item)
+        {
+            emit this->sgFlowSceneMouseClickWithXvFunc(nullptr);
+        }
+        else
+        {
+            auto qPtr=  item->itemQPtrTag();
+            if(!qPtr) return;
+            auto func=qobject_cast<XvFunc*>(qPtr);
+            emit this->sgFlowSceneMouseClickWithXvFunc(func);
+        }
+
+    }
 }
 ///功能:单击XItem时显示连接的XItems
-void UiXvWorkManager::onFlowSceneXItemSingleSelect(XGraphicsItem *item)
+void UiXvWorkManager::onFlowSceneXItemSingleSelect(XFlowGraphicsItem *item)
 {
     auto objScene=sender();
     if(objScene==nullptr) return;
-    auto scene=qobject_cast<XGraphicsScene*>(objScene);
+    auto scene=qobject_cast<XFlowGraphicsScene*>(objScene);
     if(scene==nullptr) return;
     if(item)
     {
@@ -954,16 +996,16 @@ void UiXvWorkManager::onFlowSceneXItemSingleSelect(XGraphicsItem *item)
     }
 }
 ///功能:双击时显示算子界面
-void UiXvWorkManager::onFlowSceneMouseDoubleClickXItem(XGraphicsItem *item)
+void UiXvWorkManager::onFlowSceneMouseDoubleClickXItem(XFlowGraphicsItem *item)
 {
     funcShow(item);
 }
 ///功能:单击XLink时显示连接的XItems
-void UiXvWorkManager::onFlowSceneXLinkSingleSelect(XGraphicsConnectLink *link)
+void UiXvWorkManager::onFlowSceneXLinkSingleSelect(XFlowGraphicsConnectLink *link)
 {
     auto objScene=sender();
     if(objScene==nullptr) return;
-    auto scene=qobject_cast<XGraphicsScene*>(objScene);
+    auto scene=qobject_cast<XFlowGraphicsScene*>(objScene);
     if(scene==nullptr) return;
     if(link)
     {
@@ -972,11 +1014,11 @@ void UiXvWorkManager::onFlowSceneXLinkSingleSelect(XGraphicsConnectLink *link)
     }
 }
 
-void UiXvWorkManager::onFlowSceneXItemAdd(XGraphicsItem *xItem)
+void UiXvWorkManager::onFlowSceneXItemAdd(XFlowGraphicsItem *xItem)
 {
     auto objScene=sender();
     if(!objScene) return;
-    auto scene=qobject_cast<XGraphicsScene*>(objScene);
+    auto scene=qobject_cast<XFlowGraphicsScene*>(objScene);
     if(!scene) return;
     auto objFlow= scene->sceneQPtrTag();
     if(!objFlow) return;
@@ -998,11 +1040,11 @@ void UiXvWorkManager::onFlowSceneXItemAdd(XGraphicsItem *xItem)
     initFuncXItem(func,xItem);
 }
 
-bool UiXvWorkManager::onFlowSceneXItemRemoveStart(XGraphicsItem *xItem)
+bool UiXvWorkManager::onFlowSceneXItemRemoveStart(XFlowGraphicsItem *xItem)
 {
     auto objScene=sender();
     if(!objScene) return false;
-    auto scene=qobject_cast<XGraphicsScene*>(objScene);
+    auto scene=qobject_cast<XFlowGraphicsScene*>(objScene);
     if(!scene) return false;
     auto objFlow= scene->sceneQPtrTag();
     if(!objFlow) return false;
@@ -1022,11 +1064,11 @@ bool UiXvWorkManager::onFlowSceneXItemRemoveStart(XGraphicsItem *xItem)
     return !bRet;
 }
 
-bool UiXvWorkManager::onFlowSceneXItemConnectJudge(XGraphicsItem *fatherXItem, const QString &startKey, XGraphicsItem *sonXItem, const QString &sonKey)
+bool UiXvWorkManager::onFlowSceneXItemConnectJudge(XFlowGraphicsItem *fatherXItem, const QString &startKey, XFlowGraphicsItem *sonXItem, const QString &sonKey)
 {
     auto objScene=sender();
     if(!objScene) return true;
-    auto scene=qobject_cast<XGraphicsScene*>(objScene);
+    auto scene=qobject_cast<XFlowGraphicsScene*>(objScene);
     if(!scene) return true;
     auto objFlow= scene->sceneQPtrTag();
     if(!objFlow) return true;
@@ -1075,13 +1117,13 @@ bool UiXvWorkManager::onFlowSceneXItemConnectJudge(XGraphicsItem *fatherXItem, c
 }
 
 
-void UiXvWorkManager::onFlowSceneConnectRemove(XGraphicsConnectLink *xLink)
+void UiXvWorkManager::onFlowSceneConnectRemove(XFlowGraphicsConnectLink *xLink)
 {
     if(xLink&&xLink->fatherXItem()&&xLink->sonXItem())
     {
         auto objScene=sender();
         if(!objScene) return;
-        auto scene=qobject_cast<XGraphicsScene*>(objScene);
+        auto scene=qobject_cast<XFlowGraphicsScene*>(objScene);
         if(!scene) return;
         auto objFlow= scene->sceneQPtrTag();
         if(!objFlow) return;
@@ -1104,7 +1146,7 @@ void UiXvWorkManager::onFlowSceneConnectRemove(XGraphicsConnectLink *xLink)
 }
 
 //*[算子操作]*
-void UiXvWorkManager::funcShow(XGraphicsItem* item)
+void UiXvWorkManager::funcShow(XFlowGraphicsItem* item)
 {
     if(!item) return;
     auto qPtr=  item->itemQPtrTag();
@@ -1114,7 +1156,7 @@ void UiXvWorkManager::funcShow(XGraphicsItem* item)
     func->onShowFunc();
 }
 
-void UiXvWorkManager::funcRun(XGraphicsItem *item)
+void UiXvWorkManager::funcRun(XFlowGraphicsItem *item)
 {
     if(!item) return;
     auto qPtr=  item->itemQPtrTag();
@@ -1132,7 +1174,7 @@ void UiXvWorkManager::funcRename()
     if(!act) return;
     auto var=act->data();
     if(!var.isValid()) return;
-    auto xItem=  var.value<XGraphicsItem*>();
+    auto xItem=  var.value<XFlowGraphicsItem*>();
     if(!xItem) return;
     auto qPtr=  xItem->itemQPtrTag();
     if(!qPtr) return;
@@ -1150,7 +1192,7 @@ void UiXvWorkManager::funcRename()
     auto vBRPos=xItem->parScene()->getView()->mapFromScene(sRect.bottomRight());
     QRectF itemRect = QRectF(vTLPos, vBRPos);
 
-    auto textEdit=new XGraphicsTextEdit(xItem->parScene()->getView());
+    auto textEdit=new XFlowGraphicsTextEdit(xItem->parScene()->getView());
     textEdit->setXItem(xItem);
     textEdit->setFixedSize(itemRect.width(), itemRect.height());
     textEdit->setFont(xItem->textFont());
@@ -1159,7 +1201,7 @@ void UiXvWorkManager::funcRename()
     textEdit->setFocus();
     textEdit->show();
     xItem->parScene()->getView()->setZoomAble(false);
-    connect(textEdit,&XGraphicsTextEdit::focusOut,this,[=](){
+    connect(textEdit,&XFlowGraphicsTextEdit::focusOut,this,[=](){
 
         if(textEdit->xItem())
         {

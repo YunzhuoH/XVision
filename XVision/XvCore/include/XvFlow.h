@@ -24,7 +24,8 @@ class XVCORE_EXPORT XvFlow : public QObject,public IXvTokenMsgAble
 public:
     explicit XvFlow(XvProject *project,const QString &name="Flow",QObject *parent = nullptr);
     ~XvFlow();
-
+protected:
+    const QScopedPointer<XvFlowPrivate> d_ptr;
 
  /**********************字段/属性定义**********************/
  //流程基本定义属性 序列号/名称 归属的项目
@@ -145,8 +146,13 @@ public:
     /// Ret_Xv_Success:能删除 !Ret_Xv_Success:不可删除
     RetXv release();
 
-protected:
-    const QScopedPointer<XvFlowPrivate> d_ptr;
+/**********************流程配置**********************/
+//流程配置获取和修改
+/****************************************************/
+
+public:
+    ///流程配置
+    XvFlowConfig* getFlowConfig();
 
 };
 

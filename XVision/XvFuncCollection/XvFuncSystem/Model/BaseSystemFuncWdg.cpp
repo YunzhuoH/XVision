@@ -1,6 +1,8 @@
 ﻿#include "BaseSystemFuncWdg.h"
 
 #include <QHBoxLayout>
+#include <QPlainTextEdit>
+#include <QLineEdit>
 #include <QComboBox>
 #include <QLabel>
 
@@ -100,6 +102,94 @@ void BaseSystemFuncWdg::updateLbTextWithXObject(QLabel* lb,XObject *obj,const QS
     }
 }
 
+void BaseSystemFuncWdg::initCmbByBool(QComboBox *cmb)
+{
+    cmb->clear();
+    cmb->addItem("False");
+    cmb->addItem("True");
+}
+
+void BaseSystemFuncWdg::setCmbBind(XObject *param, QComboBox *cmb)
+{
+    XvFunc::SubscribeInfo info;
+    if(m_func->getParamSubscribe(param->objectName(),info))
+    {
+      setCmbBindResultTag(cmb,SBindResultTag(info.first,info.second));
+    }
+}
+
+void BaseSystemFuncWdg::setCmbWithCmbEnable(QComboBox *cmbBind, QComboBox *cmbVal, const QString &paramName)
+{
+    auto idx=cmbBind->currentIndex();
+    if(idx<0) return;
+    if(idx==0)
+    {
+        if(m_bShowing)
+        {
+            m_func->paramUnSubscribe(paramName);
+        }
+        cmbVal->setEnabled(true);
+    }
+    else
+    {
+        cmbVal->setEnabled(false);
+        SBindResultTag tag;
+        if(getCmbBindResultTag(cmbBind,tag))
+        {
+            m_func->paramSubscribe(paramName,tag.func,tag.resultName);
+        }
+
+    }
+}
+
+void BaseSystemFuncWdg::setCmbWithLetEnable(QComboBox *cmbBind, QLineEdit *letVal, const QString &paramName)
+{
+    auto idx=cmbBind->currentIndex();
+    if(idx<0) return;
+    if(idx==0)
+    {
+        if(m_bShowing)
+        {
+            m_func->paramUnSubscribe(paramName);
+        }
+        letVal->setEnabled(true);
+    }
+    else
+    {
+        letVal->setEnabled(false);
+        SBindResultTag tag;
+        if(getCmbBindResultTag(cmbBind,tag))
+        {
+            m_func->paramSubscribe(paramName,tag.func,tag.resultName);
+        }
+
+    }
+}
+
+void BaseSystemFuncWdg::setCmbWithPetEnable(QComboBox *cmbBind, QPlainTextEdit *letVal, const QString &paramName)
+{
+    auto idx=cmbBind->currentIndex();
+    if(idx<0) return;
+    if(idx==0)
+    {
+        if(m_bShowing)
+        {
+            m_func->paramUnSubscribe(paramName);
+        }
+        letVal->setEnabled(true);
+    }
+    else
+    {
+        letVal->setEnabled(false);
+        SBindResultTag tag;
+        if(getCmbBindResultTag(cmbBind,tag))
+        {
+            m_func->paramSubscribe(paramName,tag.func,tag.resultName);
+        }
+
+    }
+}
+
 void BaseSystemFuncWdg::initFrm()
 {
     auto tb =this->titleBar();
@@ -142,7 +232,12 @@ void BaseSystemFuncWdg::initFrm()
     });
 
     tb->rightLayout()->addWidget(btnRun);
-    tb->rightLayout()->addWidget(ckb);
+    tb->rightLayout()->addWidget(ckb);   
+}
+
+void BaseSystemFuncWdg::initFixedSize()
+{
+    this->setFixedSize(this->centralWidget()->geometry().width()+10,this->centralWidget()->geometry().height()+20);
 }
 
 void BaseSystemFuncWdg::showEvent(QShowEvent *event)

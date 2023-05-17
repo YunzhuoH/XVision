@@ -24,6 +24,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets XML Concurre
 #添加依赖库包含目录
 list(APPEND CORE_INCLUDE_DIR
   ../XvData/include
+  ../XvDisplay/include
   ../XvTokenMsg/include
   ../${XLog_Inc}
   ../${XLanguage_Inc}
@@ -44,6 +45,7 @@ list(APPEND CORE_INCLUDE_DIR
 list(APPEND CORE_LIBS
     XvTokenMsg
     XvData
+    XvDisplay
     XLog        #日志库
     XLanguage   #多语言库
     XConcurrent     #多线程管理库

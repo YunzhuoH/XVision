@@ -8,7 +8,7 @@ XvCoreHelper::XvCoreHelper()
 
 }
 
-QMap<EXvFuncRunStatus,QString>  XvCoreHelper::getRunStatusLang()
+QMap<EXvFuncRunStatus,QString>  XvCoreHelper::getXvFuncRunStatusLang()
 {
     QMap<EXvFuncRunStatus,QString> map;
     map[EXvFuncRunStatus::Init]=getLang(Core_XvFunc_RunStatusInit,"初始状态");

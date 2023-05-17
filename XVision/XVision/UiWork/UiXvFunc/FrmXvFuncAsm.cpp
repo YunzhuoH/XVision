@@ -179,7 +179,7 @@ void FrmXvFuncAsm::initFrm()
         auto lstTemp=XvFuncAsm->getXvFuncInfos(info.type);
         if(lstTemp.count()==0)
         {
-            continue;//xie.y test
+            //continue;//xie.y test
         }
 
         funcAddBtn(vLayout,scAreaWcXvFuncAsm,info.icon,info.type,info.name,info.name);     

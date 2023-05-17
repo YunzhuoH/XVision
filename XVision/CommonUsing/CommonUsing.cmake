@@ -5,7 +5,7 @@ set(CurBuildType_IsDebug ON)
 #include_dir:
 
 set(AdsDocking_Inc CommonUsing/Project/AdsDocking/include)
-set(XGraphics_Inc CommonUsing/Project/XGraphics/include)
+set(XFlowGraphics_Inc CommonUsing/Project/XFlowGraphics/include)
 set(XLanguage_Inc CommonUsing/Project/XLanguage/include)
 set(XLog_Inc CommonUsing/Project/XLog/include)
 set(XWidget_Inc CommonUsing/Project/XWidget/XWidget/include)

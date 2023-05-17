@@ -1,6 +1,6 @@
 ﻿#通用工程目录
 set(ADSD_BULID OFF) #AdsDocking     浮动窗口库
-set(XGPH_BULID OFF)  #XGraphics      流程绘制库
+set(XFGP_BULID OFF)  #XFlowGraphics   流程绘制库
 set(XLNG_BULID OFF) #XLanguage      多语言库
 set(XLOG_BULID OFF) #XLog           日志库
 set(XWDG_BULID OFF) #XWidget        自定义控件库
@@ -10,8 +10,8 @@ if(ADSD_BULID)
     add_subdirectory(Project/AdsDocking)
 endif()
 
-if(XGPH_BULID)
-    add_subdirectory(Project/XGraphics)
+if(XFGP_BULID)
+    add_subdirectory(Project/XFlowGraphics)
 endif()
 
 if(XLNG_BULID)

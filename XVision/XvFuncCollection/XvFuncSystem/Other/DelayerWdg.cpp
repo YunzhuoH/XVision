@@ -16,42 +16,18 @@ DelayerWdg::~DelayerWdg()
 
 void DelayerWdg::initFrm()
 {
-    this->setFixedSize(390,80);
-
+    initFixedSize();
     auto func=getFunc<Delayer>();
     if(!func) return;
     auto ms=func->param->dealyMs;
     ui->lbDelay->setText(ms->dispalyName()+":");
 
-    auto funcSetCmb=[=](QComboBox* cmbV,QLineEdit* let, const QString &paramName)
-    {
-        auto idx=cmbV->currentIndex();
-        if(idx<0) return;
-        if(idx==0)
-        {
-            if(m_bShowing)
-            {
-                func->paramUnSubscribe(paramName);
-            }
-            let->setEnabled(true);
-        }
-        else
-        {
-            let->setEnabled(false);
-            SBindResultTag tag;
-            if(getCmbBindResultTag(cmbV,tag))
-            {
-                func->paramSubscribe(paramName,tag.func,tag.resultName);
-            }
-
-        }
-    };
 
 
 
     connect(ui->cmbDelay,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmb(ui->cmbDelay,ui->letDelay,ms->objectName());
+        setCmbWithLetEnable(ui->cmbDelay,ui->letDelay,ms->objectName());
     });
 
     connect(ui->letDelay,&QLineEdit::textChanged,this,[=]()
@@ -78,7 +54,7 @@ void DelayerWdg::onShow()
     auto ms=func->param->dealyMs;
 
     auto cmbDelay=ui->cmbDelay;
-    initCmbBindResultTag(func,cmbDelay,{XInt::type()});
+    initCmbBindResultTag(func,cmbDelay,{XInt::type()},true);
 
     XvFunc::SubscribeInfo info;
     if(func->getParamSubscribe(ms->objectName(),info))

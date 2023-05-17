@@ -12,6 +12,7 @@ class XvSingleApplication;
 class AppMainWindow;
 class DockMainManager;
 class UiXvWorkManager;
+class UiXvDisplayManager;
 
 class XvViewManager : public QObject
 {
@@ -35,6 +36,8 @@ public:
     DockMainManager* dockMainManager() const;
     ///获取流程Ui管理器
     UiXvWorkManager* uiXvWorkManager() const;
+    ///获取显示Ui管理器
+    UiXvDisplayManager* uiXvDisplayManager() const;
     ///初始化
     void init();
 
@@ -47,6 +50,8 @@ protected:
     void setDockMainManager(DockMainManager* dockMainMgr);
     ///设置流程Ui管理器
     void setUiXvWorkManager(UiXvWorkManager* uiXvWorkManager);
+    ///设置显示Ui管理器
+    void setUiXvDisplayManager(UiXvDisplayManager* uiXvDisplayManager);
 
 signals:
 
@@ -55,6 +60,7 @@ private:
     AppMainWindow*  m_appMainWindow=nullptr;
     DockMainManager* m_dockMainManager=nullptr;
     UiXvWorkManager* m_uiXvWorkManager=nullptr;
+    UiXvDisplayManager* m_uiXvDisplayManager=nullptr;
 };
 
 #endif // XVIEWMGR_H

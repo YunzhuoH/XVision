@@ -50,7 +50,8 @@
 #define App_MainDockIsNull  "App_MainDockIsNull" //MainDock为空
 #define App_XvFlowDockIsNull  "App_XvFlowDockIsNull" //XvFlowDock为空
 #define App_XvFlowStatusBarIsNull  "App_XvFlowStatusBarIsNull" //XvFlow状态栏为空
-
+#define App_XvDisplayViewIsNull   "App_XvDisplayViewIsNull" //显示视图为空
+#define App_XvDisplayToolBarIsNull   "App_XvDisplayToolBarIsNull" //显示工具栏为空
 
 /*[UI]*/
 /*UiCommon*/
@@ -102,6 +103,9 @@
 #define App_AppMainWindow_ProjectOnceRun      "App_AppMainWindow_ProjectOnceRun" //项目单次运行
 #define App_AppMainWindow_ProjectLoopRun      "App_AppMainWindow_ProjectLoopRun" //项目重复运行
 #define App_AppMainWindow_ProjectStop         "App_AppMainWindow_ProjectStop" //项目停止运行
+#define App_AppMainWindow_GlobalManager        "App_AppMainWindow_GlobalManager" //全局管理
+#define App_AppMainWindow_GlobalScript        "App_AppMainWindow_GlobalScript" //全局脚本
+#define App_AppMainWindow_VariantManager        "App_AppMainWindow_VariantManager" //变量管理
 //Msg
 #define App_AppMainWindow_MsgSwitchLangError  "App_AppMainWindow_MsgSwitchLangError" //切换语言失败
 #define App_AppMainWindow_MsgSwitchLangSuccess  "App_AppMainWindow_MsgSwitchLangSuccess" //切换语言成功，请重启软件
@@ -122,15 +126,29 @@
 #define App_Ui_FrmThreadMonitorThreadStop     "App_Ui_FrmThreadMonitorThreadStop"   //线程停止
 #define App_Ui_FrmThreadMonitorThreadMsg     "App_Ui_FrmThreadMonitorThreadMsg"   //线程消息
 
-#define App_Ui_FrmVisionImage    "App_Ui_FrmVisionImage" //图像
-#define App_Ui_FrmVisionWork     "App_Ui_FrmVisionWork"  //视觉流程
+#define App_Ui_FrmVisionDisplay    "App_Ui_FrmVisionDisplay" //图像显示
+#define App_Ui_FrmVisionWork     "App_Ui_FrmVisionWork"  //工作流程
 
 #define App_Ui_FrmXvFuncAsmUp         "App_Ui_FrmXvFuncAsmUp"      //向上滚动
 #define App_Ui_FrmXvFuncAsmDown       "App_Ui_FrmXvFuncAsmDown"      //向下滚动
 #define App_Ui_FrmXvFuncAsmExpand     "App_Ui_FrmXvFuncAsmExpand"        //展开
 #define App_Ui_FrmXvFuncAsmCollapse   "App_Ui_FrmXvFuncAsmCollapse"      //折叠
 
+#define App_Ui_FrmXvFuncResult     "App_Ui_FrmXvFuncResult"   //算子结果
+#define App_Ui_FrmXvFuncResultIdx     "App_Ui_FrmXvFuncResultIdx"   //序号
+#define App_Ui_FrmXvFuncResultName     "App_Ui_FrmXvFuncResultName"   //参数名称
+#define App_Ui_FrmXvFuncResultVal     "App_Ui_FrmXvFuncResultVal"   //当前值
+
+#define App_Ui_FrmXvFuncResultFuncName     "App_Ui_FrmXvFuncResultFuncName"   //算子名称
+#define App_Ui_FrmXvFuncResultFuncStatus     "App_Ui_FrmXvFuncResultFuncStatus"   //算子状态
+
+
 #define App_Ui_FrmAbout                 "App_Ui_FrmAbout" //关于
+
+#define App_FrmXvFlowConfig_Title                   "App_FrmXvFlowConfig_Title" //流程配置
+#define App_FrmXvFlowConfig_FlowLoopInterval        "App_FrmXvFlowConfig_FlowLoopInterval" //循环间隔(ms)
+#define App_FrmXvFlowConfig_FuncErrorInterruptRun   "App_FrmXvFlowConfig_FuncErrorInterruptRun" //算子错误中断运行
+
 /*UiXvWorkMgr*/
 //流程
 #define App_UiXvWorkMgr_FlowId          "App_UiXvWorkMgr_FlowId"   //流程ID
@@ -148,7 +166,7 @@
 #define App_UiXvWorkMgr_FlowOnceRun      "App_UiXvWorkMgr_FlowOnceRun"   //流程单次运行
 #define App_UiXvWorkMgr_FlowLoopRun      "App_UiXvWorkMgr_FlowLoopRun"   //流程重复运行
 #define App_UiXvWorkMgr_FlowStop         "App_UiXvWorkMgr_FlowStop"      //流程停止运行
-#define App_UiXvWorkMgr_FlowProp         "App_UiXvWorkMgr_FlowProp"      //流程属性
+#define App_UiXvWorkMgr_FlowConfig       "App_UiXvWorkMgr_FlowConfig"    //流程配置
 
 #define App_UiXvWorkMgr_FlowViewZoomScale         "App_UiXvWorkMgr_FlowViewZoomScale"      //缩放比例
 
@@ -170,5 +188,13 @@
 #define App_UiXvWorkMgr_XvFlowRunStart "App_UiXvWorkMgr_XvFlowRunStart" //流程<%1>开始运行
 #define App_UiXvWorkMgr_XvFlowRunEnd "App_UiXvWorkMgr_XvFlowRunEnd" //流程<%1>运行结束
 #define App_UiXvWorkMgr_XvFlowRunStop "App_UiXvWorkMgr_XvFlowRunStop" //流程<%1>运行停止
+
+
+/*UiXvDisplayManager*/
+
+#define App_UiXvDisplayManager_ZoomUp       "App_UiXvDisplayManager_ZoomUp"   //放大
+#define App_UiXvDisplayManager_ZoomDown     "App_UiXvDisplayManager_ZoomDown"   //缩小
+#define App_UiXvDisplayManager_ZoomFit     "App_UiXvDisplayManager_ZoomFit"   //缩放到合适大小
+#define App_UiXvDisplayManager_Cross        "App_UiXvDisplayManager_Cross"   //显示十字
 
 #endif // LANGDEF_H

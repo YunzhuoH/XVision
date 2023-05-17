@@ -39,7 +39,7 @@ void FrmVisionWork::initFrm()
 {
 
     this->setWindowIcon(QIcon(":/images/Ui/FrmVisionWork.svg"));
-    this->setWindowTitle(getLang(App_Ui_FrmVisionWork,"视觉流程"));
+    this->setWindowTitle(getLang(App_Ui_FrmVisionWork,"工作流程"));
 
     ///初始化左侧算子工具栏模块
     auto frmXvFuncAsm=ui->frmXvFuncAsm;

@@ -1,6 +1,7 @@
 ﻿#include "XMatTabs.h"
 #include "XMatTabs_p.h"
 #include <QtWidgets/QHBoxLayout>
+#include <QPainter>
 #include "XMatTabs_internal.h"
 #include "XMatStyleDef.h"
 
@@ -158,7 +159,7 @@ void XMatTabs::setCurrentTab(int index)
     emit currentChanged(index);
 }
 
-void XMatTabs::addTab(const QString &text, const QIcon &icon)
+XMatTab* XMatTabs::addTab(const QString &text, const QIcon &icon)
 {
     Q_D(XMatTabs);
 
@@ -180,6 +181,7 @@ void XMatTabs::addTab(const QString &text, const QIcon &icon)
         d->inkBar->raise();
         tab->setActive(true);
     }
+    return tab;
 }
 
 int XMatTabs::currentIndex() const
@@ -245,5 +247,107 @@ void XMatTabs::updateTabs()
             tab->setBackgroundColor(backgroundColor());
             tab->setForegroundColor(textColor());
         }
+    }
+}
+
+/*!
+ *  \class XMatTab
+ */
+
+XMatTab::XMatTab(XMatTabs *parent)
+    : XMatFlatButton(parent),
+      m_tabs(parent),
+      m_active(false)
+{
+    Q_ASSERT(parent);
+
+    if(parent)
+    {
+        setMinimumHeight(parent->minimumHeight());
+        setMaximumHeight(parent->maximumHeight());
+    }
+
+    QFont f(font());
+    f.setStyleName("Normal");
+    setFont(f);
+
+    setCornerRadius(0);
+    setBackgroundMode(Qt::OpaqueMode);
+    setBaseOpacity(0.25);
+
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(activateTab()));
+}
+
+XMatTab::~XMatTab()
+{
+}
+
+QSize XMatTab::sizeHint() const
+{
+    return XMatFlatButton::sizeHint();
+
+    /*SRC:
+    if (icon().isNull()) {
+        return XMatFlatButton::sizeHint();
+    } else {
+        return QSize(40, iconSize().height()+46);
+    }
+    */
+}
+
+void XMatTab::activateTab()
+{
+    m_tabs->setCurrentTab(this);
+}
+
+void XMatTab::paintForeground(QPainter *painter)
+{
+    painter->setPen(foregroundColor());
+
+    /*SRC:
+    if (!icon().isNull()) {
+        painter->translate(0, 12);
+    }
+    */
+
+    QSize textSize(fontMetrics().size(Qt::TextSingleLine, text()));
+    QSize base(size()-textSize);
+
+    QRect textGeometry(QPoint(base.width(), base.height())/2, textSize);
+
+    painter->drawText(textGeometry, Qt::AlignCenter, text());
+
+    if (!icon().isNull())
+    {
+        const QSize &size = iconSize();
+        QRect iconRect;
+        if(text().isEmpty())
+        {
+            iconRect=QRect(QPoint((width()-size.width())/2, (height()-size.height())/2), size);
+        }
+        else
+        {
+            iconRect=QRect(QPoint(textGeometry.left()-size.width()-5,  (height()-size.height())/2), size);
+        }
+
+        QPixmap pixmap = icon().pixmap(iconSize());
+        QPainter icon(&pixmap);
+        icon.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        icon.fillRect(pixmap.rect(), painter->pen().color());
+        painter->drawPixmap(iconRect, pixmap);
+    }
+
+    if (!m_active)
+    {
+        /*SRC:
+        if (!icon().isNull()) {
+           painter->translate(0, -12);
+        }
+        */
+        QBrush overlay;
+        overlay.setStyle(Qt::SolidPattern);
+        overlay.setColor(backgroundColor());
+        painter->setOpacity(0.36);
+        painter->fillRect(rect(), overlay);
     }
 }

@@ -2,9 +2,9 @@
 //Qt
 #include <QMutexLocker>
 
-//XGraphics
-#include "XGraphicsScene.h"
-#include "XGraphicsItem.h"
+//XFlowGraphics
+#include "XFlowGraphicsScene.h"
+#include "XFlowGraphicsItem.h"
 
 //XVsion
 #include "LangDef.h"

@@ -9,5 +9,8 @@
         <file>images/ElapsedTimer.svg</file>
         <file>images/Delayer.svg</file>
         <file>images/ImageAcquisition.svg</file>
+        <file>images/ImageAcquisitionWdgDirLast.svg</file>
+        <file>images/ImageAcquisitionWdgDirNext.svg</file>
+        <file>images/LogOutput.svg</file>
     </qresource>
 </RCC>

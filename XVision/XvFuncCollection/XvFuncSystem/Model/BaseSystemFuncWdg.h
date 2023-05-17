@@ -7,6 +7,8 @@
 using namespace XvCore;
 
 class QLabel;
+class QLineEdit;
+class QPlainTextEdit;
 class BaseSystemFuncWdg: public XFramelessWidget
 {
 
@@ -53,8 +55,22 @@ protected:
     static bool setCmbBindResultTag(QComboBox* cmb,const SBindResultTag &tag);
     ///通过XObject更新标签显示文本
     static void updateLbTextWithXObject(QLabel* lb,XObject* obj,const QString &suffix="");
+    ///初始化布尔量QComboBox
+    static void initCmbByBool(QComboBox* cmb);
+
+    ///设置cmb绑定
+    void setCmbBind(XObject* param,QComboBox* cmb);
+    ///设置QComboBox控件并修改QLineEdit使能
+    void setCmbWithCmbEnable(QComboBox* cmbBind,QComboBox* cmbVal, const QString &paramName);
+    ///设置QComboBox控件并修改QLineEdit使能
+    void setCmbWithLetEnable(QComboBox* cmbBind,QLineEdit* letVal, const QString &paramName);
+
+    void setCmbWithPetEnable(QComboBox* cmbBind,QPlainTextEdit* letVal, const QString &paramName);
+
     ///初始化界面
     virtual void initFrm();
+    ///初始化固定尺寸
+    virtual void initFixedSize();
     ///显示事件
     void showEvent(QShowEvent *event) override;
     ///隐藏事件

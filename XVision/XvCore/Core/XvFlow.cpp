@@ -36,6 +36,7 @@ public:
     XvFlowPrivate(XvFlow *q):q_ptr(q)
     {
         runThread=nullptr;
+        flowConfig=new XvFlowConfig;
     };
     ~XvFlowPrivate(){};
     ///父指针
@@ -44,6 +45,8 @@ public:
     QMap<QString,XvFunc*>   mapFunc;
     ///运行线程
     XThread             *runThread;
+    ///流程配置
+    XvFlowConfig        *flowConfig;
 };
 }
 /**************************************************************/
@@ -96,6 +99,16 @@ RetXv XvFlow::release()
        }
     }
     return true;
+}
+
+XvFlowConfig *XvFlow::getFlowConfig()
+{
+    Q_D(XvFlow);
+    if(!d->flowConfig)
+    {
+        d->flowConfig=new XvFlowConfig;
+    }
+    return d->flowConfig;
 }
 
 void XvFlow::setFlowName(const QString &name)
@@ -302,6 +315,7 @@ bool XvFlow::checkFlowLegal()
 void XvFlow::_threadRun(bool bLoop)
 {
     Q_D(XvFlow);
+    auto config=getFlowConfig();
     _running=true;   
     do
     {
@@ -343,7 +357,14 @@ void XvFlow::_threadRun(bool bLoop)
                           }
 
                           lstVisited.append(curFunc);
-                          curFunc->runXvFunc();
+                          EXvFuncRunStatus ret= curFunc->runXvFunc();
+                          if(config->funcErrorInterruptRun&&ret==EXvFuncRunStatus::Error)
+                          {
+                              _runInfo.runStatus=EXvFlowRunStatus::Error;
+                              _runInfo.runMsg=getLang(Core_XvFlow_RunStatusError,"运行错误");
+                              _running=false;
+                              break;
+                          }
                           auto sonFuncs= curFunc->sonFuncs();
                           foreach (auto sonFunc, sonFuncs)
                           {
@@ -366,15 +387,21 @@ void XvFlow::_threadRun(bool bLoop)
 
 
      }
+        if(_runInfo.runStatus!=EXvFlowRunStatus::Error)
+        {
+            _runInfo.runStatus=EXvFlowRunStatus::Ok;
+            _runInfo.runMsg=getLang(Core_XvFlow_RunStatusOk,"运行成功");
+        }
         _runInfo.runElapsed= (timer.nsecsElapsed()*1.0)/1000/1000;
-        _runInfo.runStatus=EXvFlowRunStatus::Ok;
-        _runInfo.runMsg=getLang(Core_XvFlow_RunStatusOk,"运行成功");
         emit this->sgFlowRunEnd();
         if(!_running)
         {
            break;
         }
-        QThread::msleep(10);
+        if(bLoop)
+        {
+            QThread::msleep(config->loopInterval);
+        }
     }while(bLoop);
     _running=false;
 }

@@ -14,7 +14,7 @@ public:
     static QString type() { return XBoolType;}
     XObject *clone() override { return new XBool(*this);}
 public://重载
-    QString toString() const override {  return QString("%1").arg(_value); }
+    QString toString() const override {  return QString("%1").arg(_value?"true":"false"); }
     QString typeName() override { return XBoolType;}
     bool getData(XObject *object) override;
     bool setData(XObject *object) override;

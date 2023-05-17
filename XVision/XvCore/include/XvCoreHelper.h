@@ -13,7 +13,7 @@ class XVCORE_EXPORT XvCoreHelper
 public:
     XvCoreHelper();
 public:
-    static QMap<EXvFuncRunStatus,QString> getRunStatusLang();
+    static QMap<EXvFuncRunStatus,QString> getXvFuncRunStatusLang();
 
 };
 }

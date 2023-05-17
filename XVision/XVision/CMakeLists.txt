@@ -47,6 +47,7 @@ endif()
 list(APPEND APP_LIBS
     SingleApplication
     XvCore #核心库
+    XvDisplay #图像交互库
     XvData #数据库
     XvTokenMsg #Token消息库
     XvUtils #工具库
@@ -57,7 +58,7 @@ list(APPEND APP_LIBS
     XLog            #日志库
     XLanguage       #多语言库
     AdsDocking      #悬浮窗口库
-    XGraphics       #流程绘图库
+    XFlowGraphics       #流程绘图库
     XConcurrent     #多线程管理库
 )
 
@@ -71,6 +72,7 @@ endif()
 list(APPEND APP_INCLUDE_DIR
     ../SingleApplication
     ../XvCore/include
+    ../XvDisplay/include
     ../XvData/include
     ../XvTokenMsg/include
     ../XvUtils/include
@@ -81,7 +83,7 @@ list(APPEND APP_INCLUDE_DIR
     ../${XLog_Inc}
     ../${XLanguage_Inc}
     ../${AdsDocking_Inc}
-    ../${XGraphics_Inc}
+    ../${XFlowGraphics_Inc}
     ../${XConcurrent_Inc}
 
 )
@@ -106,6 +108,7 @@ file(GLOB UIMAIN     UiMain/*.*)
 file(GLOB UICORE     UiCore/*.*)
 file(GLOB UIWORK     UiWork/*.*)
 file(GLOB UIWORK_UIXVFUNC     UiWork/UiXvFunc/*.*)
+file(GLOB UIWORK_UIXVFLOW     UiWork/UiXvFlow/*.*)
 file(GLOB UIOUTPUT   UIOutput/*.*)
 
 
@@ -147,6 +150,7 @@ list(APPEND APP_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/UiCore
     ${CMAKE_CURRENT_SOURCE_DIR}/UiWork
     ${CMAKE_CURRENT_SOURCE_DIR}/UiWork/UiXvFunc
+    ${CMAKE_CURRENT_SOURCE_DIR}/UiWork/UiXvFlow
     ${CMAKE_CURRENT_SOURCE_DIR}/UIOutput 
 
 )

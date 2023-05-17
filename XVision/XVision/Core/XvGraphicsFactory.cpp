@@ -1,8 +1,8 @@
 ﻿#include "XvGraphicsFactory.h"
-#include "XGraphicsRectItem.h"
-#include "XGraphicsEllipseItem.h"
-#include "XGraphicsConnectLink.h"
-#include "XGraphicsScene.h"
+#include "XFlowGraphicsRectItem.h"
+#include "XFlowGraphicsEllipseItem.h"
+#include "XFlowGraphicsConnectLink.h"
+#include "XFlowGraphicsScene.h"
 #include "XvFuncAssembly.h"
 #include "XvFunc.h"
 
@@ -10,8 +10,8 @@
 
 
 
-XvGraphicsItemFactory::XvGraphicsItemFactory(XGraphicsScene* scene,QObject *parent)
-    :XGraphicsItemDelegateFactory{scene,parent}
+XvGraphicsItemFactory::XvGraphicsItemFactory(XFlowGraphicsScene* scene,QObject *parent)
+    :XFlowGraphicsItemDelegateFactory{scene,parent}
 {
     m_mapPen.clear();
     //图标设置
@@ -34,12 +34,12 @@ XvGraphicsItemFactory::XvGraphicsItemFactory(XGraphicsScene* scene,QObject *pare
 
 }
 
-XGraphicsItem *XvGraphicsItemFactory::getXGraphicsItem(const QString &type)
+XFlowGraphicsItem *XvGraphicsItemFactory::getXFlowGraphicsItem(const QString &type)
 {
     auto info=XvWorkMgr->getXvCoreMgr()->getXvFuncAsm()->getXvFuncInfo(type);
     auto lst=m_parScene->getXItemsByType(type);
     int nIdx=lst.count()+1;
-    XGraphicsRectItem *item=new XGraphicsRectItem(type,"",m_parScene);
+    XFlowGraphicsRectItem *item=new XFlowGraphicsRectItem(type,"",m_parScene);
     item->setTextFont(QFont("Microsoft YaHei UI", 10, QFont::Bold));
     item->setText(info.name+QString("-%1").arg(nIdx));
     item->setSize(190,65);
@@ -52,15 +52,15 @@ XGraphicsItem *XvGraphicsItemFactory::getXGraphicsItem(const QString &type)
 }
 
 
-XvGraphicsLinkFactory::XvGraphicsLinkFactory(XGraphicsScene *scene, QObject *parent)
-    :XGraphicsLinkDelegateFactory{scene,parent}
+XvGraphicsLinkFactory::XvGraphicsLinkFactory(XFlowGraphicsScene *scene, QObject *parent)
+    :XFlowGraphicsLinkDelegateFactory{scene,parent}
 {
 
 }
 
-XGraphicsConnectLink *XvGraphicsLinkFactory::getXGraphicsLink()
+XFlowGraphicsConnectLink *XvGraphicsLinkFactory::getXFlowGraphicsLink()
 {
-    XGraphicsConnectLink *link=new XGraphicsConnectLink(m_parScene);
+    XFlowGraphicsConnectLink *link=new XFlowGraphicsConnectLink(m_parScene);
     link->setSelectBoundingRectPen(QPen(QColor(25, 150, 255),1,Qt::DashLine));
     return link;
 }

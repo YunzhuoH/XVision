@@ -9,6 +9,7 @@ class XvSingleApplication:public SingleApplication
     Q_OBJECT
 public:
     XvSingleApplication(int &argc, char **argv);
+    ~XvSingleApplication();
     //app初始化
     void init();
     //app反初始化
@@ -22,6 +23,7 @@ public:
 protected:
     ///是否初始化完成
     bool m_bInitFinish;
+
 };
 
 

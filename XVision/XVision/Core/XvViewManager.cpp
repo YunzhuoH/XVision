@@ -9,10 +9,11 @@
 #include "UiXvWorkManager.h"
 #include "FrmVisionWork.h"
 /*[Core]*/
-#include "FrmVisionImage.h"
+#include "FrmVisionDisplay.h"
 /*[Output]*/
 #include "FrmLogShow.h"
 #include "FrmThreadMonitor.h"
+#include "FrmXvFuncResult.h"
 
 XvViewManager::XvViewManager(QObject *parent)
     : QObject{parent}
@@ -56,6 +57,11 @@ UiXvWorkManager *XvViewManager::uiXvWorkManager() const
 {
     return m_uiXvWorkManager;
 }
+
+UiXvDisplayManager *XvViewManager::uiXvDisplayManager() const
+{
+    return m_uiXvDisplayManager;
+}
 void XvViewManager::setApp(XvSingleApplication *app)
 {
     if(app)
@@ -88,6 +94,14 @@ void XvViewManager::setUiXvWorkManager(UiXvWorkManager *uiXvWorkManager)
     }
 }
 
+void XvViewManager::setUiXvDisplayManager(UiXvDisplayManager *uiXvDisplayManager)
+{
+    if(uiXvDisplayManager)
+    {
+        m_uiXvDisplayManager=uiXvDisplayManager;
+    }
+}
+
 void XvViewManager::init()
 {
     ///初始化主界面Dock
@@ -101,16 +115,13 @@ void XvViewManager::init()
 
     if(m_dockMainManager)
     {
-        funcSetDock(DockMainManager::Core,UiVisionImage);
+        funcSetDock(DockMainManager::Core,UiVisionDisplay);
         funcSetDock(DockMainManager::Work,UiVisionWork);
         auto dock= funcSetDock(DockMainManager::Output,UiLogShow);
         funcSetDock(DockMainManager::Output,UiThreadMonitor);
+        funcSetDock(DockMainManager::Output,UiXvFuncResult);
         m_dockMainManager->setAreaCurrentDockWidget(DockMainManager::Output,dock);
         m_dockMainManager->restoreState();
-    }
-    if(m_uiXvWorkManager)//xie.y todo
-    {
-
     }
 }
 

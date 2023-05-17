@@ -90,8 +90,8 @@
     background-color: #DDDDDD;
     border: none;
 }
-/***************************XGraphicsView***************************/
-XGraphicsView
+/***************************XFlowGraphicsView***************************/
+XFlowGraphicsView
 {
     qproperty-backgroundColor:white;
     qproperty-gridSmallColor:#DDDDDD;
@@ -100,24 +100,24 @@ XGraphicsView
     qproperty-magneticLineWidth:2;
 }
 
-XGraphicsView XMatScrollBar
+XFlowGraphicsView XMatScrollBar
 {
     qproperty-canvasColor:white;
     qproperty-backgroundColor:white;
 
 }
 
-XGraphicsView QMenu {
+XFlowGraphicsView QMenu {
     font-weight: 400;
     font:15px/30px Microsoft-YaHei, serif;
     border:1px solid;
     border-color:#DDDDDD;
     background-color: white;
 }
-XGraphicsView QMenu::item:selected{
+XFlowGraphicsView QMenu::item:selected{
     background-color: #DDDDDD;
 }
-XGraphicsView QMenu::item:pressed{
+XFlowGraphicsView QMenu::item:pressed{
     background-color: #BBBBBB;
 }
 
@@ -326,7 +326,15 @@ XTitleBar QAbstractButton:pressed
 
 /********************************************************************/
 
+/***************************XMatTabs***************************/
+.XMatTabs
+{
+    qproperty-inkColor:#3282FA;
+    qproperty-backgroundColor:#803282FA;
+    qproperty-textColor:white;
+}
 
+/********************************************************************/
 
 /******************QTableView*************************/
 

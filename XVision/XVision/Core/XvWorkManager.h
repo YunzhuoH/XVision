@@ -12,8 +12,8 @@ class XvFlow;
 class XvProject;
 }
 
-class XGraphicsScene;
-class XGraphicsItem;
+class XFlowGraphicsScene;
+class XFlowGraphicsItem;
 class XvWorkManagerPrivate;
 ///工作管理器 管理视觉方案/流程/算子
 class XvWorkManager:public QObject

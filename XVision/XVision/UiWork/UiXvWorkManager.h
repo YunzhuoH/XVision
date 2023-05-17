@@ -1,25 +1,28 @@
 ﻿#ifndef UIXVWORKMANAGER_H
 #define UIXVWORKMANAGER_H
 
-
-#include "DockDef.h"
+#include <QObject>
 #include <QStatusBar>
+#include "DockDef.h"
 
 ///UiWork管理器:视觉流程界面管理器
 /// 关联XvWorkManager
 ///连接底层XvCore视觉工作流
 /// 借鉴MVC/MVVM框架,该类实现对底层视觉类的(单向)绑定
 class XMatSlider;
+
 namespace XvCore
 {
 class XvFunc;
 class XvFlow;
 class XvProject;
 }
+
 class QGraphicsSceneMouseEvent;
-class XGraphicsScene;
-class XGraphicsItem;
-class XGraphicsConnectLink;
+class XFlowGraphicsScene;
+class XFlowGraphicsItem;
+class XFlowGraphicsConnectLink;
+
 class UiXvWorkManagerPrivate;
 class UiXvWorkManager:public QObject
 {
@@ -34,7 +37,7 @@ public://公共常规接口
     ///获取流程Dock管理器
     CDockManager* dockFlowManager() const {return m_dockFlowManager;}
     ///获取流程状态栏
-    QStatusBar* dockStatusBar() const {return m_flowStatusBar;}
+    QStatusBar* dockStatusBar() const {return m_flowStatusBar;}//xie.y todo
 
 protected: //初始化接口
     ///初始化
@@ -52,20 +55,20 @@ protected://内部工具接口
     ///获取当前Dock的流程
     XvCore::XvFlow* getCurDockFlow();
     ///获取当前流程场景
-    XGraphicsScene* getCurDockFlowScene();
+    XFlowGraphicsScene* getCurDockFlowScene();
     ///初始化流程场景:【界面】相关连接(绑定)
-    void initFlowScene(XvCore::XvFlow *flow,XGraphicsScene* scene);
+    void initFlowScene(XvCore::XvFlow *flow,XFlowGraphicsScene* scene);
     ///反初始化流程场景:【界面】相关断连(解绑)
-    void uninitFlowScene(XvCore::XvFlow *flow,XGraphicsScene* scene);
+    void uninitFlowScene(XvCore::XvFlow *flow,XFlowGraphicsScene* scene);
     ///初始化算子图元:【界面】相关连接(绑定)
-    void initFuncXItem(XvCore::XvFunc *func,XGraphicsItem* xItem);
+    void initFuncXItem(XvCore::XvFunc *func,XFlowGraphicsItem* xItem);
     ///反初始化算子图元:【界面】相关连接(解绑)
-    void uninitFuncXItem(XvCore::XvFunc *func,XGraphicsItem* xItem);
+    void uninitFuncXItem(XvCore::XvFunc *func,XFlowGraphicsItem* xItem);
 public slots://公共调用槽
     ///通过id获取流程图场景
-    XGraphicsScene* getFlowScene(const QString &flowId);
+    XFlowGraphicsScene* getFlowScene(const QString &flowId);
     ///通过流程新建则创建流程图场景(如果流程号存在则返回该流程对应的Scene)
-    XGraphicsScene* createFlowScene(XvCore::XvFlow *flow);
+    XFlowGraphicsScene* createFlowScene(XvCore::XvFlow *flow);
     ///通过流程id名称移除流程图场景
     bool removeFlowScene(XvCore::XvFlow *flow);
     ///通过算子类型添加图元
@@ -85,7 +88,7 @@ protected slots://Ui界面内部调用槽
     void onFlowDockTabMenuRequested(const QPoint &pos);
 //*[流程常规操作]*
     ///流程显示属性
-    void flowShowProp();
+    void flowShowConfig();
     ///流程重命名
     void flowRename();
     ///流程名称修改响应槽函数:对应修改流程标题框显示
@@ -114,41 +117,46 @@ protected slots://Ui界面内部调用槽
     ///Flow-场景 鼠标点击事件
     void onFlowSceneMouseClicked(QGraphicsSceneMouseEvent* event);
     ///Flow-场景 XItem单独选择事件
-    void onFlowSceneXItemSingleSelect(XGraphicsItem* item);
+    void onFlowSceneXItemSingleSelect(XFlowGraphicsItem* item);
     ///Flow-场景 XItem双击事件
-    void onFlowSceneMouseDoubleClickXItem(XGraphicsItem* item);
+    void onFlowSceneMouseDoubleClickXItem(XFlowGraphicsItem* item);
     ///Flow-场景 XLink单独选择事件
-    void onFlowSceneXLinkSingleSelect(XGraphicsConnectLink* link);
+    void onFlowSceneXLinkSingleSelect(XFlowGraphicsConnectLink* link);
 
 //*[Scene算子操作]*
     ///Flow-场景流程XItem添加(界面主动添加)
-    void onFlowSceneXItemAdd(XGraphicsItem* xItem);
+    void onFlowSceneXItemAdd(XFlowGraphicsItem* xItem);
     ///Flow-场景流程XItem开始删除[判断是否可以删除XvFunc](界面主动删除)
-    bool onFlowSceneXItemRemoveStart(XGraphicsItem* xItem);
+    bool onFlowSceneXItemRemoveStart(XFlowGraphicsItem* xItem);
     ///Flow-场景流程XItem连接判断
-    bool onFlowSceneXItemConnectJudge(XGraphicsItem* fatherXItem,const QString &startKey,XGraphicsItem* sonXItem,const QString &sonKey);
+    bool onFlowSceneXItemConnectJudge(XFlowGraphicsItem* fatherXItem,const QString &startKey,XFlowGraphicsItem* sonXItem,const QString &sonKey);
     ////Flow-场景流程XItem连接删除事件(XItem删除则会联动XvFunc自动删除连接)
-    void onFlowSceneConnectRemove(XGraphicsConnectLink* xLink);
+    void onFlowSceneConnectRemove(XFlowGraphicsConnectLink* xLink);
 //*[算子操作]*
     ///算子显示
-    void funcShow(XGraphicsItem* item);
+    void funcShow(XFlowGraphicsItem* item);
     ///算子运行
-    void funcRun(XGraphicsItem* item);
+    void funcRun(XFlowGraphicsItem* item);
     ///算子重命名
     void funcRename();
 
     /*-----Scene/View/Flow信号:流程/流程UI状态更新(m_flowStatusBar区域相关)-----*/
 protected slots:
     ///流程图缩放条更新
-    void onFlowViewZoomSliderUpdate();
+    void onFlowViewZoomSliderUpdate();   
  //*[算子XItem]*
+
+signals:
+    ///流程界面点击事件
+    /// 非XItem区域func为空
+    void sgFlowSceneMouseClickWithXvFunc(XvCore::XvFunc* func);
 private:
     CDockManager* m_dockFlowManager = nullptr;//dock管理器
     CDockAreaWidget* m_dockFlowArea=nullptr;//流程区域
     QStatusBar* m_flowStatusBar=nullptr;//流程状态栏显示流程信息
     XMatSlider* m_flowViewZoomSlider=nullptr;//流程图缩放条
     ///流程号:流程图
-    QMap<QString,XGraphicsScene*> m_mapFlowScene;
+    QMap<QString,XFlowGraphicsScene*> m_mapFlowScene;
 
 };
 

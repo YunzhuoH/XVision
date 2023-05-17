@@ -1,28 +1,28 @@
 ﻿#ifndef XVGRAPHICSITEMFACTORY_H
 #define XVGRAPHICSITEMFACTORY_H
 
-#include "XGraphicsDelegateFactory.h"
+#include "XFlowGraphicsDelegateFactory.h"
 
-class XvGraphicsItemFactory: public XGraphicsItemDelegateFactory
+class XvGraphicsItemFactory: public XFlowGraphicsItemDelegateFactory
 {
     Q_OBJECT
 public:
-    XvGraphicsItemFactory(XGraphicsScene* scene,QObject* parent=nullptr);
+    XvGraphicsItemFactory(XFlowGraphicsScene* scene,QObject* parent=nullptr);
 public:
 
-    XGraphicsItem *getXGraphicsItem(const QString &type) override;
+    XFlowGraphicsItem *getXFlowGraphicsItem(const QString &type) override;
 protected:
     QMap<QString,QPen> m_mapPen;
 };
 
-class XvGraphicsLinkFactory:public XGraphicsLinkDelegateFactory
+class XvGraphicsLinkFactory:public XFlowGraphicsLinkDelegateFactory
 {
     Q_OBJECT
 public:
-    XvGraphicsLinkFactory(XGraphicsScene* scene,QObject* parent=nullptr);
+    XvGraphicsLinkFactory(XFlowGraphicsScene* scene,QObject* parent=nullptr);
 
 public:
-    XGraphicsConnectLink *getXGraphicsLink() override;
+    XFlowGraphicsConnectLink *getXFlowGraphicsLink() override;
 };
 
 #endif // XVGRAPHICSITEMFACTORY_H

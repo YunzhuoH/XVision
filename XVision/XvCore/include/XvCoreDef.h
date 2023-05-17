@@ -201,6 +201,19 @@ typedef struct S_XVFLOW_RUN_INFO
     double runElapsed;
 }XvFlowRunInfo,*PXvFlowRunInfo;
 
+///流程配置
+typedef struct S_XVFLOW_CONFIG
+{
+    S_XVFLOW_CONFIG()
+    {
+        loopInterval=1000;
+        funcErrorInterruptRun=false;
+    }
+    unsigned int loopInterval;//循环间隔(ms)
+    bool     funcErrorInterruptRun;//算子错误中断运行
+
+}XvFlowConfig,*PXvFlowConfig;
+
 
 }
 

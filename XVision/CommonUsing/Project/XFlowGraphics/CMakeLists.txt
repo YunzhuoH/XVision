@@ -1,0 +1,59 @@
+﻿cmake_minimum_required(VERSION 3.14)
+
+project(XFlowGraphics LANGUAGES CXX)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets)
+
+file(GLOB INCLUDE      include/*.*)
+file(GLOB SRC          Src/*.*)
+file(GLOB XITEM        XItem/*.*)
+
+add_library(XFlowGraphics SHARED
+  ${INCLUDE}
+  ${SRC}
+  ${XITEM}
+)
+
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src
+    ${CMAKE_CURRENT_SOURCE_DIR}/XItem
+)
+
+target_link_libraries(XFlowGraphics PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets)
+
+target_compile_definitions(XFlowGraphics PRIVATE XFLOWGRAPHICS_LIBRARY)
+
+if (NOT MSVC)
+    set(OUTPUT_DIR mingw)
+else()
+    set(OUTPUT_DIR msvc)
+endif()
+
+set(LIB_OUT_DIR_D ${CMAKE_CURRENT_SOURCE_DIR}/../../LibD/${OUTPUT_DIR})
+set(LIB_OUT_DIR_R ${CMAKE_CURRENT_SOURCE_DIR}/../../Lib/${OUTPUT_DIR})
+
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    AUTOMOC ON
+    AUTORCC ON
+    CXX_EXTENSIONS OFF
+    EXPORT_NAME ${PROJECT_NAME}
+
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${LIB_OUT_DIR_D}"
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${LIB_OUT_DIR_R}"
+
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG "${LIB_OUT_DIR_D}"
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE "${LIB_OUT_DIR_R}"
+
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${LIB_OUT_DIR_D}"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${LIB_OUT_DIR_R}"
+)

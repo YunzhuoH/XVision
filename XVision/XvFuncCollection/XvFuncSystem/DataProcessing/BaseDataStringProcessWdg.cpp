@@ -16,65 +16,14 @@ BaseDataStringProcessWdg::~BaseDataStringProcessWdg()
 
 void BaseDataStringProcessWdg::initFrm()
 {
-    this->setFixedSize(390,430);
+    initFixedSize();
     auto func=getFunc<BaseDataStringProcess>();
     if(!func) return;
 
-    auto funcInitCmb=[=](QComboBox* cmb)
-    {
-        cmb->clear();
-        cmb->addItem("False");
-        cmb->addItem("True");
-    };
-    auto funcSetCmbWithLet=[=](QComboBox* cmb,QLineEdit* let, const QString &paramName)
-    {
-        auto idx=cmb->currentIndex();
-        if(idx<0) return;
-        if(idx==0)
-        {
-            if(m_bShowing)
-            {
-                 func->paramUnSubscribe(paramName);
-            }
-            let->setEnabled(true);
-        }
-        else
-        {
-            let->setEnabled(false);
-            SBindResultTag tag;
-            if(getCmbBindResultTag(cmb,tag))
-            {
-                func->paramSubscribe(paramName,tag.func,tag.resultName);
-            }
 
-        }
-    };
-    auto funcSetCmbWithCmb=[=](QComboBox* cmbV,QComboBox* cmbB, const QString &paramName)
-    {
-        auto idx=cmbV->currentIndex();
-        if(idx<0) return;
-        if(idx==0)
-        {
-            if(m_bShowing)
-            {
-                func->paramUnSubscribe(paramName);
-            }
-            cmbB->setEnabled(true);
-        }
-        else
-        {
-            cmbB->setEnabled(false);
-            SBindResultTag tag;
-            if(getCmbBindResultTag(cmbV,tag))
-            {
-                func->paramSubscribe(paramName,tag.func,tag.resultName);
-            }
 
-        }
-    };
-
-    funcInitCmb(ui->cmbBVal);
-    funcInitCmb(ui->cmbRetB);
+    initCmbByBool(ui->cmbBVal);
+    initCmbByBool(ui->cmbRetB);
 
     updateLbTextWithXObject(ui->lbS1,func->param->stringParam1,":");
     updateLbTextWithXObject(ui->lbS2,func->param->stringParam2,":");
@@ -118,28 +67,28 @@ void BaseDataStringProcessWdg::initFrm()
 
     connect(ui->cmbS1,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmbWithLet(ui->cmbS1,ui->letS1,func->param->stringParam1->objectName());
+        setCmbWithLetEnable(ui->cmbS1,ui->letS1,func->param->stringParam1->objectName());
     });
     connect(ui->cmbS2,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmbWithLet(ui->cmbS2,ui->letS2,func->param->stringParam2->objectName());
+        setCmbWithLetEnable(ui->cmbS2,ui->letS2,func->param->stringParam2->objectName());
     });
     connect(ui->cmbI1,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmbWithLet(ui->cmbI1,ui->letI1,func->param->intParam1->objectName());
+        setCmbWithLetEnable(ui->cmbI1,ui->letI1,func->param->intParam1->objectName());
     });
     connect(ui->cmbI2,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmbWithLet(ui->cmbI2,ui->letI2,func->param->intParam2->objectName());
+        setCmbWithLetEnable(ui->cmbI2,ui->letI2,func->param->intParam2->objectName());
     });
     connect(ui->cmbR,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmbWithLet(ui->cmbR,ui->letR,func->param->realParam->objectName());
+        setCmbWithLetEnable(ui->cmbR,ui->letR,func->param->realParam->objectName());
     });
 
     connect(ui->cmbB,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmbWithCmb(ui->cmbB,ui->cmbBVal,func->param->boolParam->objectName());
+        setCmbWithCmbEnable(ui->cmbB,ui->cmbBVal,func->param->boolParam->objectName());
     });
 
 
@@ -222,15 +171,6 @@ void BaseDataStringProcessWdg::onShow()
     auto func=getFunc<BaseDataStringProcess>();
     if(!func) return;
 
-    auto funcSetCmbBind=[=](XObject* param,QComboBox* cmb)
-    {
-        XvFunc::SubscribeInfo info;
-        if(func->getParamSubscribe(param->objectName(),info))
-        {
-          setCmbBindResultTag(cmb,SBindResultTag(info.first,info.second));
-        }
-    };
-
 //cmb
 
     auto cmbType=ui->cmbProcessType;
@@ -244,12 +184,12 @@ void BaseDataStringProcessWdg::onShow()
     initCmbBindResultTag(func,ui->cmbB,{XBool::type()},true);
     initCmbBindResultTag(func,ui->cmbR,{XInt::type(),XReal::type()},true);
 
-    funcSetCmbBind(func->param->stringParam1,ui->cmbS1);
-    funcSetCmbBind(func->param->stringParam2,ui->cmbS2);
-    funcSetCmbBind(func->param->intParam1,ui->cmbI1);
-    funcSetCmbBind(func->param->intParam2,ui->cmbI2);
-    funcSetCmbBind(func->param->boolParam,ui->cmbB);
-    funcSetCmbBind(func->param->realParam,ui->cmbR);
+    setCmbBind(func->param->stringParam1,ui->cmbS1);
+    setCmbBind(func->param->stringParam2,ui->cmbS2);
+    setCmbBind(func->param->intParam1,ui->cmbI1);
+    setCmbBind(func->param->intParam2,ui->cmbI2);
+    setCmbBind(func->param->boolParam,ui->cmbB);
+    setCmbBind(func->param->realParam,ui->cmbR);
 
 
  //let

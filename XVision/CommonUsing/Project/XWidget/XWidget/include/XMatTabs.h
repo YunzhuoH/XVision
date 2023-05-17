@@ -2,13 +2,13 @@
 #define XMATTABS_H
 
 #include "XWidgetGlobal.h"
+#include "XMatFlatButton.h"
 #include <QWidget>
 #include <QIcon>
 #include "XMatCommonDef.h"
 
-class XMatTabsPrivate;
 class XMatTab;
-
+class XMatTabsPrivate;
 class XWIDGET_EXPORT XMatTabs : public QWidget
 {
     Q_OBJECT
@@ -38,7 +38,7 @@ public:
     void setTextColor(const QColor &color);
     QColor textColor() const;
 
-    void addTab(const QString &text, const QIcon &icon = QIcon());
+    XMatTab* addTab(const QString &text, const QIcon &icon = QIcon());
 
     void setCurrentTab(XMatTab *tab);
     void setCurrentTab(int index);
@@ -60,5 +60,42 @@ private:
     Q_DISABLE_COPY(XMatTabs)
     Q_DECLARE_PRIVATE(XMatTabs)
 };
+
+class XWIDGET_EXPORT XMatTab : public XMatFlatButton
+{
+    Q_OBJECT
+
+public:
+    explicit XMatTab(XMatTabs *parent);
+    ~XMatTab();
+
+    inline void setActive(bool state);
+    inline bool isActive() const;
+
+    QSize sizeHint() const Q_DECL_OVERRIDE;
+
+protected slots:
+    void activateTab();
+
+protected:
+    void paintForeground(QPainter *painter) Q_DECL_OVERRIDE;
+
+private:
+    Q_DISABLE_COPY(XMatTab)
+
+    XMatTabs *const m_tabs;
+    bool                  m_active;
+};
+
+inline void XMatTab::setActive(bool state)
+{
+    m_active = state;
+    update();
+}
+
+inline bool XMatTab::isActive() const
+{
+    return m_active;
+}
 
 #endif // XMATTABS_H

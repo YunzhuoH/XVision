@@ -17,6 +17,7 @@ class XvFlow;
 class XVCORE_EXPORT XvFunc:public QObject,public IXvTokenMsgAble
 {
     Q_OBJECT
+    Q_PROPERTY(QString funcId READ funcId)
     Q_PROPERTY(QString funcName READ funcName WRITE setFuncName NOTIFY funcNameChanged)
     friend class XvFunc;
     friend class XvFlow;
@@ -244,7 +245,7 @@ public:
         return _mapParamSubscribe.contains(paramName);
     }
 
-protected://参数订阅(调用对象为本算子)
+public://参数订阅
     ///参数进行订阅
     /// paramName:需要订阅的参数名称
     /// target：订阅的目标算子

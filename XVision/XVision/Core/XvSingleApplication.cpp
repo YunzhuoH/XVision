@@ -1,9 +1,11 @@
 ﻿#include "XvSingleApplication.h"
+
 #include <XLogger>
 #include "LangDef.h"
 #include "AppMainWindow.h"
 #include "DockMainManager.h"
 #include "UiXvWorkManager.h"
+#include "UiXvDisplayManager.h"
 
 #include "XvWorkManager.h"
 #include "XvViewManager.h"
@@ -20,7 +22,12 @@ const SingleApplication::Options opts = SingleApplication::ExcludeAppPath | Sing
 XvSingleApplication::XvSingleApplication(int &argc, char **argv)
 : SingleApplication(argc, argv, false, opts)
 {
-    m_bInitFinish=false;
+
+}
+
+XvSingleApplication::~XvSingleApplication()
+{
+
 }
 
 void XvSingleApplication::init()
@@ -54,6 +61,7 @@ void XvSingleApplication::init()
     XvViewMgr->setApp(this);
     XvViewMgr->setDockMainManager(new DockMainManager(this));
     XvViewMgr->setUiXvWorkManager(new UiXvWorkManager(this));
+    XvViewMgr->setUiXvDisplayManager(new UiXvDisplayManager(this));
     XvViewMgr->setAppMainWindow(new AppMainWindow(this));
     ///进行初始化
     XvViewMgr->init();

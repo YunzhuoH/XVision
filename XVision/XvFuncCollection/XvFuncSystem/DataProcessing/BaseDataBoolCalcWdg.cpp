@@ -16,7 +16,7 @@ BaseDataBoolCalcWdg::~BaseDataBoolCalcWdg()
 
 void BaseDataBoolCalcWdg::initFrm()
 {
-    this->setFixedSize(390,180);
+    initFixedSize();
 
     auto func=getFunc<BaseDataBoolCalc>();
     if(!func) return;
@@ -44,39 +44,9 @@ void BaseDataBoolCalcWdg::initFrm()
     auto cmbB2=ui->cmbB2;
     auto cmbRet=ui->cmbRet;
 
-    auto funcInitCmb=[=](QComboBox* cmb)
-    {
-        cmb->clear();
-        cmb->addItem("False");
-        cmb->addItem("True");
-    };
-    funcInitCmb(cmbB1);
-    funcInitCmb(cmbB2);
-    funcInitCmb(cmbRet);
-
-    auto funcSetCmb=[=](QComboBox* cmbV,QComboBox* cmbB, const QString &paramName)
-    {
-        auto idx=cmbV->currentIndex();
-        if(idx<0) return;
-        if(idx==0)
-        {
-            if(m_bShowing)
-            {
-                func->paramUnSubscribe(paramName);
-            }
-            cmbB->setEnabled(true);
-        }
-        else
-        {
-            cmbB->setEnabled(false);
-            SBindResultTag tag;
-            if(getCmbBindResultTag(cmbV,tag))
-            {
-                func->paramSubscribe(paramName,tag.func,tag.resultName);
-            }
-
-        }
-    };
+    initCmbByBool(cmbB1);
+    initCmbByBool(cmbB2);
+    initCmbByBool(cmbRet);
 
     connect(ui->cmbType,&QComboBox::currentIndexChanged,this,[=]()
     {
@@ -86,12 +56,12 @@ void BaseDataBoolCalcWdg::initFrm()
 
     connect(ui->cmbV1,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmb(ui->cmbV1,ui->cmbB1,p1->objectName());
+        setCmbWithCmbEnable(ui->cmbV1,ui->cmbB1,p1->objectName());
     });
 
     connect(ui->cmbV2,&QComboBox::currentIndexChanged,this,[=]()
     {
-        funcSetCmb(ui->cmbV2,ui->cmbB2,p2->objectName());
+        setCmbWithCmbEnable(ui->cmbV2,ui->cmbB2,p2->objectName());
     });
 
     connect(ui->cmbB1,&QComboBox::currentIndexChanged,this,[=]()

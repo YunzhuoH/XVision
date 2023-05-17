@@ -8,6 +8,7 @@
 
 #include "Delayer.h"
 #include "ElapsedTimer.h"
+#include "LogOutput.h"
 
 using namespace XvCore;
 SystemXvFactoryPlugin::SystemXvFactoryPlugin(QObject *parent)
@@ -33,5 +34,6 @@ QList<QMetaObject> SystemXvFactoryPlugin::getPlgXvFunc()
 
     ADD_XVFUNC(lst,Delayer);
     ADD_XVFUNC(lst,ElapsedTimer);
+    ADD_XVFUNC(lst,LogOutput);
     return lst;
 }

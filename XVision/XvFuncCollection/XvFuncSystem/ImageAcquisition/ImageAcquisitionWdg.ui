@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ImageAcquisitionWdg</class>
+ <widget class="QWidget" name="ImageAcquisitionWdg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>320</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
+   <item>
+    <widget class="XMatHLine" name="hLine">
+     <property name="lineStyle">
+      <enum>Qt::SolidLine</enum>
+     </property>
+     <property name="lineColor">
+      <color alpha="200">
+       <red>100</red>
+       <green>100</green>
+       <blue>100</blue>
+      </color>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="staWdg">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="wdgPgLocalImage">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="XMatPlainTextEdit" name="ptxLocalImage">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hLayoutLocalImage">
+         <item>
+          <widget class="XMatRaisedButton" name="btnLocalImageOpen">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>打开文件</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="vSpacerLocalImage">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>134</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="wdgPgLocalDir">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="XMatPlainTextEdit" name="ptxLocalDir">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hLayoutLocalDir">
+         <item>
+          <layout class="QHBoxLayout" name="hLayoutLocalDirLN">
+           <item>
+            <widget class="XMatToolButton" name="btnLocalDirLast">
+             <property name="minimumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="XMatToolButton" name="btnLocalDirNext">
+             <property name="minimumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="XMatRaisedButton" name="btnLocalDirOpen">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>打开目录</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="vSpacerLocalDir">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>118</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="wdgPgCamera">
+      <layout class="QVBoxLayout" name="verticalLayout_2"/>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XMatFlatButton</class>
+   <extends>QPushButton</extends>
+   <header>XMatFlatButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XMatRaisedButton</class>
+   <extends>XMatFlatButton</extends>
+   <header>XMatRaisedButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XMatToolButton</class>
+   <extends>QToolButton</extends>
+   <header>XMatToolButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XMatPlainTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>XMatPlainTextEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>XMatHLine</class>
+   <extends>QWidget</extends>
+   <header>XMatHLine.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

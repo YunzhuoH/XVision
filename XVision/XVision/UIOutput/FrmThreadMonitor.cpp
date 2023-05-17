@@ -49,7 +49,7 @@ void FrmThreadMonitor::initFrm()
 //初始化tablewidget
     auto tb=ui->tbwThreadMonitor;
     //自适应宽度
-    tb->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    tb->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     //使行列头自适应宽度，最后一列将会填充空白部分
     tb->horizontalHeader()->setStretchLastSection(true);
     tb->verticalHeader()->setVisible(false);
@@ -177,7 +177,7 @@ void FrmThreadMonitor::onTimerUpdate()
         funcSetItemText(tbw,i,ColIdx_ThreadGroup,th->group());
         funcSetItemText(tbw,i,ColIdx_ThreadName,th->name());
         funcSetItemText(tbw,i,ColIdx_ThreadPriority,QString("%1").arg(th->priority()));
-        funcSetItemText(tbw,i,ColIdx_ThreadRunElapsed,QString("%1").arg(th->runElapsed()));
+        funcSetItemText(tbw,i,ColIdx_ThreadRunElapsed,QString("%1ms").arg(th->runElapsed()));
         funcSetItemText(tbw,i,ColIdx_ThreadRunState,th->isRunning()?strRunning:strStop);
         funcSetItemText(tbw,i,ColIdx_ThreadMsg,th->msg());
 
