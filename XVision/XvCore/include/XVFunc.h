@@ -142,7 +142,7 @@ signals:
 protected:
     ///父连接算子列表
     QList<XvFunc*> _lstFatherFunc;
-    ///字连接算子列表
+    ///子连接算子列表
     QList<XvFunc*> _lstSonFunc;
 protected slots:
     ///父连接算子delete事件

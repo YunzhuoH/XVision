@@ -121,7 +121,7 @@ void FrmXvFuncResult::onUpdateXvFuncResult()
         tb->setItem(nRow,2,funcNewItem(val));
 
     };
-
+    const int fixedTopRowCount=4; //固定顶部行数
     auto tb=ui->tbwXvFuncResult;
     auto results=func->getResult();
     int nRetCount=0;
@@ -129,16 +129,19 @@ void FrmXvFuncResult::onUpdateXvFuncResult()
     {
         nRetCount=results->childObjects().count();
     }
-    tb->setRowCount(2+nRetCount);
+    tb->setRowCount(fixedTopRowCount+nRetCount);
 
     funcSetItemText(tb,0,getLang(App_Ui_FrmXvFuncResultFuncName,"算子名称") ,func->funcName());
     funcSetItemText(tb,1,getLang(App_Ui_FrmXvFuncResultFuncStatus,"算子状态") ,map[func->getXvFuncRunStatus()]);
+    funcSetItemText(tb,2,getLang(App_Ui_FrmXvFuncResultFuncRunMsg,"算子运行消息") ,func->getXvFuncRunMsg());
+    funcSetItemText(tb,3,getLang(App_Ui_FrmXvFuncResultFuncRunElapsed,"算子运行耗时") ,QString("%1ms").arg(func->getXvFuncRunElapsed()));
+
     if(results)
     {
         for (int i = 0; i < results->childObjects().count(); ++i)
         {
             auto ret=results->childObjects()[i];
-            funcSetItemText(tb,i+2,ret->dispalyName(),ret->toString());
+            funcSetItemText(tb,i+fixedTopRowCount,ret->dispalyName(),ret->toString());
         }
 
     }

@@ -12,5 +12,6 @@
         <file>images/ImageAcquisitionWdgDirLast.svg</file>
         <file>images/ImageAcquisitionWdgDirNext.svg</file>
         <file>images/LogOutput.svg</file>
+        <file>images/HModelMatch.svg</file>
     </qresource>
 </RCC>

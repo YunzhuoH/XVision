@@ -8,6 +8,8 @@
 #include <QToolBar>
 #include <QSettings>
 #include <QDir>
+#include <QLabel>
+#include <QtConcurrent>
 
 //XWidget
 #include "XTitleBar.h"
@@ -20,25 +22,29 @@
 #include "XMessageBox.h"
 
 //XvCore
-#include "XvCoreManager.h"
-#include "XvPluginManager.h"
-#include "XvFuncAssembly.h"
+//#include "XvCoreManager.h"
+//#include "XvPluginManager.h"
+//#include "XvFuncAssembly.h"
 
 //XVsion
 #include "XvSingleApplication.h"
 #include "XvViewManager.h"
-#include "XvWorkManager.h"
+//#include "XvWorkManager.h"
 #include "DockMainManager.h"
-#include "DockDef.h"
+//#include "DockDef.h"
 #include "LangDef.h"
 #include "UiUtils.h"
+#include "HardWareInfo.h"
 
 #include "FrmAbout.h"
 //XvUtils
-#include "XvUtils.h"
+//#include "XvUtils.h"
 
 //XLanguage
 #include <XLanguage>
+
+//XConcurrent
+//#include "XConcurrentManager.h"
 
 #define APPMAINWINDOW_CONFIG_PATH "Config/AppMainWindow.ini"
 
@@ -112,7 +118,8 @@ private://主界面窗口控件
 
     XMatHLine* hlineStatus=nullptr;///状态栏隔离线
     QStatusBar* statusBar=nullptr; ///状态栏
-
+    QLabel  *lbStbRunTime=nullptr;//状态栏:软件运行时间Label
+    QLabel  *lbHardWareInfo=nullptr;//状态栏:硬件信息
 
 };
 
@@ -165,6 +172,7 @@ void AppMainWindowPrivate::initFrm()
     hlineStatus->setMinimumHeight(1);
     hlineStatus->setMaximumHeight(1);
     verticalLayout->addWidget(hlineStatus);
+
     ///主界面四大区域初始化
     initMwTitleBar(q->titleBar());
     initMwToolBar(fmToolBar);
@@ -409,6 +417,12 @@ void AppMainWindowPrivate::initMwStatusBar(AppMainWindow* mw)
     statusBar->setObjectName("statusBar");
     statusBar->setMinimumHeight(25);
     mw->setStatusBar(statusBar);
+
+    lbStbRunTime=new QLabel(statusBar);
+    statusBar->addWidget(lbStbRunTime);
+    lbHardWareInfo=new QLabel(statusBar);
+    statusBar->addWidget(lbHardWareInfo);
+
 }
 
 void AppMainWindowPrivate::showEvent()
@@ -425,7 +439,7 @@ void AppMainWindowPrivate::closeEvent()
     Q_Q(AppMainWindow);
     QSettings Settings(APPMAINWINDOW_CONFIG_PATH,QSettings::IniFormat);
     Settings.setValue("AppMainWindow/Geometry", q->saveGeometry());
-    q->getApp()->quit();
+    q->getApp()->quit();   
 }
 
 
@@ -435,11 +449,11 @@ void AppMainWindowPrivate::closeEvent()
 
 
 AppMainWindow::AppMainWindow(XvSingleApplication *app,QWidget *parent) :
-    XFramelessWidget(parent),
-    m_app(app),
-    d_ptr(new AppMainWindowPrivate(this))
+    XFramelessWidget(parent), d_ptr(new AppMainWindowPrivate(this)),
+    m_app(app)
 {
     d_ptr->initFrm();
+    init();
 }
 
 AppMainWindow::~AppMainWindow()
@@ -447,10 +461,55 @@ AppMainWindow::~AppMainWindow()
 
 }
 
+void AppMainWindow::init()
+{
+    connect(this,&AppMainWindow::sgStatusBarInfoUpdate,this,&AppMainWindow::onStatusBarInfoUpdate);
+    auto ret= QtConcurrent::run([=]()
+    {
+        auto funcMsToHMS=[=](qint64 ms)
+        {
+            int ss = 1000;//ms
+            int mm = ss * 60;
+            int hh = mm * 60;
+            int dd = hh * 24;
+
+            qint64 day = ms / dd;
+            qint64 hour = (ms - day * dd) / hh;
+            qint64 minute = (ms - day * dd - hour * hh) / mm;
+            qint64 second = (ms - day * dd - hour * hh - minute * mm) / ss;
+
+            QString strTime = QString("%1:%2:%3")
+                .arg(hour + day * 24, 2, 10, QLatin1Char('0'))
+                .arg(minute, 2, 10, QLatin1Char('0'))
+                .arg(second, 2, 10, QLatin1Char('0'));
+            return strTime;
+
+        };
+        while(getApp()->isRunning())
+        {
+            QString runTime= QString("%1:%2").arg(getLang(App_AppMainWindow_StatusBarAppRunTime,"软件运行时间")).arg(funcMsToHMS(getApp()->getAppRunTime()));
+            HardWareInfo info;
+            double rCpuUsage;
+            double rMemTotal;
+            double rMemUsed;
+            info.getCpuUsage(rCpuUsage);
+            info.getMemUsage(rMemTotal,rMemUsed);
+            QString hardWare= QString("%1:%2% %3:%4MB/%5MB")
+                    .arg(getLang(App_AppMainWindow_StatusBarCpuUsage,"CPU占用率")).arg(rCpuUsage)
+                    .arg(getLang(App_AppMainWindow_StatusBarMemUsage,"内存占用")).arg(rMemUsed).arg(rMemTotal);
+            emit this->sgStatusBarInfoUpdate(runTime,hardWare);
+            QThread::msleep(500);
+        }
+
+    });
+}
+
 bool AppMainWindow::addToolBarAction(QAction *act)
 {
     return d_ptr->addToolBarAction(act);
 }
+
+
 
 
 void AppMainWindow::showEvent(QShowEvent *event)
@@ -513,4 +572,21 @@ void AppMainWindow::about()
 {
     FrmAbout ab;
     ab.exec();
+}
+
+void AppMainWindow::onStatusBarInfoUpdate(const QString &runTime,const QString &hardWare)
+{
+    Q_D(AppMainWindow);
+    auto lbStbRunTime=d->lbStbRunTime;
+    if(lbStbRunTime)
+    {
+        lbStbRunTime->setText(runTime);
+    }
+    auto lbHardWareInfo=d->lbHardWareInfo;
+    if(lbHardWareInfo)
+    {
+        lbHardWareInfo->setText(hardWare);
+    }
+
+
 }

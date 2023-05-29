@@ -1,0 +1,63 @@
+/*****************************************************************************
+ * HalconXimport.idl
+ ***************************************************************************** 
+ *
+ * Project:     HALCON/COM
+ * Description: Interfaces required for building COM extension packages
+ *
+ * (c) 1996-2019 by MVTec Software GmbH
+ *               www.mvtec.com 
+ * 
+ *****************************************************************************/
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+// Interface: IHObjectX
+[
+  object,
+  uuid(6ebd90c3-d219-11d2-ade5-0000c00f4ef9),
+  dual,
+  helpstring("Instance of an iconic object. Base class for HImage, HRegion,..."),
+  pointer_default(unique)
+]
+interface IHObjectX : IDispatch
+{
+}
+
+// Interface: IHUntypedObjectX
+[
+  object,
+  uuid(6ebd90c4-d219-11d2-ade5-0000c00f4ef9),
+  dual,
+  helpstring("weak typed data type for object parameters."),
+  pointer_default(unique)
+]
+interface IHUntypedObjectX : IDispatch
+{
+}
+
+
+
+// Interface: IHandleAccess
+[
+  object,
+  uuid(6ebd90d2-d219-11d2-ade5-0000c00f4ef9),
+  dual,
+  helpstring("interface for accessing the handle"),
+  pointer_default(unique)
+]
+interface IHandleAccess : IDispatch
+{
+    [id(0), hidden, helpstring("read out the handle...")]
+        HRESULT HandleAccess([out, retval] long *rVal);
+    [id(1), hidden, helpstring("set the semaphore")]
+        HRESULT HandleEnterCriticalSection();
+    [id(2), hidden, helpstring("release the semaphore")]
+        HRESULT HandleLeaveCriticalSection();
+    [id(3), hidden, helpstring("call the class destructor")]
+        HRESULT HandleCleanUp([in] BOOL CallDestructor);
+    [id(4), helpstring("check handle - is the object valid?")]
+        HRESULT HandleIsValid([out, retval] long *isValid);
+}
+

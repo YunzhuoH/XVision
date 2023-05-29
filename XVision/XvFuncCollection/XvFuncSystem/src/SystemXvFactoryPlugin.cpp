@@ -6,6 +6,8 @@
 #include "BaseDataRealCalc.h"
 #include "BaseDataStringProcess.h"
 
+#include "HModelMatch.h"
+
 #include "Delayer.h"
 #include "ElapsedTimer.h"
 #include "LogOutput.h"
@@ -31,6 +33,8 @@ QList<QMetaObject> SystemXvFactoryPlugin::getPlgXvFunc()
     ADD_XVFUNC(lst,BaseDataIntCalc);
     ADD_XVFUNC(lst,BaseDataRealCalc);
     ADD_XVFUNC(lst,BaseDataStringProcess);
+
+    ADD_XVFUNC(lst,HModelMatch);
 
     ADD_XVFUNC(lst,Delayer);
     ADD_XVFUNC(lst,ElapsedTimer);

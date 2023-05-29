@@ -109,7 +109,10 @@
 //Msg
 #define App_AppMainWindow_MsgSwitchLangError  "App_AppMainWindow_MsgSwitchLangError" //切换语言失败
 #define App_AppMainWindow_MsgSwitchLangSuccess  "App_AppMainWindow_MsgSwitchLangSuccess" //切换语言成功，请重启软件
-
+//StatusBar
+#define App_AppMainWindow_StatusBarAppRunTime  "App_AppMainWindow_StatusBarAppRunTime" //软件运行时间
+#define App_AppMainWindow_StatusBarCpuUsage "App_AppMainWindow_StatusBarCpuUsage" //CPU占用率
+#define App_AppMainWindow_StatusBarMemUsage "App_AppMainWindow_StatusBarMemUsage" //内存占用
 /*Frm*/
 #define App_Ui_FrmLogShow           "App_Ui_FrmLogShow"     //日志显示
 #define App_Ui_FrmLogShowClearLog       "App_Ui_FrmLogShowClearLog"     //清除日志
@@ -141,6 +144,8 @@
 
 #define App_Ui_FrmXvFuncResultFuncName     "App_Ui_FrmXvFuncResultFuncName"   //算子名称
 #define App_Ui_FrmXvFuncResultFuncStatus     "App_Ui_FrmXvFuncResultFuncStatus"   //算子状态
+#define App_Ui_FrmXvFuncResultFuncRunMsg     "App_Ui_FrmXvFuncResultFuncRunMsg"   //算子运行消息
+#define App_Ui_FrmXvFuncResultFuncRunElapsed     "App_Ui_FrmXvFuncResultFuncRunElapsed"   //算子运行耗时
 
 
 #define App_Ui_FrmAbout                 "App_Ui_FrmAbout" //关于
@@ -167,6 +172,8 @@
 #define App_UiXvWorkMgr_FlowLoopRun      "App_UiXvWorkMgr_FlowLoopRun"   //流程重复运行
 #define App_UiXvWorkMgr_FlowStop         "App_UiXvWorkMgr_FlowStop"      //流程停止运行
 #define App_UiXvWorkMgr_FlowConfig       "App_UiXvWorkMgr_FlowConfig"    //流程配置
+#define App_UiXvWorkMgr_FlowImport       "App_UiXvWorkMgr_FlowImport"    //流程导入
+#define App_UiXvWorkMgr_FlowExport       "App_UiXvWorkMgr_FlowExport"    //流程导出
 
 #define App_UiXvWorkMgr_FlowViewZoomScale         "App_UiXvWorkMgr_FlowViewZoomScale"      //缩放比例
 

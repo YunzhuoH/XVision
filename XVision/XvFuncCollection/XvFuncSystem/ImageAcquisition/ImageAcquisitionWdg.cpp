@@ -13,7 +13,6 @@ ImageAcquisitionWdg::ImageAcquisitionWdg(ImageAcquisition *func,QWidget *parent)
 }
 
 
-
 ImageAcquisitionWdg::~ImageAcquisitionWdg()
 {
     delete ui;

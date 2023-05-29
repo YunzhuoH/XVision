@@ -4,6 +4,7 @@
 #include <QLayout>
 #include <QSpacerItem>
 #include <QLabel>
+#include <QVBoxLayout>
 
 //XvDisplay
 #include <XvDisplay>
@@ -74,7 +75,7 @@ void UiXvDisplayManager::init()
    initToolBar();
    initConnect();
 }
-#include <QVBoxLayout>
+
 void UiXvDisplayManager::initView()
 {
     m_displayView=new XvDisplayView();

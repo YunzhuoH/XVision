@@ -17,6 +17,7 @@
 #include "XMatToolButton.h"
 #include "XInputDialog.h"
 #include "XMessageBox.h"
+#include "XMatVLine.h"
 
 //XConcurrent
 #include "XConcurrentManager.h"
@@ -187,6 +188,26 @@ void UiXvWorkManager::initToolBtn()
     auto iconSize=btnSize-2;
 
     auto btn=new XMatToolButton(bar);
+    btn->setObjectName("btnFlowImport");
+    U_initSetButton(btn,getLang(App_UiXvWorkMgr_FlowImport,"流程导入"),getLang(App_UiXvWorkMgr_FlowImport,"流程导入"),
+                    QIcon(":/images/Ui/UiXvWorkManagerFlowImport.svg"),iconSize,
+                    QSize(btnSize,btnSize), QSize(btnSize,btnSize)
+                    );
+    bar->insertWidget(-1, btn);
+    connect(btn,&XMatToolButton::clicked,this,&UiXvWorkManager::flowImport);
+
+    btn=new XMatToolButton(bar);
+    btn->setObjectName("btnFlowExport");
+    U_initSetButton(btn,getLang(App_UiXvWorkMgr_FlowExport,"流程导出"),getLang(App_UiXvWorkMgr_FlowExport,"流程导出"),
+                        QIcon(":/images/Ui/UiXvWorkManagerFlowExport.svg"),iconSize,
+                        QSize(btnSize,btnSize), QSize(btnSize,btnSize)
+                        );
+    bar->insertWidget(-1, btn);
+    connect(btn,&XMatToolButton::clicked,this,&UiXvWorkManager::flowExport);
+
+    bar->insertWidget(-1,new XMatVLine(bar));
+
+    btn=new XMatToolButton(bar);
     btn->setObjectName("btnFlowConfig");
     U_initSetButton(btn,getLang(App_UiXvWorkMgr_FlowConfig,"流程配置"),getLang(App_UiXvWorkMgr_FlowConfig,"流程配置"),
                     QIcon(":/images/Ui/UiXvWorkManagerFlowConfig.svg"),iconSize,
@@ -222,6 +243,8 @@ void UiXvWorkManager::initToolBtn()
     btn->setRippleColor(Qt::red);
     bar->insertWidget(-1, btn);
     connect(btn,&XMatToolButton::clicked,this,&UiXvWorkManager::flowStopRun);
+
+    bar->insertWidget(-1,new XMatVLine(bar));
 
     btn=new XMatToolButton(bar);
     btn->setObjectName("btnFlowDel");
@@ -632,6 +655,16 @@ void UiXvWorkManager::flowRemove()
         }
 
     }
+}
+
+void UiXvWorkManager::flowImport()
+{
+    Log_Critical("xie.y todo:此功能未完成");
+}
+
+void UiXvWorkManager::flowExport()
+{
+    Log_Critical("xie.y todo:此功能未完成");
 }
 void UiXvWorkManager::flowRename()
 {

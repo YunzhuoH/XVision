@@ -96,8 +96,7 @@ public:
         m_strLocalDir=dir;
         result->acqLocalPath->setValue(m_strLocalDir);
     }
-    ///更新本地采集
-    bool upDateLocalAcq();
+
 protected:
     ///设置输出的图像
     void setOutputImage(const QImage &img);

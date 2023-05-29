@@ -97,6 +97,10 @@ protected slots://Ui界面内部调用槽
     void flowAdd();
     ///流程删除
     void flowRemove();
+    ///流程导入
+    void flowImport();
+    ///流程导出
+    void flowExport();
 //*[流程运行操作]*
     ///流程单次运行
     void flowOnceRun();

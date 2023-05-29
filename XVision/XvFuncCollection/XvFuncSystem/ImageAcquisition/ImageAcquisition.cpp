@@ -20,7 +20,7 @@ ImageAcquisition::ImageAcquisition(QObject *parent)
 }
 
 ImageAcquisition::~ImageAcquisition()
-{
+{  
     if(m_frm)
     {
         delete m_frm;
@@ -31,29 +31,6 @@ ImageAcquisition::~ImageAcquisition()
         delete m_sDirImage;
         m_sDirImage=nullptr;
     }
-}
-
-bool ImageAcquisition::upDateLocalAcq()
-{
-    switch (m_AcqType)
-    {
-    case AcqType::File:
-    {
-
-    }
-        break;
-    case AcqType::Dir:
-    {
-
-    }
-        break;
-    case AcqType::Camera:
-    {
-        return false;
-    }
-        break;
-    }
-    return true;
 }
 
 void ImageAcquisition::setOutputImage(const QImage &img)

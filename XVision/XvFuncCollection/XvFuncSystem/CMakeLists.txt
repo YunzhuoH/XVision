@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include (../../CommonCMake/CommonXvFuncOutputSet.cmake)
 include (../../CommonUsing/CommonUsing.cmake)
+include (../../3rdparty/Common3rdparty.cmake)
 
 
 #寻找QT库
@@ -39,6 +40,10 @@ list(APPEND _LIBS
     XLanguage       #多语言库
     XConcurrent     #多线程管理库
 )
+#添加第三方库
+list(APPEND _LIBS
+   ${HALCON_LIB}
+)
 #[[**************添加包含目录**************]]
 
 #添加工程包含目录
@@ -55,15 +60,19 @@ list(APPEND _INCLUDE_DIR
     ../../${XLog_Inc}
     ../../${XLanguage_Inc}
     ../../${XConcurrent_Inc}
-
+    ../../${HALCON_INC_DIR}
+    ../../${HALCONCPP_INC_DIR}
 )
+
 
 #[[**************添加连接库文件路径**************]]
 
 #添加依赖库目录
 list(APPEND _LINK_DIR
     ../../${COMMON_USING_LINK_DIR}
+    ../../${HALCON_LINK_DIR}
 )
+
 link_directories(${_LINK_DIR})
 
 
@@ -71,10 +80,12 @@ link_directories(${_LINK_DIR})
 file(GLOB INCLUDE include/*.*)
 file(GLOB SRC src/*.*)
 file(GLOB Model Model/*.*)
+file(GLOB Def Def/*.*)
 file(GLOB Helper Helper/*.*)
 
 file(GLOB ImageAcquisition ImageAcquisition/*.*)
 file(GLOB DataProcessing DataProcessing/*.*)
+file(GLOB Location Location/*.*)
 file(GLOB User User/*.*)
 file(GLOB Logic Logic/*.*)
 file(GLOB Other Other/*.*)
@@ -85,11 +96,13 @@ set(PROJECT_SOURCES
     ${INCLUDE}
     ${SRC}
 
+    ${Def}
     ${Model}
     ${Helper}
 
     ${DataProcessing}
     ${ImageAcquisition}
+    ${Location}
     ${User}
     ${Logic}
     ${Other}
@@ -108,8 +121,10 @@ list(APPEND _INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Model
     ${CMAKE_CURRENT_SOURCE_DIR}/Helper
+    ${CMAKE_CURRENT_SOURCE_DIR}/Def
 
     ${CMAKE_CURRENT_SOURCE_DIR}/ImageAcquisition
+    ${CMAKE_CURRENT_SOURCE_DIR}/Location
     ${CMAKE_CURRENT_SOURCE_DIR}/DataProcessing
     ${CMAKE_CURRENT_SOURCE_DIR}/User
     ${CMAKE_CURRENT_SOURCE_DIR}/Logic
@@ -120,6 +135,7 @@ list(APPEND _INCLUDE_DIR
 
 #包含目录
 include_directories(${_INCLUDE_DIR})
+
 #连接[第三方库/内部库] 动态
 target_link_libraries(${PROJECT_NAME} PRIVATE ${_LIBS})
 

@@ -24,6 +24,11 @@ protected:
 private:
     Q_DISABLE_COPY(AppMainWindow)
     Q_DECLARE_PRIVATE(AppMainWindow)
+
+protected:
+    void init();
+signals:
+    void sgStatusBarInfoUpdate(const QString &runTime,const QString &hardWare);
 public slots:
 //*[文件/项目]*
     ///新建项目
@@ -46,7 +51,8 @@ public slots:
 //*[帮助]*
     ///关于
     void about();
-
+//*[状态栏消息更新]*
+    void onStatusBarInfoUpdate(const QString &runTime,const QString &hardWare);
     // QWidget interface
 protected:
     void showEvent(QShowEvent *event) override;

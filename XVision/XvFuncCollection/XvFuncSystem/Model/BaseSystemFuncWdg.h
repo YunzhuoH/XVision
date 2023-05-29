@@ -75,7 +75,8 @@ protected:
     void showEvent(QShowEvent *event) override;
     ///隐藏事件
     void hideEvent(QHideEvent *event) override;
-
+    ///关闭事件
+    void closeEvent(QCloseEvent *event) override;
 protected slots:
     ///算子运行更新事件
     virtual void onFuncRunUpdate() {};
@@ -83,9 +84,12 @@ protected slots:
     virtual void onShow(){};
     ///隐藏事件响应
     virtual void onHide(){};
+    ///关闭事件响应
+    virtual void onClose(){};
 protected:
     XvFunc* m_func=nullptr;
     bool m_bShowing=false;//是否正在显示
+
 
 
 };

@@ -268,4 +268,10 @@ void BaseSystemFuncWdg::hideEvent(QHideEvent *event)
     return XFramelessWidget::hideEvent(event);
 }
 
+void BaseSystemFuncWdg::closeEvent(QCloseEvent *event)
+{
+    onClose();
+    return XFramelessWidget::closeEvent(event);
+}
+
 

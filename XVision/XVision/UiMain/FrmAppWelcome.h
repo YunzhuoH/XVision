@@ -2,7 +2,7 @@
 #define FRMAPPWELCOME_H
 
 #include "BaseWidget.h"
-
+///废弃
 namespace Ui {
 class FrmAppWelcome;
 }

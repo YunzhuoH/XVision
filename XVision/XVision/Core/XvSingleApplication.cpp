@@ -1,6 +1,7 @@
 ﻿#include "XvSingleApplication.h"
 
-#include <XLogger>
+#include <QElapsedTimer>
+
 #include "LangDef.h"
 #include "AppMainWindow.h"
 #include "DockMainManager.h"
@@ -18,9 +19,38 @@
 const SingleApplication::Options opts = SingleApplication::ExcludeAppPath | SingleApplication::ExcludeAppVersion | SingleApplication::SecondaryNotification;
 
 
+/**************************************************************/
+//* [UXvSingleApplicationPrivate]
+/**************************************************************/
+class XvSingleApplicationPrivate
+{
+    Q_DISABLE_COPY(XvSingleApplicationPrivate)
+    Q_DECLARE_PUBLIC(XvSingleApplication)
+
+public:
+    XvSingleApplicationPrivate(XvSingleApplication *q):q_ptr(q)
+    {
+        runElapsedTimer=new QElapsedTimer;
+    };
+    ~XvSingleApplicationPrivate()
+    {
+        delete runElapsedTimer;
+        runElapsedTimer=nullptr;
+    };
+
+public:
+    XvSingleApplication              *const q_ptr;
+    QElapsedTimer*                  runElapsedTimer=nullptr;//运行计时器
+
+};
+
+/**************************************************************/
+//* [XvSingleApplication]
+/**************************************************************/
 
 XvSingleApplication::XvSingleApplication(int &argc, char **argv)
-: SingleApplication(argc, argv, false, opts)
+: SingleApplication(argc, argv, false, opts),d_ptr(new XvSingleApplicationPrivate(this)),
+  m_bInitFinish(false),  m_bIsRunning(false)
 {
 
 }
@@ -32,7 +62,9 @@ XvSingleApplication::~XvSingleApplication()
 
 void XvSingleApplication::init()
 {
+    Q_D(XvSingleApplication);
     m_bInitFinish=false;
+    m_bIsRunning=true;
     setOrganizationName("XVision");
     setApplicationName("XVision");
 
@@ -40,7 +72,7 @@ void XvSingleApplication::init()
     //设置Crash目录
     QBreakpadInstance.setDumpPath("Crash");
 #endif
-
+    d->runElapsedTimer->start();
     //初始化多语言管理器
     XLang->init();
 
@@ -82,6 +114,7 @@ void XvSingleApplication::uninit()
     XLang->uninit();
 
     m_bInitFinish=false;
+    m_bIsRunning=false;
 }
 
 bool XvSingleApplication::isInit()
@@ -96,6 +129,12 @@ int XvSingleApplication::run()
     //主界面最大化
     XvViewMgr->appMainWindow()->showMaximized();
     return this->exec();
+}
+
+qint64 XvSingleApplication::getAppRunTime()
+{
+    Q_D(XvSingleApplication);
+    return d->runElapsedTimer->elapsed();
 }
 
 

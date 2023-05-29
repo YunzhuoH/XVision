@@ -12,7 +12,7 @@ namespace XvCore
 class XVCORE_EXPORT  IXvFactoryPlugin
 {
 public:
-    IXvFactoryPlugin();
+    IXvFactoryPlugin(){}
     //析构函数
    virtual ~IXvFactoryPlugin() {}
 public:

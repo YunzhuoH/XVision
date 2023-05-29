@@ -39,8 +39,6 @@ protected:
     DelayerParam *param=nullptr;
     DelayerWdg* m_frm=nullptr;
 
-
-
 };
 }
 

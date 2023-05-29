@@ -47,5 +47,7 @@
         <file>images/Ui/AppMainWindowGlobalManager.svg</file>
         <file>images/Ui/AppMainWindowGlobalScript.svg</file>
         <file>images/Ui/AppMainWindowVariantManager.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowExport.svg</file>
+        <file>images/Ui/UiXvWorkManagerFlowImport.svg</file>
     </qresource>
 </RCC>
