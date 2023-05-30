@@ -191,3 +191,17 @@ endif()
 
 
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+
+#此处需要将引用的CommonUsing库复制到exe目录中
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_SOURCE_DIR}/../${COMMON_USING_LINK_DIR}/XWidget.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/../${COMMON_USING_LINK_DIR}/XLog.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/../${COMMON_USING_LINK_DIR}/XLanguage.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/../${COMMON_USING_LINK_DIR}/AdsDocking.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/../${COMMON_USING_LINK_DIR}/XFlowGraphics.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/../${COMMON_USING_LINK_DIR}/XConcurrent.dll
+
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
+

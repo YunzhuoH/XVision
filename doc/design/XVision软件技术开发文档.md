@@ -380,7 +380,24 @@
 # **6.开发注意事项**
 
 * Debug/Release切换:切换构建模式时，需要同步修改XVision\CommonUsing\CommonUsing.cmake中的"set(CurBuildType_IsDebug ON/OFF)"，Debug模式为ON，Release为OFF，防止引用dll库错误；
+
 * 生成路径:所有主要工程都需要在CMake中添加"include (../CommonCMake/CommonProjectOutputSet.cmake)"，使之能生成在同一个目录中。注:当前XVision/XvCore/XvData/XvDisplay/XvUtils/XvTokenMsg已经添加无需重复添加；
+
 * 调用CommonUsing库:需要调用CommonUsing中的库时，需要在CMake中添加"include (../CommonUsing/CommonUsing.cmake)"，具体可参考XvCore工程中CMake的用法；
-* 维护XWidget:当在开发中需要根据需求修改XWidget库(XVision\CommonUsing\Project\XWidget)，需要同步更新Gitlab上的XWidget库，保持两个工程的同步，并记录在XVision\CommonUsing\Project\XWidget\更新XWidget库注意事项.txt中。
+
+* 维护XWidget:当在开发中需要根据需求修改XWidget库(XVision\CommonUsing\Project\XWidget)，需要同步更新Gitlab上的XWidget库，保持两个工程的同步，并记录在XVision\CommonUsing\Project\XWidget\更新XWidget库注意事项.txt中；
+
+* Halcon等第三方库引用:当算子插件dll使用Halcon之类的第三方库，dll生成时是不会自动将Halcon生成到exe目录中的，继而引起exe无法加载插件的错误，故此需要在引用Halcon等第三方库的工程CMake添加以下代码，使之可以自动复制第三方库到exe目录中(可参考XvFuncSystem工程的CMake);
+
+  ```cmake
+  #此处需要将引用的halcon库复制到exe目录中，否则插件系统无法加载本dll
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+          ${CMAKE_CURRENT_SOURCE_DIR}/${库路径}/第三方库.dll
+          ${CMAKE_CURRENT_SOURCE_DIR}/${库路径}/第三方库.lib
+          $<TARGET_FILE_DIR:${PROJECT_NAME}>
+  )
+  ```
+
+  
 

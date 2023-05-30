@@ -869,8 +869,8 @@ void UiXvWorkManager::onFlowSceneMenuRequested(const QPoint &pos)
             if(!qPtr) return;
             auto funcSel=qobject_cast<XvFunc*>(qPtr);
             if(!funcSel) return;
-            qDebug()<<"选择的算子是否存在后代为当前所指的算子:"<<funcSel->existDescendantFunc(func);
-            qDebug()<<"当前所指的算子是否存在祖先为选择的算子:"<<func->existAncestorFunc(funcSel);
+          //  qDebug()<<"选择的算子是否存在后代为当前所指的算子:"<<funcSel->existDescendantFunc(func);
+           // qDebug()<<"当前所指的算子是否存在祖先为选择的算子:"<<func->existAncestorFunc(funcSel);
         });
 
         menu.exec(pt);

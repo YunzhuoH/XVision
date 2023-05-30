@@ -143,3 +143,13 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${_LIBS})
 target_compile_definitions(XvFuncSystem PRIVATE XVFUNCSYSTEM_LIBRARY)
 
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+
+#此处需要将引用的halcon库复制到exe目录中，否则插件系统无法加载本dll
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../${HALCON_LINK_DIR}/halcon.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../${HALCON_LINK_DIR}/halcon.lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../${HALCON_LINK_DIR}/halconcpp.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../${HALCON_LINK_DIR}/halconcpp.lib
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/..
+)

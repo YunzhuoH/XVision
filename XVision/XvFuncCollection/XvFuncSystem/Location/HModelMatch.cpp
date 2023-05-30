@@ -36,7 +36,7 @@ void HModelMatch::onShowFunc()
 
 EXvFuncRunStatus HModelMatch::run()
 {
-    HObject obj;
+    HObject obj;//此处为测试Halcon库是否可用。
 
 
     return EXvFuncRunStatus::Ok;
